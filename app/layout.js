@@ -1,5 +1,6 @@
 import {Montserrat} from "next/font/google";
 import Image from 'next/image'
+import Link from 'next/link'
 import logo from '../public/logo.png'
 import "./globals.css";
 
@@ -12,14 +13,29 @@ export const metadata = {
 
 const Header = () => {
   return (
-    <header className='bg-white flex'>
+    <header className='bg-white flex justify-between px-32 py-8'>
       <Image
         src={logo}
         alt="TechAway Logo"
         width={277}
         height={57}
       />
-      <p>{metadata.description}</p>
+      <nav className='flex items-center'>
+        <ul className='flex justify-between items-center gap-12 font-bold text-black'>
+          <li className='flex items-center'>
+            <Link href="/dashboard">Dashboard</Link>
+          </li>
+          <li className='flex items-center'>
+            <Link href="/schedule">Schedule</Link>
+          </li>
+          <li className='flex items-center'>
+            <Link href="/tickets">Tickets</Link>
+          </li>
+          <li className='flex items-center'>
+            <Link href="/shop">Shop</Link>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }
