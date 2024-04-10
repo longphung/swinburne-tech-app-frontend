@@ -1,6 +1,7 @@
 {
   "name": "swinburne-tech-app-frontend",
   "version": "0.1.0",
+  "description": "Swinburne Technology Application frontend",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -22,5 +23,8 @@
     "postcss": "^8",
     "prettier": "3.2.5",
     "tailwindcss": "^3.3.0"
-  }
+  },
+  "author": "Phung Nguyen, Ritvik Thakur, Gauri Krishna, Bashini Dewage, Charles Ficarra",
+  "homepage": "https://github.com/longphung/swinburne-tech-app-frontend#readme",
+  "license": "Apache-2.0"
 }
