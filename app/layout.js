@@ -22,16 +22,16 @@ const Header = () => {
       />
       <nav className='flex items-center'>
         <ul className='flex justify-between items-center gap-12 font-bold text-black'>
-          <li className='flex items-center'>
+          <li className='flex items-center hover:underline decoration-2 underline-offset-8'>
             <Link href="/dashboard">Dashboard</Link>
           </li>
-          <li className='flex items-center'>
+          <li className='flex items-center hover:underline decoration-2 underline-offset-8'>
             <Link href="/schedule">Schedule</Link>
           </li>
-          <li className='flex items-center'>
+          <li className='flex items-center hover:underline decoration-2 underline-offset-8'>
             <Link href="/tickets">Tickets</Link>
           </li>
-          <li className='flex items-center'>
+          <li className='flex items-center hover:underline decoration-2 underline-offset-8'>
             <Link href="/shop">Shop</Link>
           </li>
         </ul>
