@@ -1,7 +1,10 @@
 import {Montserrat} from "next/font/google";
 import Image from 'next/image'
 import Link from 'next/link'
+
 import logo from '../public/logo.png'
+import underConstruction from '../public/under-construction.png';
+
 import "./globals.css";
 
 const montserrat = Montserrat({subsets: ["latin"]});
@@ -14,12 +17,14 @@ export const metadata = {
 const Header = () => {
   return (
     <header className='bg-white flex justify-between px-32 py-8'>
-      <Image
-        src={logo}
-        alt="TechAway Logo"
-        width={277}
-        height={57}
-      />
+      <Link href='/'>
+        <Image
+          src={logo}
+          alt="TechAway Logo"
+          width={277}
+          height={57}
+        />
+      </Link>
       <nav className='flex items-center'>
         <ul className='flex justify-between items-center gap-12 font-bold text-black'>
           <li className='flex items-center hover:underline decoration-2 underline-offset-8'>
@@ -45,7 +50,11 @@ export default function RootLayout({children}) {
     <html lang="en">
     <body className={montserrat.className}>
     <Header/>
-    {children}
+    {process.env.IS_UNDER_CONSTRUCTION === "1" ? (
+      <Image src={underConstruction} width={512} alt='Under Construction' className='my-8 mx-auto'/>
+      ) :
+      children
+    }
     </body>
     </html>
   );
