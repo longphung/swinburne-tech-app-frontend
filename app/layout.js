@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { Refine } from "@refinedev/core";
-import routerProvider from "@refinedev/nextjs-router";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 
@@ -9,6 +7,7 @@ import underConstruction from "@/public/under-construction.png";
 import Header from "@/components/Header";
 import theme from "@/components/theme";
 import SnackbarProvider from "@/components/contexts/SnackbarProvider";
+import RefineProvider from "@/components/contexts/RefineProvider";
 
 export const metadata = {
   title: "TechAway",
@@ -20,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Refine routerProvider={routerProvider}>
+        <RefineProvider>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
               <SnackbarProvider>
@@ -39,7 +38,7 @@ export default function RootLayout({ children }) {
               </SnackbarProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
-        </Refine>
+        </RefineProvider>
       </body>
     </html>
   );

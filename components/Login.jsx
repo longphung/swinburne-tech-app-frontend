@@ -4,19 +4,27 @@ import { LoadingButton } from "@mui/lab";
 import { Link, Paper, Stack, Typography } from "@mui/material";
 import NextLink from "next/link";
 import { useForm } from "@refinedev/react-hook-form";
-import axios from "axios";
 import { useSnackbar } from "notistack";
 
 import FormInputText from "@/components/form-components/FormInputText";
+import { login } from "@/api/backend";
+import { useLog, useLogin } from "@refinedev/core";
 
 /**
  * @param {{
  *   title: string;
+ *   onLogin: (data: {
+ *     idToken: string;
+ *     accessToken: string;
+ *     refreshToken: string;
+ *     expiresIn: string;
+ *   }) => void;
  * }} props
  * @returns {JSX.Element}
  */
 const Login = (props) => {
   const { enqueueSnackbar } = useSnackbar();
+  const { mutateAsync: login } = useLogin();
   const {
     control,
     handleSubmit,
@@ -30,25 +38,25 @@ const Login = (props) => {
   });
 
   const onSubmit = async (data) => {
-    try {
-      const result = await axios.post("/api/auth/login/password", data);
-    } catch (e) {
-      console.error(e);
-      if (e.response.status === 401) {
-        const message = "Invalid username or password.";
-        enqueueSnackbar(message, {
-          variant: "error",
-        });
-        setError("username", {
-          type: "manual",
-          message,
-        });
-        setError("password", {
-          type: "manual",
-          message,
-        });
-      }
+    const result = await login({
+      username: data.username,
+      password: data.password,
+    });
+    if (result.success) {
+      props.onLogin(result);
+      return;
     }
+    enqueueSnackbar(result.error.message, {
+      variant: "error",
+    });
+    setError("username", {
+      type: "manual",
+      message: result.error.message,
+    });
+    setError("password", {
+      type: "manual",
+      message: result.error.message,
+    });
   };
 
   return (
@@ -88,12 +96,7 @@ const Login = (props) => {
         <Link component={NextLink} href="/forgot">
           Forgot password?
         </Link>
-        <LoadingButton
-          loading={isSubmitting}
-          loadingPosition="start"
-          variant="contained"
-          type="submit"
-        >
+        <LoadingButton loading={isSubmitting} variant="contained" type="submit">
           Login
         </LoadingButton>
         <Stack
