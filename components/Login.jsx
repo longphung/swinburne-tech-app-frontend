@@ -1,10 +1,13 @@
 "use client";
 
-import { Button, Link, Paper, Stack, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Link, Paper, Stack, Typography } from "@mui/material";
 import NextLink from "next/link";
 import { useForm } from "@refinedev/react-hook-form";
-import FormInputText from "@/components/form-components/FormInputText";
 import axios from "axios";
+import { useSnackbar } from "notistack";
+
+import FormInputText from "@/components/form-components/FormInputText";
 
 /**
  * @param {{
@@ -13,7 +16,13 @@ import axios from "axios";
  * @returns {JSX.Element}
  */
 const Login = (props) => {
-  const { control, handleSubmit } = useForm({
+  const { enqueueSnackbar } = useSnackbar();
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { isSubmitting },
+  } = useForm({
     defaultValues: {
       username: "",
       password: "",
@@ -21,8 +30,25 @@ const Login = (props) => {
   });
 
   const onSubmit = async (data) => {
-    const result = await axios.post("/api/auth/login/password", data);
-    console.log(result);
+    try {
+      const result = await axios.post("/api/auth/login/password", data);
+    } catch (e) {
+      console.error(e);
+      if (e.response.status === 401) {
+        const message = "Invalid username or password.";
+        enqueueSnackbar(message, {
+          variant: "error",
+        });
+        setError("username", {
+          type: "manual",
+          message,
+        });
+        setError("password", {
+          type: "manual",
+          message,
+        });
+      }
+    }
   };
 
   return (
@@ -62,9 +88,14 @@ const Login = (props) => {
         <Link component={NextLink} href="/forgot">
           Forgot password?
         </Link>
-        <Button variant="contained" type="submit">
+        <LoadingButton
+          loading={isSubmitting}
+          loadingPosition="start"
+          variant="contained"
+          type="submit"
+        >
           Login
-        </Button>
+        </LoadingButton>
         <Stack
           direction="row"
           sx={{

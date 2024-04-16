@@ -8,6 +8,7 @@ import underConstruction from "@/public/under-construction.png";
 
 import Header from "@/components/Header";
 import theme from "@/components/theme";
+import SnackbarProvider from "@/components/contexts/SnackbarProvider";
 
 export const metadata = {
   title: "TechAway",
@@ -22,18 +23,20 @@ export default function RootLayout({ children }) {
         <Refine routerProvider={routerProvider}>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <Header />
-              {process.env.IS_UNDER_CONSTRUCTION === "1" ? (
-                <Image
-                  src={underConstruction}
-                  width={512}
-                  alt="Under Construction"
-                  className="my-8 mx-auto"
-                />
-              ) : (
-                children
-              )}
+              <SnackbarProvider>
+                <CssBaseline />
+                <Header />
+                {process.env.IS_UNDER_CONSTRUCTION === "1" ? (
+                  <Image
+                    src={underConstruction}
+                    width={512}
+                    alt="Under Construction"
+                    className="my-8 mx-auto"
+                  />
+                ) : (
+                  children
+                )}
+              </SnackbarProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </Refine>
