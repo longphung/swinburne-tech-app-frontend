@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Refine } from "@refinedev/core";
+import routerProvider from "@refinedev/nextjs-router";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 
@@ -17,22 +19,24 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Header />
-            {process.env.IS_UNDER_CONSTRUCTION === "1" ? (
-              <Image
-                src={underConstruction}
-                width={512}
-                alt="Under Construction"
-                className="my-8 mx-auto"
-              />
-            ) : (
-              children
-            )}
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <Refine routerProvider={routerProvider}>
+          <AppRouterCacheProvider>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <Header />
+              {process.env.IS_UNDER_CONSTRUCTION === "1" ? (
+                <Image
+                  src={underConstruction}
+                  width={512}
+                  alt="Under Construction"
+                  className="my-8 mx-auto"
+                />
+              ) : (
+                children
+              )}
+            </ThemeProvider>
+          </AppRouterCacheProvider>
+        </Refine>
       </body>
     </html>
   );
