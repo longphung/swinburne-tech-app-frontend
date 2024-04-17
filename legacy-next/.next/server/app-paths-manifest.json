@@ -1,0 +1,15 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/register/page": "app/register/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/manifest.webmanifest/route": "app/manifest.webmanifest/route.js",
+  "/page": "app/page.js",
+  "/tickets/page": "app/tickets/page.js",
+  "/shop/page": "app/shop/page.js",
+  "/schedule/page": "app/schedule/page.js",
+  "/apple-icon.png/route": "app/apple-icon.png/route.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/login/page": "app/dashboard/login/page.js",
+  "/admin/page": "app/admin/page.js"
+}
