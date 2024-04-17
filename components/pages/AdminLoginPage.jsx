@@ -3,7 +3,7 @@ import { Box, Container } from "@mui/material";
 import Login from "@/components/Login";
 import { USERS_ROLE } from "@/utils/authProvider";
 
-const AdminPage = () => {
+const AdminLoginPage = () => {
   return (
     <Container maxWidth="xs" sx={{ padding: "2rem" }}>
       <Box
@@ -17,4 +17,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default AdminLoginPage;

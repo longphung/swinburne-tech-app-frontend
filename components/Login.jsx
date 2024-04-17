@@ -12,7 +12,7 @@ import { useLogin } from "@refinedev/core";
 /**
  * @param {{
  *   title: string;
- *   role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
+ *   role: USERS_ROLE.TECHNICIAN & USERS_ROLE.CUSTOMER;
  *   onLogin: (data: {
  *     idToken: string;
  *     accessToken: string;
