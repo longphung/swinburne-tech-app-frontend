@@ -1,4 +1,4 @@
-import { login, logout, refreshAccessToken } from "@/api/backend";
+import { login, logout } from "@/api/backend";
 import { jwtDecode } from "jwt-decode";
 
 export const USERS_ROLE = {
@@ -72,7 +72,7 @@ const authProvider = {
         authenticated: false,
         error: {
           message: "Not logged in",
-          name: "Not logged in"
+          name: "Not logged in",
         },
         redirectTo: redirectTo,
       };
@@ -126,7 +126,7 @@ const authProvider = {
         emailVerified: null,
         phone: null,
         address: null,
-        role: [],
+        role: null,
       };
     }
     const { userData } = jwtDecode(idToken);
