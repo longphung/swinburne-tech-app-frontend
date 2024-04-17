@@ -7,7 +7,7 @@ import underConstruction from "@/public/under-construction.png";
 import Header from "@/components/Header";
 import theme from "@/components/theme";
 import SnackbarProvider from "@/components/contexts/SnackbarProvider";
-import RefineProvider from "@/components/contexts/RefineProvider";
+import RefineCustomerProvider from "@/components/contexts/RefineCustomerProvider";
 
 export const metadata = {
   title: "TechAway",
@@ -19,10 +19,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <RefineProvider>
+        <RefineCustomerProvider>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
-              <SnackbarProvider>
+              <SnackbarProvider
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
                 <CssBaseline />
                 <Header />
                 {process.env.IS_UNDER_CONSTRUCTION === "1" ? (
@@ -38,7 +43,7 @@ export default function RootLayout({ children }) {
               </SnackbarProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
-        </RefineProvider>
+        </RefineCustomerProvider>
       </body>
     </html>
   );

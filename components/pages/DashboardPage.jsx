@@ -5,7 +5,9 @@ import { Box, Container } from "@mui/material";
 import { useIsAuthenticated } from "@refinedev/core";
 
 const DashboardPage = () => {
-  const { isLoading, data } = useIsAuthenticated();
+  const { isLoading, data } = useIsAuthenticated({
+    params: "some data"
+  });
 
   console.log("authenticatedData", data);
 

@@ -7,7 +7,7 @@ import { login, refreshAccessToken } from "@/api/backend";
 import { jwtDecode } from "jwt-decode";
 
 /**
- * @type {AuthProvider}
+ * @type {import("@refinedev/core").AuthProvider}
  */
 const authProvider = {
   login: async (data) => {
@@ -15,24 +15,39 @@ const authProvider = {
       username: data.username,
       password: data.password,
     });
-    if (result.success) {
-      localStorage.setItem("idToken", result.data.idToken);
-      localStorage.setItem("accessToken", result.data.accessToken);
-      localStorage.setItem("refreshToken", result.data.refreshToken);
+    if (!result.success) {
+      return {
+        success: false,
+        error: {
+          name: "Login Error",
+          message: result.message,
+        },
+      };
     }
+    const { userData } = jwtDecode(result.data.idToken);
+    if (!userData.role.includes("customer")) {
+      return {
+        success: false,
+        error: {
+          name: "Login Error",
+          message: "You are not a customer",
+        },
+      };
+    }
+    localStorage.setItem("idToken", result.data.idToken);
+    localStorage.setItem("accessToken", result.data.accessToken);
+    localStorage.setItem("refreshToken", result.data.refreshToken);
     return {
-      success: result.success,
-      data: result.data,
-      error: {
-        name: "Login Error",
-        message: result.message || "",
+      success: true,
+      error: null,
+      successNotification: {
+        message: `Login successful. Welcome ${userData.username}!`,
       },
     };
   },
   /**
    * Checking both the idToken and accessToken in the localStorage just to be sure
    * @param data
-   * @returns {Promise<{authenticated: boolean, error: null}|{authenticated: boolean, logout: boolean, redirectTo: string, error: {name: string, message: string}}>}
    */
   check: async (data) => {
     const idToken = localStorage.getItem("idToken");
@@ -46,7 +61,7 @@ const authProvider = {
           name: "Not authenticated",
         },
         logout: true,
-        redirectTo: "/login",
+        redirectTo: "/dashboard/login",
       };
     }
     const idTokenDecoded = jwtDecode(idToken);
@@ -57,9 +72,19 @@ const authProvider = {
     ) {
       try {
         const newTokens = await refreshAccessToken(refreshToken);
-        localStorage.setItem("idToken", newTokens.idToken);
-        localStorage.setItem("accessToken", newTokens.accessToken);
-        localStorage.setItem("refreshToken", newTokens.refreshToken);
+        if (!newTokens.success) {
+          return {
+            authenticated: false,
+            error: {
+              message: newTokens.message,
+              name: "Token refresh error",
+            },
+            redirectTo: "/login",
+          };
+        }
+        localStorage.setItem("idToken", newTokens.data.idToken);
+        localStorage.setItem("accessToken", newTokens.data.accessToken);
+        localStorage.setItem("refreshToken", newTokens.data.refreshToken);
         return {
           authenticated: true,
           error: null,
@@ -72,7 +97,6 @@ const authProvider = {
             message: "Token expired",
             name: "Token expired",
           },
-          logout: true,
           redirectTo: "/login",
         };
       }
@@ -84,10 +108,10 @@ const authProvider = {
   },
 };
 
-const RefineProviderComponent = (props) => (
+const RefineCustomerProvider = (props) => (
   <Refine routerProvider={routerProvider} authProvider={authProvider}>
     {props.children}
   </Refine>
 );
 
-export default RefineProviderComponent;
+export default RefineCustomerProvider;

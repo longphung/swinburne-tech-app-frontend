@@ -43,7 +43,10 @@ const Login = (props) => {
       password: data.password,
     });
     if (result.success) {
-      props.onLogin(result);
+      props.onLogin && props.onLogin(result.data);
+      enqueueSnackbar(result.successNotification.message, {
+        variant: "success",
+      })
       return;
     }
     enqueueSnackbar(result.error.message, {
