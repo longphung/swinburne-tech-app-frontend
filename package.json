@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "refine": "refine"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
@@ -18,6 +19,7 @@
     "@mui/material": "^5.15.15",
     "@mui/material-nextjs": "^5.15.11",
     "@mui/x-data-grid": "^7.1.1",
+    "@refinedev/cli": "^2.16.29",
     "@refinedev/core": "^4.49.0",
     "@refinedev/mui": "^5.14.6",
     "@refinedev/nextjs-router": "^6.0.2",

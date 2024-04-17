@@ -8,7 +8,7 @@
   },
   "overrides": [
     {
-      "files": ["components/**/*.jsx"],
+      "files": ["components/**/*.{jsx|tsx}"],
       "rules": {
         "max-lines-per-function": [
           "error",

@@ -125,3 +125,18 @@ export const logout = async (refreshToken) => {
     };
   }
 };
+
+/**
+ * @param {{
+ *   username: string,
+ *   password: string,
+ *   email: string,
+ *   phone: string,
+ *   address: string,
+ *   role: string,
+ * }} data
+ * @returns {Promise<void>}
+ */
+export const register = async (data) => {
+  const result = await beInst.post("/auth/signup", data);
+};

@@ -44,7 +44,6 @@ const authProvider = {
         },
       };
     }
-    console.log("userData", userData);
     localStorage.setItem("idToken", result.data.idToken);
     localStorage.setItem("accessToken", result.data.accessToken);
     localStorage.setItem("refreshToken", result.data.refreshToken);
@@ -95,6 +94,9 @@ const authProvider = {
   },
   onError: (error) => {
     console.error(error);
+  },
+  register: () => {
+    console.log("doing stuffs");
   },
   getIdentity: () => {
     const idToken = localStorage.getItem("idToken");

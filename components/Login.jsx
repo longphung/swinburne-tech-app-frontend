@@ -4,7 +4,6 @@ import { LoadingButton } from "@mui/lab";
 import { Link, Paper, Stack, Typography } from "@mui/material";
 import NextLink from "next/link";
 import { useForm } from "@refinedev/react-hook-form";
-import { useSnackbar } from "notistack";
 
 import FormInputText from "@/components/form-components/FormInputText";
 import { useLogin } from "@refinedev/core";
@@ -23,7 +22,6 @@ import { useLogin } from "@refinedev/core";
  * @returns {JSX.Element}
  */
 const Login = (props) => {
-  const { enqueueSnackbar } = useSnackbar();
   const { mutateAsync: login } = useLogin();
   const {
     control,
@@ -45,14 +43,15 @@ const Login = (props) => {
     });
     if (result.success) {
       props.onLogin && props.onLogin(result.data);
-      enqueueSnackbar(result.successNotification.message, {
-        variant: "success",
-      });
+      // enqueueSnackbar(result.successNotification.message, {
+      //   variant: "success",
+      // });
+      // open({
+      //   type: "success",
+      //   message: result.successNotification.message,
+      // });
       return;
     }
-    enqueueSnackbar(result.error.message, {
-      variant: "error",
-    });
     setError("username", {
       type: "manual",
       message: result.error.message,
