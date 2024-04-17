@@ -3,7 +3,7 @@
 import routerProvider from "@refinedev/nextjs-router";
 import { Refine } from "@refinedev/core";
 
-import { login, refreshAccessToken } from "@/api/backend";
+import { login, logout, refreshAccessToken } from "@/api/backend";
 import { jwtDecode } from "jwt-decode";
 
 export const USERS_ROLE = {
@@ -108,12 +108,27 @@ const authProvider = {
       error: null,
     };
   },
+  logout: async () => {
+    // Request server to invalidate all refresh token, but it is safe to just remove the tokens from the localStorage
+    await logout(localStorage.getItem("refreshToken"));
+    localStorage.removeItem("idToken");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    return {
+      success: true,
+      error: null,
+      redirectTo: "/",
+      successNotification: {
+        message: "Logout successful",
+      },
+    };
+  },
 };
 
-const RefineCustomerProvider = (props) => (
+const RefineProvider = (props) => (
   <Refine routerProvider={routerProvider} authProvider={authProvider}>
     {props.children}
   </Refine>
 );
 
-export default RefineCustomerProvider;
+export default RefineProvider;

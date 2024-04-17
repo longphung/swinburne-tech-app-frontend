@@ -7,7 +7,7 @@ import underConstruction from "@/public/under-construction.png";
 import Header from "@/components/Header";
 import theme from "@/components/theme";
 import SnackbarProvider from "@/components/contexts/SnackbarProvider";
-import RefineCustomerProvider from "@/components/contexts/RefineCustomerProvider";
+import RefineProvider from "@/components/contexts/RefineProvider";
 
 export const metadata = {
   title: "TechAway",
@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <RefineCustomerProvider>
+        <RefineProvider>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
               <SnackbarProvider
@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
               </SnackbarProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
-        </RefineCustomerProvider>
+        </RefineProvider>
       </body>
     </html>
   );

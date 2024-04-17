@@ -44,7 +44,7 @@ export const login = async ({ username, password }) => {
 export const refreshAccessToken = async (refreshToken) => {
   try {
     const result = await beInst.post("/auth/token", {
-      refreshToken
+      refreshToken,
     });
     return {
       success: true,
@@ -56,4 +56,25 @@ export const refreshAccessToken = async (refreshToken) => {
       message: e.response.data.message,
     };
   }
-}
+};
+
+/**
+ * Request server to invalidate all refresh tokens for the user
+ * @param refreshToken
+ * @returns {Promise<{success: boolean}>}
+ */
+export const logout = async (refreshToken) => {
+  try {
+    await beInst.put("/auth/token", {
+      refreshToken,
+    });
+    return {
+      success: true,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      message: e.response.data.message,
+    };
+  }
+};
