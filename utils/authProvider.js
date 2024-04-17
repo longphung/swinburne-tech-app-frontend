@@ -57,45 +57,41 @@ const authProvider = {
     };
   },
   /**
-   * Checking both the idToken and accessToken in the localStorage just to be sure
+   * Checking both the idToken expiration
+   * @param {USERS_ROLE.TECHNICIAN & USERS_ROLE.CUSTOMER} role
    */
-  check: async () => {
+  check: async (role) => {
     const idToken = localStorage.getItem("idToken");
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
+    const redirectTo =
+      role === USERS_ROLE.CUSTOMER ? "/dashboard/login" : "/admin/login";
     // No tokens available
     if (!idToken || !accessToken || !refreshToken) {
       return {
         authenticated: false,
         error: {
-          message: "Not authenticated",
-          name: "Not authenticated",
+          message: "Not logged in",
+          name: "Not logged in"
         },
-        logout: true,
-        redirectTo: "/dashboard/login",
+        redirectTo: redirectTo,
       };
     }
-    const idTokenDecoded = jwtDecode(idToken);
-    const accessTokenDecoded = jwtDecode(accessToken);
-    // Tokens expired
+    const { userData } = jwtDecode(idToken);
+    // Inappropriate role
     if (
-      idTokenDecoded.exp * 1000 < Date.now() ||
-      accessTokenDecoded.exp * 1000 < Date.now()
+      !userData.role.includes(role) &&
+      !userData.role.includes(USERS_ROLE.ADMIN)
     ) {
-      const newTokens = await refreshAccessToken(refreshToken);
-      if (!newTokens.success) {
-        return {
-          authenticated: false,
-          error: {
-            message: newTokens.message,
-            name: "Token refresh error",
-          },
-          redirectTo: "/login",
-        };
-      }
-      localStorage.setItem("idToken", newTokens.data.idToken);
-      localStorage.setItem("accessToken", newTokens.data.accessToken);
-      localStorage.setItem("refreshToken", newTokens.data.refreshToken);
+      return {
+        authenticated: false,
+        error: {
+          message: `You are not a ${role}`,
+          name: "Role error",
+        },
+        logout: true,
+        redirectTo: redirectTo,
+      };
     }
     return {
       authenticated: true,
