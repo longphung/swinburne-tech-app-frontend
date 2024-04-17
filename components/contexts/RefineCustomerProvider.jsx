@@ -69,6 +69,7 @@ const authProvider = {
     const idToken = localStorage.getItem("idToken");
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
+    // No tokens available
     if (!idToken || !accessToken || !refreshToken) {
       return {
         authenticated: false,
@@ -82,40 +83,25 @@ const authProvider = {
     }
     const idTokenDecoded = jwtDecode(idToken);
     const accessTokenDecoded = jwtDecode(accessToken);
+    // Tokens expired
     if (
       idTokenDecoded.exp * 1000 < Date.now() ||
       accessTokenDecoded.exp * 1000 < Date.now()
     ) {
-      try {
-        const newTokens = await refreshAccessToken(refreshToken);
-        if (!newTokens.success) {
-          return {
-            authenticated: false,
-            error: {
-              message: newTokens.message,
-              name: "Token refresh error",
-            },
-            redirectTo: "/login",
-          };
-        }
-        localStorage.setItem("idToken", newTokens.data.idToken);
-        localStorage.setItem("accessToken", newTokens.data.accessToken);
-        localStorage.setItem("refreshToken", newTokens.data.refreshToken);
-        return {
-          authenticated: true,
-          error: null,
-        };
-      } catch (e) {
-        console.error(e);
+      const newTokens = await refreshAccessToken(refreshToken);
+      if (!newTokens.success) {
         return {
           authenticated: false,
           error: {
-            message: "Token expired",
-            name: "Token expired",
+            message: newTokens.message,
+            name: "Token refresh error",
           },
           redirectTo: "/login",
         };
       }
+      localStorage.setItem("idToken", newTokens.data.idToken);
+      localStorage.setItem("accessToken", newTokens.data.accessToken);
+      localStorage.setItem("refreshToken", newTokens.data.refreshToken);
     }
     return {
       authenticated: true,
