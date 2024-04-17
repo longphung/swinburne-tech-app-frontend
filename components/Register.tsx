@@ -1,7 +1,6 @@
 import { useForm } from "@refinedev/react-hook-form";
 import * as React from "react";
 import {
-  RegisterFormTypes,
   RegisterPageProps,
   useActiveAuthProvider,
   BaseRecord,
@@ -23,6 +22,7 @@ import Typography from "@mui/material/Typography";
 import type { BoxProps } from "@mui/material/Box";
 import type { CardContentProps } from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
+import { USERS_ROLE } from "@/utils/authProvider";
 
 type RegisterProps = RegisterPageProps<BoxProps, CardContentProps>;
 
@@ -42,6 +42,7 @@ export const Register: React.FC<RegisterProps> = ({
   const { onSubmit, ...useFormProps } = formProps || {};
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<
@@ -52,13 +53,24 @@ export const Register: React.FC<RegisterProps> = ({
       email: string;
       address: string;
       phone: string;
+      password: string;
+      confirmPassword: string;
+      name: string;
     }
   >({
     ...useFormProps,
   });
 
   const authProvider = useActiveAuthProvider();
-  const { mutate: registerMutate, isLoading } = useRegister<RegisterFormTypes>({
+  const { mutate: registerMutate, isLoading } = useRegister<{
+    username: string;
+    email: string;
+    address: string;
+    phone: string;
+    password: string;
+    role: string;
+    name: string;
+  }>({
     v3LegacyAuthProviderCompatible: Boolean(authProvider?.isLegacy),
   });
   const routerType = useRouterType();
@@ -78,22 +90,19 @@ export const Register: React.FC<RegisterProps> = ({
                 // @ts-ignore
                 return onSubmit(data);
               }
-
-              return registerMutate(data);
+              const { confirmPassword, ...rest } = data;
+              return registerMutate({
+                role: USERS_ROLE.CUSTOMER,
+                ...rest,
+              });
             })}
             spacing={2}
           >
             <Grid container>
-              <Grid
-                xs={12}
-                md={6}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
+              <Grid xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("username", {
-                    required: true,
+                    required: "Username is required",
                   })}
                   id="username"
                   margin="normal"
@@ -112,16 +121,10 @@ export const Register: React.FC<RegisterProps> = ({
                   }}
                 />
               </Grid>
-              <Grid
-                xs={12}
-                md={6}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
+              <Grid xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("email", {
-                    required: true,
+                    required: "Email is required",
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                       message: "Invalid email address",
@@ -135,21 +138,16 @@ export const Register: React.FC<RegisterProps> = ({
                   helperText={errors["email"] ? errors["email"].message : ""}
                   name="email"
                   autoComplete="email"
+                  type="email"
                   sx={{
                     margin: "1rem",
                   }}
                 />
               </Grid>
-              <Grid
-                xs={12}
-                md={6}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
+              <Grid xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("address", {
-                    required: true,
+                    required: "Address is required",
                   })}
                   id="address"
                   margin="normal"
@@ -167,16 +165,10 @@ export const Register: React.FC<RegisterProps> = ({
                   }}
                 />
               </Grid>
-              <Grid
-                xs={12}
-                md={6}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
+              <Grid xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("phone", {
-                    required: true,
+                    required: "Phone is required",
                   })}
                   id="phone"
                   margin="normal"
@@ -187,6 +179,101 @@ export const Register: React.FC<RegisterProps> = ({
                   error={!!errors.phone}
                   type="text"
                   autoComplete="tel-local"
+                  sx={{
+                    margin: "1rem",
+                  }}
+                />
+              </Grid>
+              <Grid xs={12} md={6} display="flex" justifyContent="center">
+                <TextField
+                  {...register("name", {
+                    required: "Name is required",
+                  })}
+                  id="name"
+                  margin="normal"
+                  fullWidth
+                  name="name"
+                  label="Name"
+                  helperText={errors["name"] ? errors["name"].message : ""}
+                  error={!!errors.name}
+                  type="text"
+                  autoComplete="name"
+                  sx={{
+                    margin: "1rem",
+                  }}
+                />
+              </Grid>
+              <Grid
+                xs={12}
+                sx={{
+                  padding: "1rem",
+                }}
+              >
+                <Typography>
+                  Password must contain at least 8 characters, 1 uppercase
+                  letter, 1 lowercase letter, and 1 number.
+                </Typography>
+              </Grid>
+              <Grid xs={12} md={6} display="flex" justifyContent="center">
+                <TextField
+                  {...register("password", {
+                    required: true,
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters",
+                    },
+                    validate: (value) => {
+                      if (!/[A-Z]/.test(value)) {
+                        return "Password must contain at least 1 uppercase letter";
+                      }
+                      if (!/[a-z]/.test(value)) {
+                        return "Password must contain at least 1 lowercase letter";
+                      }
+                      if (!/[0-9]/.test(value)) {
+                        return "Password must contain at least 1 number";
+                      }
+                      return true;
+                    },
+                  })}
+                  id="password"
+                  margin="normal"
+                  fullWidth
+                  name="password"
+                  label={"Password"}
+                  helperText={
+                    errors["password"] ? errors["password"].message : ""
+                  }
+                  error={!!errors.password}
+                  type="password"
+                  autoComplete="off"
+                  sx={{
+                    margin: "1rem",
+                  }}
+                />
+              </Grid>
+              <Grid xs={12} md={6} display="flex" justifyContent="center">
+                <TextField
+                  {...register("confirmPassword", {
+                    required: true,
+                    validate: (value) => {
+                      return (
+                        watch("password") === value || "Passwords do not match"
+                      );
+                    },
+                  })}
+                  id="confirmPassword"
+                  margin="normal"
+                  fullWidth
+                  name="confirmPassword"
+                  label={"Confirm Password"}
+                  helperText={
+                    errors["confirmPassword"]
+                      ? errors["confirmPassword"].message
+                      : ""
+                  }
+                  error={!!errors.confirmPassword}
+                  type="password"
+                  autoComplete="off"
                   sx={{
                     margin: "1rem",
                   }}

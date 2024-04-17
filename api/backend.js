@@ -133,10 +133,11 @@ export const logout = async (refreshToken) => {
  *   email: string,
  *   phone: string,
  *   address: string,
- *   role: string,
+ *   role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER,
  * }} data
  * @returns {Promise<void>}
  */
 export const register = async (data) => {
   const result = await beInst.post("/auth/signup", data);
+  return result.data;
 };

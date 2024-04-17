@@ -1,4 +1,4 @@
-import { login, logout } from "@/api/backend";
+import { login, logout, register } from "@/api/backend";
 import { jwtDecode } from "jwt-decode";
 
 export const USERS_ROLE = {
@@ -95,8 +95,38 @@ const authProvider = {
   onError: (error) => {
     console.error(error);
   },
-  register: () => {
-    console.log("doing stuffs");
+  /**
+   * @param {{
+   *   username: string;
+   *   email: string;
+   *   password: string;
+   *   phone: string;
+   *   address: string;
+   *   role: USERS_ROLE.TECHNICIAN & USERS_ROLE.CUSTOMER;
+   * }} data
+   * @returns {import("@refinedev/core").AuthActionResponse}
+   */
+  register: async (data) => {
+    try {
+      const result = await register(data);
+      console.log("userId", result);
+      return {
+        success: true,
+        error: null,
+        successNotification: {
+          message: "Confirmation email sent",
+          description: "Please confirm your email to login.",
+        },
+      };
+    } catch (e) {
+      return {
+        success: false,
+        error: {
+          name: "Register Error",
+          message: e.message,
+        },
+      };
+    }
   },
   getIdentity: () => {
     const idToken = localStorage.getItem("idToken");
