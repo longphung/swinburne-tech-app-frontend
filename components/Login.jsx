@@ -9,10 +9,10 @@ import { useSnackbar } from "notistack";
 import FormInputText from "@/components/form-components/FormInputText";
 import { useLogin } from "@refinedev/core";
 
-
 /**
  * @param {{
  *   title: string;
+ *   role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
  *   onLogin: (data: {
  *     idToken: string;
  *     accessToken: string;
@@ -41,12 +41,13 @@ const Login = (props) => {
     const result = await login({
       username: data.username,
       password: data.password,
+      role: props.role,
     });
     if (result.success) {
       props.onLogin && props.onLogin(result.data);
       enqueueSnackbar(result.successNotification.message, {
         variant: "success",
-      })
+      });
       return;
     }
     enqueueSnackbar(result.error.message, {

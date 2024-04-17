@@ -1,5 +1,6 @@
 import { Box, Container } from "@mui/material";
 import Login from "@/components/Login";
+import { USERS_ROLE } from "@/utils/authProvider";
 
 const DashboardLoginPage = () => {
   return (
@@ -9,7 +10,7 @@ const DashboardLoginPage = () => {
           marginTop: "10rem",
         }}
       >
-        <Login title="Customer Portal" />
+        <Login title="Customer Portal" role={USERS_ROLE.CUSTOMER} />
       </Box>
     </Container>
   );

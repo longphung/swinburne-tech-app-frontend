@@ -31,7 +31,7 @@ const authProvider = {
         },
       };
     }
-    const {userData} = jwtDecode(result.data.idToken);
+    const { userData } = jwtDecode(result.data.idToken);
     if (
       !userData.role.includes(data.role) &&
       !userData.role.includes(USERS_ROLE.ADMIN)
@@ -44,6 +44,7 @@ const authProvider = {
         },
       };
     }
+    console.log("userData", userData);
     localStorage.setItem("idToken", result.data.idToken);
     localStorage.setItem("accessToken", result.data.accessToken);
     localStorage.setItem("refreshToken", result.data.refreshToken);
@@ -114,6 +115,33 @@ const authProvider = {
       successNotification: {
         message: "Logout successful",
       },
+    };
+  },
+  onError: (error) => {
+    console.error(error);
+  },
+  getIdentity: () => {
+    const idToken = localStorage.getItem("idToken");
+    if (!idToken) {
+      return {
+        id: null,
+        fullName: null,
+        email: null,
+        emailVerified: null,
+        phone: null,
+        address: null,
+        role: [],
+      };
+    }
+    const { userData } = jwtDecode(idToken);
+    return {
+      id: userData._id,
+      username: userData.username,
+      email: userData.email,
+      emailVerified: userData.emailVerified,
+      phone: userData.phone,
+      address: userData.address,
+      role: userData.role,
     };
   },
 };
