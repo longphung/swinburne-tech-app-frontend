@@ -14,5 +14,11 @@ const compat = new FlatCompat({ baseDirectory: __dirname, recommendedConfig: plu
 export default [
   { languageOptions: { globals: globals.browser } },
   ...compat.extends('standard'),
-  nextConfig
+  nextConfig,
+  {
+    rules: {
+      "max-lines-per-function": ["error", { max: 50, skipBlankLines: true, skipComments: true }],
+    },
+  },
+
 ]

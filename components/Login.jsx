@@ -7,8 +7,8 @@ import { useForm } from "@refinedev/react-hook-form";
 import { useSnackbar } from "notistack";
 
 import FormInputText from "@/components/form-components/FormInputText";
-import { login } from "@/api/backend";
-import { useLog, useLogin } from "@refinedev/core";
+import { useLogin } from "@refinedev/core";
+
 
 /**
  * @param {{

@@ -6,10 +6,23 @@ import { Refine } from "@refinedev/core";
 import { login, refreshAccessToken } from "@/api/backend";
 import { jwtDecode } from "jwt-decode";
 
+export const USERS_ROLE = {
+  ADMIN: "admin",
+  TECHNICIAN: "technician",
+  CUSTOMER: "customer",
+};
+
 /**
  * @type {import("@refinedev/core").AuthProvider}
  */
 const authProvider = {
+  /**
+   * @param {{
+   *   username: string;
+   *   password: string;
+   *   role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
+   * }} data
+   */
   login: async (data) => {
     const result = await login({
       username: data.username,
@@ -25,12 +38,15 @@ const authProvider = {
       };
     }
     const { userData } = jwtDecode(result.data.idToken);
-    if (!userData.role.includes("customer")) {
+    if (
+      !userData.role.includes(data.role) &&
+      !userData.role.includes(USERS_ROLE.ADMIN)
+    ) {
       return {
         success: false,
         error: {
           name: "Login Error",
-          message: "You are not a customer",
+          message: `You are not a ${data.role}`,
         },
       };
     }
