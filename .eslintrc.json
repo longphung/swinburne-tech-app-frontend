@@ -5,5 +5,16 @@
       "error",
       { "max": 50, "skipBlankLines": true, "skipComments": true }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["components/**/*.jsx"],
+      "rules": {
+        "max-lines-per-function": [
+          "error",
+          { "max": 120, "skipBlankLines": true, "skipComments": true }
+        ]
+      }
+    }
+  ]
 }

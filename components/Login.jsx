@@ -108,7 +108,7 @@ const Login = (props) => {
             justifyContent: "space-between",
           }}
         >
-          <Typography>Don't have an account?</Typography>
+          <Typography>Don&apos;t have an account?</Typography>
           <Link component={NextLink} href="/register">
             Sign up
           </Link>
