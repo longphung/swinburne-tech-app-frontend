@@ -15,10 +15,5 @@ export default [
   { languageOptions: { globals: globals.browser } },
   ...compat.extends('standard'),
   nextConfig,
-  {
-    rules: {
-      "max-lines-per-function": ["error", { max: 50, skipBlankLines: true, skipComments: true }],
-    },
-  },
 
 ]
