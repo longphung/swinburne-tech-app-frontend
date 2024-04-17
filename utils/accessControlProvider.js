@@ -1,10 +1,11 @@
 import { jwtDecode } from "jwt-decode";
+import { USERS_ROLE } from "@/utils/authProvider";
 
 /**
  * @type {import("@refinedev/core").AccessControlProvider}
  */
 const accessControlProvider = {
-  can: async ({ resource, action, params }) => {
+  can: async ({ resource }) => {
     const idToken = localStorage.getItem("idToken");
     if (!idToken) {
       return {
@@ -13,17 +14,23 @@ const accessControlProvider = {
       };
     }
     const { userData } = jwtDecode(idToken);
-    if (userData.role.includes("admin")) {
+    if (userData.role.includes(USERS_ROLE.ADMIN)) {
       return {
         can: true,
       };
     }
-    if (userData.role.includes("technician") && resource === "technician") {
+    if (
+      userData.role.includes(USERS_ROLE.TECHNICIAN) &&
+      resource === USERS_ROLE.TECHNICIAN
+    ) {
       return {
         can: true,
       };
     }
-    if (userData.role.includes("customer") && resource === "customer") {
+    if (
+      userData.role.includes(USERS_ROLE.CUSTOMER) &&
+      resource === USERS_ROLE.CUSTOMER
+    ) {
       return {
         can: true,
       };

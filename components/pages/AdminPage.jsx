@@ -1,19 +1,13 @@
-import { Box, Container } from "@mui/material";
+import { Typography } from "@mui/material";
+import { CanAccess } from "@refinedev/core";
 
-import Login from "@/components/Login";
 import { USERS_ROLE } from "@/utils/authProvider";
 
 const AdminPage = () => {
   return (
-    <Container maxWidth="xs" sx={{ padding: "2rem" }}>
-      <Box
-        sx={{
-          marginTop: "10rem",
-        }}
-      >
-        <Login title="Admin Portal" role={USERS_ROLE.TECHNICIAN} />
-      </Box>
-    </Container>
+    <CanAccess resource={USERS_ROLE.TECHNICIAN}>
+      <Typography>Dashboard Page</Typography>
+    </CanAccess>
   );
 };
 

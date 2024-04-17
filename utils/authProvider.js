@@ -58,14 +58,11 @@ const authProvider = {
   },
   /**
    * Checking both the idToken expiration
-   * @param {USERS_ROLE.TECHNICIAN & USERS_ROLE.CUSTOMER} role
    */
-  check: async (role) => {
+  check: async () => {
     const idToken = localStorage.getItem("idToken");
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
-    const redirectTo =
-      role === USERS_ROLE.CUSTOMER ? "/dashboard/login" : "/admin/login";
     // No tokens available
     if (!idToken || !accessToken || !refreshToken) {
       return {
@@ -74,23 +71,6 @@ const authProvider = {
           message: "Not logged in",
           name: "Not logged in",
         },
-        redirectTo: redirectTo,
-      };
-    }
-    const { userData } = jwtDecode(idToken);
-    // Inappropriate role
-    if (
-      !userData.role.includes(role) &&
-      !userData.role.includes(USERS_ROLE.ADMIN)
-    ) {
-      return {
-        authenticated: false,
-        error: {
-          message: `You are not a ${role}`,
-          name: "Role error",
-        },
-        logout: true,
-        redirectTo: redirectTo,
       };
     }
     return {
