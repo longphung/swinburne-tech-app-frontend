@@ -22,6 +22,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import type { BoxProps } from "@mui/material/Box";
 import type { CardContentProps } from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
 
 type RegisterProps = RegisterPageProps<BoxProps, CardContentProps>;
 
@@ -82,85 +83,125 @@ export const Register: React.FC<RegisterProps> = ({
             })}
             spacing={2}
           >
-            <TextField
-              {...register("username", {
-                required: true,
-              })}
-              id="username"
-              margin="normal"
-              fullWidth
-              name="username"
-              label="Username"
-              helperText={errors["username"] ? errors["username"].message : ""}
-              error={!!errors.username}
-              type="text"
-              placeholder="Username"
-              autoComplete="username"
-              sx={{
-                mb: 0,
-              }}
-            />
-            <TextField
-              {...register("email", {
-                required: true,
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              })}
-              id="email"
-              margin="normal"
-              fullWidth
-              label={"Email"}
-              error={!!errors.email}
-              helperText={errors["email"] ? errors["email"].message : ""}
-              name="email"
-              autoComplete="email"
-              sx={{
-                mt: 0,
-              }}
-            />
-            <TextField
-              {...register("address", {
-                required: true,
-              })}
-              id="address"
-              margin="normal"
-              fullWidth
-              name="address"
-              label={"Address"}
-              helperText={errors["address"] ? errors["address"].message : ""}
-              error={!!errors.address}
-              type="text"
-              autoComplete="street-address"
-              sx={{
-                mb: 0,
-              }}
-            />
-            <TextField
-              {...register("phone", {
-                required: true,
-              })}
-              id="phone"
-              margin="normal"
-              fullWidth
-              name="phone"
-              label={"Phone"}
-              helperText={errors["phone"] ? errors["phone"].message : ""}
-              error={!!errors.phone}
-              type="text"
-              autoComplete="tel-local"
-              sx={{
-                mb: 0,
-              }}
-            />
+            <Grid container>
+              <Grid
+                xs={12}
+                md={6}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <TextField
+                  {...register("username", {
+                    required: true,
+                  })}
+                  id="username"
+                  margin="normal"
+                  fullWidth
+                  name="username"
+                  label="Username"
+                  helperText={
+                    errors["username"] ? errors["username"].message : ""
+                  }
+                  error={!!errors.username}
+                  type="text"
+                  placeholder="Username"
+                  autoComplete="username"
+                  sx={{
+                    margin: "1rem",
+                  }}
+                />
+              </Grid>
+              <Grid
+                xs={12}
+                md={6}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <TextField
+                  {...register("email", {
+                    required: true,
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    },
+                  })}
+                  id="email"
+                  margin="normal"
+                  fullWidth
+                  label={"Email"}
+                  error={!!errors.email}
+                  helperText={errors["email"] ? errors["email"].message : ""}
+                  name="email"
+                  autoComplete="email"
+                  sx={{
+                    margin: "1rem",
+                  }}
+                />
+              </Grid>
+              <Grid
+                xs={12}
+                md={6}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <TextField
+                  {...register("address", {
+                    required: true,
+                  })}
+                  id="address"
+                  margin="normal"
+                  fullWidth
+                  name="address"
+                  label={"Address"}
+                  helperText={
+                    errors["address"] ? errors["address"].message : ""
+                  }
+                  error={!!errors.address}
+                  type="text"
+                  autoComplete="street-address"
+                  sx={{
+                    margin: "1rem",
+                  }}
+                />
+              </Grid>
+              <Grid
+                xs={12}
+                md={6}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <TextField
+                  {...register("phone", {
+                    required: true,
+                  })}
+                  id="phone"
+                  margin="normal"
+                  fullWidth
+                  name="phone"
+                  label={"Phone"}
+                  helperText={errors["phone"] ? errors["phone"].message : ""}
+                  error={!!errors.phone}
+                  type="text"
+                  autoComplete="tel-local"
+                  sx={{
+                    margin: "1rem",
+                  }}
+                />
+              </Grid>
+            </Grid>
             <Button
               type="submit"
-              fullWidth
               variant="contained"
               disabled={isLoading}
               sx={{
                 mt: "24px",
+                width: "100%",
+                maxWidth: "400px",
+                alignSelf: "center",
               }}
             >
               {"Sign up"}
@@ -188,7 +229,7 @@ export const Register: React.FC<RegisterProps> = ({
               color="primary"
               component={ActiveLink}
               underline="none"
-              to="/login"
+              to="/dashboard/login"
               fontSize="12px"
               fontWeight="bold"
             >
@@ -212,20 +253,28 @@ export const Register: React.FC<RegisterProps> = ({
           minHeight: "100dvh",
           padding: "16px",
           width: "100%",
-          maxWidth: "400px",
         }}
       >
-        <Box
+        <Stack
           sx={{
             width: "100%",
-            maxWidth: "400px",
             display: "flex",
             flexDirection: "column",
             paddingTop: hideForm ? "15dvh" : 0,
+            gap: "2rem",
           }}
         >
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            Create an account
+          </Typography>
           {renderContent ? renderContent(Content, null) : <>{Content}</>}
-        </Box>
+        </Stack>
       </Container>
     </Box>
   );
