@@ -1,8 +1,5 @@
 import CssBaseline from "@mui/material/CssBaseline";
-import {
-  Refine,
-  Authenticated,
-} from "@refinedev/core";
+import { Refine, Authenticated } from "@refinedev/core";
 import {
   ThemedLayoutV2,
   ErrorComponent,
@@ -19,8 +16,6 @@ import dataProvider from "@refinedev/simple-rest";
 import routerProvider, {
   NavigateToResource,
   CatchAllNavigate,
-  UnsavedChangesNotifier,
-  DocumentTitleHandler,
 } from "@refinedev/react-router-v6";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
@@ -29,7 +24,6 @@ import { PostList, PostCreate, PostEdit } from "./pages/posts";
 import authProvider, { authCredentials } from "./utils/authProvider";
 
 const App: React.FC = () => {
-
   const RememeberMe = () => {
     const { register } = useFormContext();
 
@@ -122,11 +116,7 @@ const App: React.FC = () => {
                 />
                 <Route
                   path="/register"
-                  element={
-                    <AuthPage
-                      type="register"
-                    />
-                  }
+                  element={<AuthPage type="register" />}
                 />
                 <Route
                   path="/forgot-password"
@@ -150,8 +140,6 @@ const App: React.FC = () => {
                 <Route path="*" element={<ErrorComponent />} />
               </Route>
             </Routes>
-            <UnsavedChangesNotifier />
-            <DocumentTitleHandler />
           </Refine>
         </RefineSnackbarProvider>
       </ThemeProvider>
