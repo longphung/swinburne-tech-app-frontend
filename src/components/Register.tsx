@@ -36,7 +36,7 @@ type RegisterProps = RegisterPageProps<BoxProps, CardContentProps>;
  * @see {@link https://refine.dev/docs/api-reference/mui/components/mui-auth-page/#register} for more details.
  */
 // eslint-disable-next-line max-lines-per-function
-export const Register: React.FC<RegisterProps> = ({
+const Register: React.FC<RegisterProps> = ({
   loginLink,
   wrapperProps,
   contentProps,
@@ -371,3 +371,5 @@ export const Register: React.FC<RegisterProps> = ({
     </Box>
   );
 };
+
+export default Register;
