@@ -16,7 +16,6 @@ const authProvider: AuthProvider = {
     password: string;
     role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
   }) => {
-    console.log('data', data)
     try {
       const result = await login({
         username: data.username,
@@ -50,7 +49,7 @@ const authProvider: AuthProvider = {
         success: false,
         error: {
           name: "Login Error",
-          message: e.message,
+          message: e.response.data,
         },
       };
     }

@@ -13,6 +13,7 @@ const UpdatePassword = lazy(() => import("@/components/UpdatePassword"));
 const Home = lazy(() => import("@/pages/Home"));
 const Services = lazy(() => import("@/pages/Services"));
 const About = lazy(() => import("@/pages/About"));
+const Login = lazy(() => import("@/components/Login"));
 
 const Router = () => {
   return (
@@ -36,8 +37,7 @@ const Router = () => {
         <Route
           path="/login"
           element={
-            <AuthPage
-              type="login"
+            <Login
               rememberMe={<RememberMe />}
               title={
                 <Typography variant="h4" sx={{ fontWeight: "bold" }}>
