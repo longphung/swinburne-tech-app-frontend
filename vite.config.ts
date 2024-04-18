@@ -17,13 +17,18 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes("@mui")) {
-            return "vendor_mui";
-          }
-          if (id.includes("@refinedev/mui")) {
-            console.log("id", id);
-            return "vendor_refinedev_mui";
-          }
+          const chunkList = [
+            "@mui",
+            "@refinedev/mui",
+            "material-ui-confirm"
+          ]
+          let result: string | void;
+          chunkList.forEach((chunk) => {
+            if (id.includes(chunk)) {
+              result = chunk;
+            }
+          });
+          return result;
         },
       },
     },

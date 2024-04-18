@@ -145,3 +145,17 @@ export const register = async (data: {
   const result = await beInst.post("/auth/signup", data);
   return result.data;
 };
+
+export const sendConfirmationEmail = async (username: string) => {
+  const result = await beInst.post("/auth/resend-confirmation-email", {
+    username,
+  });
+  return result.data;
+};
+
+export const sendForgotPasswordEmail = async (username: string) => {
+  const result = await beInst.post("/auth/forgot-password", {
+    username,
+  });
+  return result.data;
+}

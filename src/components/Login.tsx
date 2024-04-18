@@ -12,6 +12,7 @@ import {
   useRouterContext,
   useRouterType,
   useLink,
+  useNotification,
 } from "@refinedev/core";
 import { ThemedTitleV2 } from "@refinedev/mui";
 import Box from "@mui/material/Box";
@@ -28,6 +29,16 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import type { BoxProps } from "@mui/material/Box";
 import type { CardContentProps } from "@mui/material/CardContent";
+import { sendConfirmationEmail } from "@/api/backend";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { useState } from "react";
+import { LoadingButton } from "@mui/lab";
 
 type LoginProps = LoginPageProps<BoxProps, CardContentProps>;
 
@@ -48,6 +59,10 @@ const Login: React.FC<LoginProps> = ({
   title,
   hideForm,
 }) => {
+  const { open } = useNotification();
+  const [showDialog, setShowDialog] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
+
   const { onSubmit, ...useFormProps } = formProps || {};
   const methods = useForm<
     BaseRecord,
@@ -162,7 +177,15 @@ const Login: React.FC<LoginProps> = ({
                 return onSubmit(data);
               }
 
-              return login(data);
+              return login(data, {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onSuccess: (result: any) => {
+                  if (result.success) return;
+                  if (result.error.message === "Email not verified") {
+                    setShowDialog(true);
+                  }
+                },
+              });
             })}
           >
             <TextField
@@ -331,6 +354,59 @@ const Login: React.FC<LoginProps> = ({
           </Box>
         </Container>
       </Box>
+      <Dialog
+        open={showDialog}
+        onClose={(_, reason) => {
+          if (
+            (reason === "backdropClick" || reason === "escapeKeyDown") &&
+            sendingEmail
+          )
+            return;
+          setShowDialog(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Your account is not verified. Resend verification email?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Please verify your email to login.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button disabled={sendingEmail} onClick={() => setShowDialog(false)}>
+            Cancel
+          </Button>
+          <LoadingButton
+            loading={sendingEmail}
+            onClick={async () => {
+              try {
+                setSendingEmail(true);
+                await sendConfirmationEmail(methods.getValues("username"));
+                open!({
+                  message: "Confirmation email sent",
+                  description: "Please confirm your email to login.",
+                  type: "success",
+                });
+              } catch (e) {
+                open!({
+                  message: "Error",
+                  description: (e as Error).message,
+                  type: "error",
+                });
+              } finally {
+                setSendingEmail(false);
+                setShowDialog(false);
+              }
+            }}
+            autoFocus
+          >
+            Ok
+          </LoadingButton>
+        </DialogActions>
+      </Dialog>
     </FormProvider>
   );
 };

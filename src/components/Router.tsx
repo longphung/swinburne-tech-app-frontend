@@ -1,11 +1,10 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Authenticated } from "@refinedev/core";
-import { AuthPage, ErrorComponent, ThemedLayoutV2 } from "@refinedev/mui";
+import { ErrorComponent, ThemedLayoutV2 } from "@refinedev/mui";
 
 import Header from "./Header";
 import Typography from "@mui/material/Typography";
-import RememberMe from "@/components/RememberMe";
 import { CircularProgress } from "@mui/material";
 
 const Register = lazy(() => import("@/components/Register"));
@@ -14,10 +13,35 @@ const Home = lazy(() => import("@/pages/Home"));
 const Services = lazy(() => import("@/pages/Services"));
 const About = lazy(() => import("@/pages/About"));
 const Login = lazy(() => import("@/components/Login"));
+const ForgotPassword = lazy(() => import("@/components/ForgotPassword"));
 
 const Router = () => {
   return (
     <Routes>
+      <Route
+        path="/dashboard"
+        element={
+          <Authenticated
+            key="catch-all"
+            redirectOnFail="/login"
+            v3LegacyAuthProviderCompatible={false}
+          >
+            <ThemedLayoutV2>
+              <Outlet />
+            </ThemedLayoutV2>
+          </Authenticated>
+        }
+      >
+        <Route
+          path="/dashboard"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <Home />
+            </Suspense>
+          }
+        />
+      </Route>
+
       <Route
         element={
           <main>
@@ -37,14 +61,16 @@ const Router = () => {
         <Route
           path="/login"
           element={
-            <Login
-              rememberMe={<RememberMe />}
-              title={
-                <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-                  Dashboard Login
-                </Typography>
-              }
-            />
+            <Suspense fallback={<CircularProgress />}>
+              <Login
+                rememberMe=""
+                title={
+                  <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+                    Dashboard Login
+                  </Typography>
+                }
+              />
+            </Suspense>
           }
         />
         <Route
@@ -58,14 +84,15 @@ const Router = () => {
         <Route
           path="/forgot-password"
           element={
-            <AuthPage
-              title={
-                <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-                  Password Recovery
-                </Typography>
-              }
-              type="forgotPassword"
-            />
+            <Suspense fallback={<CircularProgress />}>
+              <ForgotPassword
+                title={
+                  <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+                    Password Recovery
+                  </Typography>
+                }
+              />
+            </Suspense>
           }
         />
         <Route
@@ -93,26 +120,6 @@ const Router = () => {
           }
         />
         <Route path="*" element={<ErrorComponent />} />
-      </Route>
-
-      <Route
-        path="/dashboard"
-        element={
-          <Authenticated key="catch-all" v3LegacyAuthProviderCompatible={false}>
-            <ThemedLayoutV2>
-              <Outlet />
-            </ThemedLayoutV2>
-          </Authenticated>
-        }
-      >
-        <Route
-          path="/dashboard"
-          element={
-            <Suspense fallback={<CircularProgress />}>
-              <Home />
-            </Suspense>
-          }
-        />
       </Route>
     </Routes>
   );

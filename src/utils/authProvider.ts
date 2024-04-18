@@ -1,4 +1,4 @@
-import { login, logout, register } from "@/api/backend";
+import { login, logout, register, sendForgotPasswordEmail } from "@/api/backend";
 
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { AuthProvider } from "@refinedev/core";
@@ -37,6 +37,7 @@ const authProvider: AuthProvider = {
         successNotification: {
           message: `Login successful. Welcome ${userData.username}!`,
         },
+        redirectTo: "/dashboard",
       };
     } catch (e) {
       if (!isAxiosError(e) || !e.response) {
@@ -127,6 +128,26 @@ const authProvider: AuthProvider = {
         success: false,
         error: {
           name: "Register Error",
+          message: (e as Error).message,
+        },
+      };
+    }
+  },
+  forgotPassword: async (data: { username: string }) => {
+    try {
+      await sendForgotPasswordEmail(data.username);
+      return {
+        success: true,
+        successNotification: {
+          message: "Password reset email sent",
+          description: "Please check your email to reset your password.",
+        },
+      };
+    } catch (e) {
+      return {
+        success: false,
+        error: {
+          name: "Forgot Password Error",
           message: (e as Error).message,
         },
       };

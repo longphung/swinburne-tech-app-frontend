@@ -1,4 +1,5 @@
 import CssBaseline from "@mui/material/CssBaseline";
+import { ConfirmProvider } from "material-ui-confirm";
 import { Refine } from "@refinedev/core";
 import {
   RefineSnackbarProvider,
@@ -20,21 +21,23 @@ const App: React.FC = () => {
       <ThemeProvider theme={RefineThemes.Blue}>
         <CssBaseline />
         <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
-        <RefineSnackbarProvider>
-          <Refine
-            authProvider={authProvider}
-            dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
-            routerProvider={routerProvider}
-            notificationProvider={useNotificationProvider}
-            // resources={}
-            options={{
-              syncWithLocation: true,
-              warnWhenUnsavedChanges: true,
-            }}
-          >
-            <Router />
-          </Refine>
-        </RefineSnackbarProvider>
+        <ConfirmProvider>
+          <RefineSnackbarProvider>
+            <Refine
+              authProvider={authProvider}
+              dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+              routerProvider={routerProvider}
+              notificationProvider={useNotificationProvider}
+              // resources={}
+              options={{
+                syncWithLocation: true,
+                warnWhenUnsavedChanges: true,
+              }}
+            >
+              <Router />
+            </Refine>
+          </RefineSnackbarProvider>
+        </ConfirmProvider>
       </ThemeProvider>
     </BrowserRouter>
   );
