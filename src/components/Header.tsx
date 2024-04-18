@@ -20,8 +20,15 @@ const Header = () => {
       direction="row"
       position="sticky"
     >
-      <RouteLink to="/">
-        <img src={logo} alt="TechAway Logo" style={{ cursor: "pointer" }} />
+      <RouteLink to="/" style={{
+        display: "flex",
+        alignItems: "center",
+      }}>
+        <img
+          src={logo}
+          alt="TechAway Logo"
+          style={{ cursor: "pointer", maxWidth: "12.5rem" }}
+        />
       </RouteLink>
       <Box
         component="nav"
@@ -45,9 +52,9 @@ const Header = () => {
               }}
               color="black"
               underline="hover"
-              to="/dashboard"
+              to="/"
             >
-              Dashboard
+              Home
             </Link>
           </Item>
           <Item>
@@ -59,9 +66,9 @@ const Header = () => {
               }}
               color="black"
               underline="hover"
-              to="/schedule"
+              to="/services"
             >
-              Schedule
+              Services
             </Link>
           </Item>
           <Item>
@@ -73,9 +80,9 @@ const Header = () => {
               }}
               color="black"
               underline="hover"
-              to="/tickets"
+              to="/about"
             >
-              Tickets
+              About
             </Link>
           </Item>
           <Item>
@@ -87,9 +94,9 @@ const Header = () => {
               }}
               color="black"
               underline="hover"
-              to="/shop"
+              to="/Login"
             >
-              Shop
+              Login
             </Link>
           </Item>
         </Stack>

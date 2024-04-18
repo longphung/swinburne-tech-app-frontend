@@ -86,6 +86,7 @@ const UpdatePassword: React.FC<UpdatePasswordProps> = ({
           component="form"
           onSubmit={handleSubmit((data) => {
             if (onSubmit) {
+              // @ts-expect-error This is a legacy prop
               return onSubmit(data);
             }
 

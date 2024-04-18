@@ -92,6 +92,7 @@ export const Register: React.FC<RegisterProps> = ({
             component="form"
             onSubmit={handleSubmit((data) => {
               if (onSubmit) {
+                // @ts-expect-error This is a legacy prop
                 return onSubmit(data);
               }
               const { confirmPassword, ...rest } = data;
