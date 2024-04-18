@@ -1,122 +1,174 @@
-import { AuthProvider } from "@refinedev/core";
+import { login, logout, register } from "@/api/backend";
 
-/**
- *  mock auth credentials to simulate authentication
- */
-export const authCredentials = {
-  email: "demo@refine.dev",
-  password: "demodemo",
-};
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import { AuthProvider } from "@refinedev/core";
+import { AxiosError, isAxiosError } from "axios";
+
+export const enum USERS_ROLE {
+  ADMIN = "admin",
+  TECHNICIAN = "technician",
+  CUSTOMER = "customer",
+}
 
 const authProvider: AuthProvider = {
-  login: async ({ providerName, email }) => {
-    if (providerName === "google") {
-      window.location.href = "https://accounts.google.com/o/oauth2/v2/auth";
+  login: async (data: {
+    username: string;
+    password: string;
+    role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
+  }) => {
+    console.log('data', data)
+    try {
+      const result = await login({
+        username: data.username,
+        password: data.password,
+      });
+      const {
+        userData,
+      }: JwtPayload & {
+        userData: {
+          username: string;
+          role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
+        };
+      } = jwtDecode(result.idToken || "");
+      localStorage.setItem("idToken", result.idToken || "");
+      localStorage.setItem("accessToken", result.accessToken || "");
+      localStorage.setItem("refreshToken", result.refreshToken || "");
       return {
         success: true,
+        successNotification: {
+          message: `Login successful. Welcome ${userData.username}!`,
+        },
       };
-    }
-
-
-    if (email === authCredentials.email) {
-      localStorage.setItem("email", email);
+    } catch (e) {
+      if (!isAxiosError(e) || !e.response) {
+        return {
+          success: false,
+          error: e as Error,
+        };
+      }
       return {
-        success: true,
-        redirectTo: "/",
+        success: false,
+        error: {
+          name: "Login Error",
+          message: e.message,
+        },
       };
     }
-
-    return {
-      success: false,
-      error: {
-        message: "Login failed",
-        name: "Invalid email or password",
-      },
-    };
   },
-  register: async (params) => {
-    if (params.email === authCredentials.email && params.password) {
-      localStorage.setItem("email", params.email);
+  /**
+   * Checking both the idToken expiration
+   */
+  check: async () => {
+    const idToken = localStorage.getItem("idToken");
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    // No tokens available
+    if (!idToken || !accessToken || !refreshToken) {
       return {
-        success: true,
-        redirectTo: "/",
+        authenticated: false,
+        error: {
+          message: "Not logged in",
+          name: "Not logged in",
+        },
       };
     }
     return {
-      success: false,
-      error: {
-        message: "Register failed",
-        name: "Invalid email or password",
-      },
-    };
-  },
-  updatePassword: async (params) => {
-    if (params.password === authCredentials.password) {
-      //we can update password here
-      return {
-        success: true,
-      };
-    }
-    return {
-      success: false,
-      error: {
-        message: "Update password failed",
-        name: "Invalid password",
-      },
-    };
-  },
-  forgotPassword: async (params) => {
-    if (params.email === authCredentials.email) {
-      //we can send email with reset password link here
-      return {
-        success: true,
-      };
-    }
-    return {
-      success: false,
-      error: {
-        message: "Forgot password failed",
-        name: "Invalid email",
-      },
+      authenticated: true,
     };
   },
   logout: async () => {
-    localStorage.removeItem("email");
+    // Request server to invalidate all refresh token, but it is safe to just remove the tokens from the localStorage
+    await logout(localStorage.getItem("refreshToken") || "");
+    localStorage.removeItem("idToken");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     return {
       success: true,
-      redirectTo: "/login",
+      redirectTo: "/",
+      successNotification: {
+        message: "Logout successful",
+      },
     };
   },
-  onError: async (error) => {
-    if (error.response?.status === 401) {
+  onError: async (error: AxiosError) => {
+    console.error(error);
+    if (error.status === 401 || error.status === 403) {
       return {
         logout: true,
+        error,
       };
     }
-
-    return { error };
-  },
-  check: async () =>
-    localStorage.getItem("email")
-      ? {
-        authenticated: true,
-      }
-      : {
-        authenticated: false,
-        error: {
-          message: "Check failed",
-          name: "Not authenticated",
-        },
-        logout: true,
-        redirectTo: "/login",
+    return {
+      error: {
+        name: "API Error",
+        message: "An error occurred during authentication",
       },
-  getPermissions: async () => ["admin"],
-  getIdentity: async () => ({
-    id: 1,
-    name: "Jane Doe",
-    avatar:
-      "https://unsplash.com/photos/IWLOvomUmWU/download?force=true&w=640",
-  }),
+    };
+  },
+  register: async (data: {
+    username: string;
+    email: string;
+    password: string;
+    phone: string;
+    address: string;
+    role: USERS_ROLE.TECHNICIAN & USERS_ROLE.CUSTOMER;
+  }) => {
+    try {
+      const result = await register(data);
+      console.log("userId", result);
+      return {
+        success: true,
+        successNotification: {
+          message: "Confirmation email sent",
+          description: "Please confirm your email to login.",
+        },
+      };
+    } catch (e) {
+      return {
+        success: false,
+        error: {
+          name: "Register Error",
+          message: (e as Error).message,
+        },
+      };
+    }
+  },
+  getIdentity: async () => {
+    const idToken = localStorage.getItem("idToken");
+    if (!idToken) {
+      return {
+        id: null,
+        fullName: null,
+        email: null,
+        emailVerified: null,
+        phone: null,
+        address: null,
+        role: null,
+      };
+    }
+    const {
+      userData,
+    }: JwtPayload & {
+      userData: {
+        _id: string;
+        username: string;
+        email: string;
+        emailVerified: boolean;
+        phone: string;
+        address: string;
+        role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
+      };
+    } = jwtDecode(idToken);
+    return {
+      id: userData._id,
+      username: userData.username,
+      email: userData.email,
+      emailVerified: userData.emailVerified,
+      phone: userData.phone,
+      address: userData.address,
+      role: userData.role,
+    };
+  },
 };
 
-export default authProvider
+export default authProvider;

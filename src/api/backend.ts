@@ -65,34 +65,16 @@ export const login = async ({
   username: string;
   password: string;
 }) => {
-  try {
-    const result = await beInst.post<{
-      idToken: string;
-      accessToken: string;
-      refreshToken: string;
-      expiresIn: string;
-    }>("/auth/login/password", {
-      username,
-      password,
-    });
-    return {
-      success: true,
-      data: result.data,
-    };
-  } catch (e) {
-    if (!axios.isAxiosError(e)) return;
-    if (!e.response) return;
-    if (e.response.status === 401) {
-      return {
-        success: false,
-        message: "Invalid username or password",
-      };
-    }
-    return {
-      success: false,
-      message: e.response.data.message,
-    };
-  }
+  const result = await beInst.post<{
+    idToken: string;
+    accessToken: string;
+    refreshToken: string;
+    expiresIn: string;
+  }>("/auth/login/password", {
+    username,
+    password,
+  });
+  return result.data;
 };
 
 export const refreshAccessToken = async (refreshToken: string) => {
@@ -120,17 +102,14 @@ export const refreshAccessToken = async (refreshToken: string) => {
       };
     return {
       success: false,
-      message: e.response.data.message,
+      message: e.message,
     };
   }
 };
 
-/**
- * Request server to invalidate all refresh tokens for the user
- * @param refreshToken
- * @returns {Promise<{success: boolean}>}
- */
-export const logout = async (refreshToken: string) => {
+export const logout = async (
+  refreshToken: string,
+): Promise<{ success: boolean; message?: string }> => {
   try {
     await beInst.put("/auth/token", {
       refreshToken,
@@ -139,11 +118,17 @@ export const logout = async (refreshToken: string) => {
       success: true,
     };
   } catch (e) {
-    if (!axios.isAxiosError(e)) return;
-    if (!e.response) return;
+    if (!axios.isAxiosError(e))
+      return {
+        success: false,
+      };
+    if (!e.response)
+      return {
+        success: false,
+      };
     return {
       success: false,
-      message: e.response.data.message,
+      message: e.message,
     };
   }
 };

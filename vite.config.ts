@@ -4,6 +4,15 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
   build: {
     rollupOptions: {
       output: {
@@ -12,7 +21,7 @@ export default defineConfig({
             return "vendor_mui";
           }
           if (id.includes("@refinedev/mui")) {
-            console.log('id', id)
+            console.log("id", id);
             return "vendor_refinedev_mui";
           }
         },

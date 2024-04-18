@@ -26,14 +26,7 @@ const App: React.FC = () => {
             dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
             routerProvider={routerProvider}
             notificationProvider={useNotificationProvider}
-            resources={[
-              {
-                name: "posts",
-                list: "/posts",
-                edit: "/posts/edit/:id",
-                create: "/posts/create",
-              },
-            ]}
+            // resources={}
             options={{
               syncWithLocation: true,
               warnWhenUnsavedChanges: true,

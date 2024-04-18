@@ -94,7 +94,7 @@ const Header = () => {
               }}
               color="black"
               underline="hover"
-              to="/Login"
+              to="/login"
             >
               Login
             </Link>

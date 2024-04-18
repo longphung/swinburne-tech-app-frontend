@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-const Home = () => {
+const Index = () => {
   return (
     <Box>
       <h1>Home</h1>
@@ -8,4 +8,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Index;
