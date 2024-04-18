@@ -8,6 +8,9 @@ import Checkbox from "@mui/material/Checkbox";
 import { authCredentials } from "../utils/authProvider";
 import Header from "./Header";
 import { Register } from "@/components/Register";
+import Home from "@/pages/Home/Home";
+import Typography from "@mui/material/Typography";
+import UpdatePassword from "@/components/UpdatePassword";
 
 const RememberMe = () => {
   const { register } = useFormContext();
@@ -40,13 +43,18 @@ const Router = () => {
           </main>
         }
       >
+        <Route path="/" element={<Home />} />
         <Route
           path="/login"
           element={
             <AuthPage
               type="login"
               rememberMe={<RememberMe />}
-              title=""
+              title={
+                <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+                  Dashboard Login
+                </Typography>
+              }
               formProps={{
                 defaultValues: {
                   ...authCredentials,
@@ -58,12 +66,18 @@ const Router = () => {
         <Route path="/register" element={<Register />} />
         <Route
           path="/forgot-password"
-          element={<AuthPage type="forgotPassword" />}
+          element={
+            <AuthPage
+              title={
+                <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+                  Password Recovery
+                </Typography>
+              }
+              type="forgotPassword"
+            />
+          }
         />
-        <Route
-          path="/update-password"
-          element={<AuthPage type="updatePassword" />}
-        />
+        <Route path="/update-password" element={<UpdatePassword />} />
       </Route>
 
       <Route
