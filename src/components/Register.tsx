@@ -104,7 +104,7 @@ const Register: React.FC<RegisterProps> = ({
             spacing={2}
           >
             <Grid container>
-              <Grid xs={12} md={6} display="flex" justifyContent="center">
+              <Grid item xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("username", {
                     required: "Username is required",
@@ -126,7 +126,7 @@ const Register: React.FC<RegisterProps> = ({
                   }}
                 />
               </Grid>
-              <Grid xs={12} md={6} display="flex" justifyContent="center">
+              <Grid item xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("email", {
                     required: "Email is required",
@@ -149,7 +149,7 @@ const Register: React.FC<RegisterProps> = ({
                   }}
                 />
               </Grid>
-              <Grid xs={12} md={6} display="flex" justifyContent="center">
+              <Grid item xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("address", {
                     required: "Address is required",
@@ -170,7 +170,7 @@ const Register: React.FC<RegisterProps> = ({
                   }}
                 />
               </Grid>
-              <Grid xs={12} md={6} display="flex" justifyContent="center">
+              <Grid item xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("phone", {
                     required: "Phone is required",
@@ -189,7 +189,7 @@ const Register: React.FC<RegisterProps> = ({
                   }}
                 />
               </Grid>
-              <Grid xs={12} md={6} display="flex" justifyContent="center">
+              <Grid item xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("name", {
                     required: "Name is required",
@@ -209,6 +209,7 @@ const Register: React.FC<RegisterProps> = ({
                 />
               </Grid>
               <Grid
+                item
                 xs={12}
                 sx={{
                   padding: "1rem",
@@ -219,7 +220,7 @@ const Register: React.FC<RegisterProps> = ({
                   letter, 1 lowercase letter, and 1 number.
                 </Typography>
               </Grid>
-              <Grid xs={12} md={6} display="flex" justifyContent="center">
+              <Grid item xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("password", {
                     required: true,
@@ -256,7 +257,7 @@ const Register: React.FC<RegisterProps> = ({
                   }}
                 />
               </Grid>
-              <Grid xs={12} md={6} display="flex" justifyContent="center">
+              <Grid item xs={12} md={6} display="flex" justifyContent="center">
                 <TextField
                   {...register("confirmPassword", {
                     required: true,

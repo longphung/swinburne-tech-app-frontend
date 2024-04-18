@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Link as RouteLink, Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Authenticated } from "@refinedev/core";
 import { ErrorComponent, ThemedLayoutV2 } from "@refinedev/mui";
@@ -7,6 +7,8 @@ import Header from "./Header";
 import Typography from "@mui/material/Typography";
 import { CircularProgress } from "@mui/material";
 
+import logoIcon from "@/assets/logo-icon.png";
+import logo from "@/assets/logo.png";
 const Register = lazy(() => import("@/components/Register"));
 const UpdatePassword = lazy(() => import("@/components/UpdatePassword"));
 const Home = lazy(() => import("@/pages/Home"));
@@ -26,7 +28,23 @@ const Router = () => {
             redirectOnFail="/login"
             v3LegacyAuthProviderCompatible={false}
           >
-            <ThemedLayoutV2>
+            <ThemedLayoutV2
+              Title={({ collapsed }) => (
+                <RouteLink
+                  to="/"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <img
+                    src={collapsed ? logoIcon : logo}
+                    alt="TechAway Logo"
+                    style={{ cursor: "pointer", height: "2rem" }}
+                  />
+                </RouteLink>
+              )}
+            >
               <Outlet />
             </ThemedLayoutV2>
           </Authenticated>

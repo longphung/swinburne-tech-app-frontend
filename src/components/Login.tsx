@@ -12,7 +12,7 @@ import {
   useRouterContext,
   useRouterType,
   useLink,
-  useNotification,
+  useNotification, useParsed,
 } from "@refinedev/core";
 import { ThemedTitleV2 } from "@refinedev/mui";
 import Box from "@mui/material/Box";
@@ -62,6 +62,7 @@ const Login: React.FC<LoginProps> = ({
   const { open } = useNotification();
   const [showDialog, setShowDialog] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
+  const { params } = useParsed()
 
   const { onSubmit, ...useFormProps } = formProps || {};
   const methods = useForm<
@@ -72,6 +73,9 @@ const Login: React.FC<LoginProps> = ({
     }
   >({
     ...useFormProps,
+    defaultValues: {
+      username: params?.username ?? "",
+    }
   });
   const {
     register,

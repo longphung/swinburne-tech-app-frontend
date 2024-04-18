@@ -159,3 +159,11 @@ export const sendForgotPasswordEmail = async (username: string) => {
   });
   return result.data;
 }
+
+export const resetPassword = async (data: {
+  token: string,
+  password: string,
+}) => {
+  const result = await beInst.post("/auth/reset-password", data);
+  return result.data;
+}

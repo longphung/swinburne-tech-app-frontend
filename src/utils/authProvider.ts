@@ -1,4 +1,10 @@
-import { login, logout, register, sendForgotPasswordEmail } from "@/api/backend";
+import {
+  login,
+  logout,
+  register,
+  resetPassword,
+  sendForgotPasswordEmail,
+} from "@/api/backend";
 
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { AuthProvider } from "@refinedev/core";
@@ -158,7 +164,7 @@ const authProvider: AuthProvider = {
     if (!idToken) {
       return {
         id: null,
-        fullName: null,
+        username: null,
         email: null,
         emailVerified: null,
         phone: null,
@@ -176,18 +182,43 @@ const authProvider: AuthProvider = {
         emailVerified: boolean;
         phone: string;
         address: string;
+        name: string;
         role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
       };
     } = jwtDecode(idToken);
     return {
       id: userData._id,
       username: userData.username,
+      name: userData.name,
       email: userData.email,
       emailVerified: userData.emailVerified,
       phone: userData.phone,
       address: userData.address,
       role: userData.role,
     };
+  },
+  updatePassword: async (data) => {
+    try {
+      const result = await resetPassword({
+        token: data.token,
+        password: data.password,
+      });
+      return {
+        success: true,
+        redirectTo: "/login?username=" + result.username,
+        successNotification: {
+          message: "Password reset successful",
+        },
+      };
+    } catch (e) {
+      return {
+        success: false,
+        error: {
+          name: "Reset Password Error",
+          message: (e as Error).message,
+        },
+      };
+    }
   },
 };
 

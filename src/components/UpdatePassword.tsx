@@ -89,8 +89,9 @@ const UpdatePassword: React.FC<UpdatePasswordProps> = ({
               // @ts-expect-error This is a legacy prop
               return onSubmit(data);
             }
-
-            return update(data);
+            return update({
+              password: data.confirmPassword,
+            });
           })}
         >
           <Typography
