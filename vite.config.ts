@@ -22,7 +22,7 @@ export default defineConfig({
             "@refinedev/mui",
             "material-ui-confirm"
           ]
-          let result: string | void;
+          let result = '';
           chunkList.forEach((chunk) => {
             if (id.includes(chunk)) {
               result = chunk;
