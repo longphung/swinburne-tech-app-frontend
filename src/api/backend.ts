@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const beInst = axios.create({
+export const beInst = axios.create({
   baseURL: "/api",
 });
 

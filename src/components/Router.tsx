@@ -16,6 +16,10 @@ const Services = lazy(() => import("@/pages/Services"));
 const About = lazy(() => import("@/pages/About"));
 const Login = lazy(() => import("@/components/Login"));
 const ForgotPassword = lazy(() => import("@/components/ForgotPassword"));
+const UsersList = lazy(() => import("@/pages/dashboard/users/list"));
+const UsersCreate = lazy(() => import("@/pages/dashboard/users/create"));
+const UsersEdit = lazy(() => import("@/pages/dashboard/users/edit"));
+const UsersShow = lazy(() => import("@/pages/dashboard/users/show"));
 
 const Router = () => {
   return (
@@ -55,6 +59,38 @@ const Router = () => {
           element={
             <Suspense fallback={<CircularProgress />}>
               <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/users"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <UsersList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/users/:id"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <UsersShow />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/users/new"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <UsersCreate />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/users/:id/edit"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <UsersEdit />
             </Suspense>
           }
         />

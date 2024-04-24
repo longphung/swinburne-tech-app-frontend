@@ -1,3 +1,4 @@
+import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ConfirmProvider } from "material-ui-confirm";
 import { Refine } from "@refinedev/core";
@@ -8,12 +9,13 @@ import {
 } from "@refinedev/mui";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { ThemeProvider } from "@mui/material/styles";
-import dataProvider from "@refinedev/simple-rest";
 import routerProvider from "@refinedev/react-router-v6";
 import { BrowserRouter } from "react-router-dom";
 
 import Router from "./components/Router";
 import authProvider from "./utils/authProvider";
+import { beInst } from "@/api/backend";
+import { dataProvider } from "@/utils/restDataProvider";
 
 const App: React.FC = () => {
   return (
@@ -25,7 +27,18 @@ const App: React.FC = () => {
           <RefineSnackbarProvider>
             <Refine
               authProvider={authProvider}
-              dataProvider={dataProvider("http://localhost:8000")}
+              dataProvider={dataProvider("", beInst)}
+              // dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+              resources={[
+                {
+                  name: "users",
+                  list: "/dashboard/users",
+                  show: "/dashboard/users/:id",
+                  create: "/dashboard/users/new",
+                  edit: "/dashboard/users/:id/edit",
+                },
+
+              ]}
               routerProvider={routerProvider}
               notificationProvider={useNotificationProvider}
               // resources={}
