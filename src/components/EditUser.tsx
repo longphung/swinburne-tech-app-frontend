@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useGetIdentity } from "@refinedev/core";
+import { useGetIdentity, useInvalidate } from "@refinedev/core";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Controller } from "react-hook-form";
@@ -20,7 +20,6 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 
-
 import { UserData, USERS_ROLE } from "@/interfaces";
 
 interface Props {
@@ -30,7 +29,8 @@ interface Props {
 
 const EditUser: FC<Props> = (props) => {
   const { userData, titleText = "User Edit" } = props;
-  const { data: currUser } = useGetIdentity<UserData>();
+  const invalidate = useInvalidate();
+  const { data: currUser, refetch } = useGetIdentity<UserData>();
   const {
     saveButtonProps,
     refineCore: { onFinish, autoSaveProps },
@@ -56,8 +56,15 @@ const EditUser: FC<Props> = (props) => {
       id: userData.id,
       action: "edit",
       onMutationSuccess: ({ data }) => {
-        // set new id token
-        localStorage.setItem("idToken", data as unknown as string);
+        if (userData.id === currUser?.id) {
+          localStorage.setItem("idToken", data.token as unknown as string);
+          refetch();
+        }
+        invalidate({
+          resource: "users",
+          id: userData.id,
+          invalidates: ["resourceAll"],
+        });
       },
     },
   });

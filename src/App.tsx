@@ -1,5 +1,6 @@
+import { DevtoolsProvider, DevtoolsPanel } from "@refinedev/devtools";
 import React from "react";
-import StoreIcon from '@mui/icons-material/Store';
+import StoreIcon from "@mui/icons-material/Store";
 import PeopleIcon from "@mui/icons-material/People";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ConfirmProvider } from "material-ui-confirm";
@@ -21,53 +22,57 @@ import { dataProvider } from "@/utils/restDataProvider";
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    (<BrowserRouter>
       <ThemeProvider theme={RefineThemes.Blue}>
         <CssBaseline />
         <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
         <ConfirmProvider>
           <RefineSnackbarProvider>
-            <Refine
-              authProvider={authProvider}
-              dataProvider={dataProvider("", beInst)}
-              resources={[
-                {
-                  name: "users",
-                  list: "/dashboard/users",
-                  show: "/dashboard/users/:id",
-                  create: "/dashboard/users/new",
-                  edit: "/dashboard/users/:id/edit",
-                  meta: {
-                    icon: <PeopleIcon />,
-                    label: "Manage Users",
+            <DevtoolsProvider>
+              <Refine
+                authProvider={authProvider}
+                dataProvider={dataProvider("", beInst)}
+                resources={[
+                  {
+                    name: "users",
+                    list: "/dashboard/users",
+                    show: "/dashboard/users/:id",
+                    create: "/dashboard/users/new",
+                    edit: "/dashboard/users/:id/edit",
+                    meta: {
+                      icon: <PeopleIcon />,
+                      label: "Manage Users",
+                    },
                   },
-                },
-                {
-                  name: "services",
-                  list: "/dashboard/services",
-                  show: "/dashboard/services/:id",
-                  create: "/dashboard/services/new",
-                  edit: "/dashboard/services/:id/edit",
-                  meta: {
-                    icon: <StoreIcon />,
-                    label: "Manage Services",
+                  {
+                    name: "services",
+                    list: "/dashboard/services",
+                    show: "/dashboard/services/:id",
+                    create: "/dashboard/services/new",
+                    edit: "/dashboard/services/:id/edit",
+                    meta: {
+                      icon: <StoreIcon />,
+                      label: "Manage Services",
+                    },
                   },
-                }
-              ]}
-              routerProvider={routerProvider}
-              notificationProvider={useNotificationProvider}
-              // resources={}
-              options={{
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-              }}
-            >
-              <Router />
-            </Refine>
+                ]}
+                routerProvider={routerProvider}
+                notificationProvider={useNotificationProvider}
+                // resources={}
+                options={{
+                  syncWithLocation: true,
+                  warnWhenUnsavedChanges: true,
+                  projectId: "qdfM7M-qCRHlR-IDgJ9N"
+                }}
+              >
+                <Router />
+              </Refine>
+              <DevtoolsPanel />
+            </DevtoolsProvider>
           </RefineSnackbarProvider>
         </ConfirmProvider>
       </ThemeProvider>
-    </BrowserRouter>
+    </BrowserRouter>)
   );
 };
 

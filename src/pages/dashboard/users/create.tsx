@@ -55,7 +55,7 @@ const UsersCreate = () => {
   });
 
   return (
-    <Create
+    (<Create
       resource="users"
       breadcrumb={breadCrumb}
       saveButtonProps={saveButtonProps}
@@ -189,7 +189,7 @@ const UsersCreate = () => {
           </Grid>
         </Grid>
       </Stack>
-    </Create>
+    </Create>)
   );
 };
 
