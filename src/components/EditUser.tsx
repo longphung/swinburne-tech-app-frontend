@@ -1,4 +1,17 @@
 /* eslint-disable react/prop-types */
+import { useGetIdentity } from "@refinedev/core";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { Controller } from "react-hook-form";
+import {
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
+import Box from "@mui/material/Box";
 import React, { FC } from "react";
 import { Edit } from "@refinedev/mui";
 import Typography from "@mui/material/Typography";
@@ -8,9 +21,6 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 
 import { UserData, USERS_ROLE } from "@/utils/authProvider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Controller } from "react-hook-form";
 
 interface Props {
   titleText?: string;
@@ -19,6 +29,7 @@ interface Props {
 
 const EditUser: FC<Props> = (props) => {
   const { userData, titleText = "User Edit" } = props;
+  const { data: currUser } = useGetIdentity<UserData>();
   const {
     saveButtonProps,
     refineCore: { onFinish, autoSaveProps },
@@ -34,6 +45,7 @@ const EditUser: FC<Props> = (props) => {
       name: userData.name,
       phone: userData.phone,
       username: userData.username,
+      role: [userData.role],
     },
     refineCoreProps: {
       autoSave: {
@@ -63,8 +75,8 @@ const EditUser: FC<Props> = (props) => {
       autoSaveProps={autoSaveProps}
       title={<Typography variant="h5">{titleText}</Typography>}
       canDelete={
-        userData.role.includes(USERS_ROLE.ADMIN) ||
-        userData.role.includes(USERS_ROLE.CUSTOMER)
+        currUser?.role.includes(USERS_ROLE.ADMIN) ||
+        currUser?.role.includes(USERS_ROLE.CUSTOMER)
       }
       goBack={null}
       saveButtonProps={{
@@ -74,7 +86,7 @@ const EditUser: FC<Props> = (props) => {
     >
       <Stack component="form" onSubmit={onSubmit} spacing={2}>
         <Grid container>
-          {userData.role.includes(USERS_ROLE.ADMIN) && (
+          {currUser?.role.includes(USERS_ROLE.ADMIN) && (
             <Grid item xs={12}>
               <FormControlLabel
                 control={
@@ -194,6 +206,55 @@ const EditUser: FC<Props> = (props) => {
               }}
             />
           </Grid>
+          {currUser?.role.includes(USERS_ROLE.ADMIN) && (
+            <Grid item xs={12} md={6} display="flex" justifyContent="center">
+              <FormControl
+                fullWidth
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "1rem",
+                }}
+              >
+                <InputLabel id="role">Role</InputLabel>
+                <Controller
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      labelId="role"
+                      id="role"
+                      multiple
+                      input={
+                        <OutlinedInput id="select-multiple-chip" label="Chip" />
+                      }
+                      renderValue={(selected) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                          ))}
+                        </Box>
+                      )}
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    >
+                      {Object.values([
+                        USERS_ROLE.ADMIN,
+                        USERS_ROLE.CUSTOMER,
+                        USERS_ROLE.TECHNICIAN,
+                      ]).map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                  name="role"
+                />
+              </FormControl>
+            </Grid>
+          )}
         </Grid>
       </Stack>
     </Edit>
