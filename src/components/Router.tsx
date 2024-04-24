@@ -1,7 +1,7 @@
 import { Link as RouteLink, Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Authenticated } from "@refinedev/core";
-import { ErrorComponent, ThemedLayoutV2 } from "@refinedev/mui";
+import { ErrorComponent, ThemedLayoutV2, ThemedSiderV2 } from "@refinedev/mui";
 
 import Header from "./Header";
 import Typography from "@mui/material/Typography";
@@ -9,6 +9,7 @@ import { CircularProgress } from "@mui/material";
 
 import logoIcon from "@/assets/logo-icon.png";
 import logo from "@/assets/logo.png";
+import Sider from "@/components/Sider";
 const Register = lazy(() => import("@/components/Register"));
 const UpdatePassword = lazy(() => import("@/components/UpdatePassword"));
 const Home = lazy(() => import("@/pages/Home"));
@@ -16,6 +17,7 @@ const Services = lazy(() => import("@/pages/Services"));
 const About = lazy(() => import("@/pages/About"));
 const Login = lazy(() => import("@/components/Login"));
 const ForgotPassword = lazy(() => import("@/components/ForgotPassword"));
+const Profile = lazy(() => import("@/pages/dashboard/Profile"));
 const UsersList = lazy(() => import("@/pages/dashboard/users/list"));
 const UsersCreate = lazy(() => import("@/pages/dashboard/users/create"));
 const UsersEdit = lazy(() => import("@/pages/dashboard/users/edit"));
@@ -48,6 +50,7 @@ const Router = () => {
                   />
                 </RouteLink>
               )}
+              Sider={(props) => <ThemedSiderV2 {...props} render={Sider} />}
             >
               <Outlet />
             </ThemedLayoutV2>
@@ -59,6 +62,14 @@ const Router = () => {
           element={
             <Suspense fallback={<CircularProgress />}>
               <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/profile"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <Profile />
             </Suspense>
           }
         />

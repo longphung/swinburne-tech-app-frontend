@@ -1,4 +1,5 @@
 import React from "react";
+import PeopleIcon from "@mui/icons-material/People";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ConfirmProvider } from "material-ui-confirm";
 import { Refine } from "@refinedev/core";
@@ -28,7 +29,6 @@ const App: React.FC = () => {
             <Refine
               authProvider={authProvider}
               dataProvider={dataProvider("", beInst)}
-              // dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
               resources={[
                 {
                   name: "users",
@@ -36,8 +36,11 @@ const App: React.FC = () => {
                   show: "/dashboard/users/:id",
                   create: "/dashboard/users/new",
                   edit: "/dashboard/users/:id/edit",
+                  meta: {
+                    icon: <PeopleIcon />,
+                    label: "Manage Users",
+                  },
                 },
-
               ]}
               routerProvider={routerProvider}
               notificationProvider={useNotificationProvider}
