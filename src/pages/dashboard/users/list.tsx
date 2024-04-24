@@ -1,9 +1,12 @@
 import { DataGrid, GridRowParams } from "@mui/x-data-grid";
+import LockResetIcon from "@mui/icons-material/LockReset";
 import { DeleteButton, EditButton, List, useDataGrid } from "@refinedev/mui";
 import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Breadcrumbs, IconButton, Link, Popover } from "@mui/material";
+import { Breadcrumbs, Chip, IconButton, Link, Popover } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
 const CellAction = (props: { id: string }) => {
   const [open, setOpen] = useState(false);
@@ -29,10 +32,14 @@ const CellAction = (props: { id: string }) => {
         open={open}
         onClose={handlePopoverClose}
         anchorEl={anchorEl as Element}
+        sx={{
+          maxWidth: "20rem",
+        }}
       >
         <DeleteButton
           resource="users"
           recordItemId={props.id}
+          fullWidth
           sx={{ padding: "1rem" }}
         />
         <EditButton
@@ -41,6 +48,12 @@ const CellAction = (props: { id: string }) => {
           fullWidth
           sx={{ padding: "1rem" }}
         />
+        <Button variant="text" sx={{ padding: "1rem" }} fullWidth>
+          <LockResetIcon />
+          <Typography variant="button" sx={{ marginLeft: "0.25rem" }}>
+            Reset Password
+          </Typography>
+        </Button>
       </Popover>
     </>
   );
@@ -77,7 +90,25 @@ const UsersList = () => {
           { field: "name", headerName: "Name", width: 150 },
           { field: "username", headerName: "Username", width: 150 },
           { field: "email", headerName: "Email", width: 250 },
-          { field: "role", headerName: "Role", width: 150 },
+          {
+            field: "role",
+            headerName: "Role",
+            width: 250,
+            renderCell: (params: GridRowParams) => {
+              return (
+                <Stack direction="row" spacing={1}>
+                  {params.row.role.map((x) => (
+                    <Chip
+                      key={`${params.row.id}-${x}`}
+                      label={x}
+                      color="primary"
+                      variant="outlined"
+                    />
+                  ))}
+                </Stack>
+              );
+            },
+          },
           { field: "address", headerName: "Address", width: 300 },
           { field: "phone", headerName: "Phone", width: 150 },
           {
