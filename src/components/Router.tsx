@@ -22,6 +22,10 @@ const UsersList = lazy(() => import("@/pages/dashboard/users/list"));
 const UsersCreate = lazy(() => import("@/pages/dashboard/users/create"));
 const UsersEdit = lazy(() => import("@/pages/dashboard/users/edit"));
 const UsersShow = lazy(() => import("@/pages/dashboard/users/show"));
+const ServicesShow = lazy(() => import("@/pages/dashboard/services/show"));
+const ServicesList = lazy(() => import("@/pages/dashboard/services/list"));
+const ServicesCreate = lazy(() => import("@/pages/dashboard/services/create"));
+const ServicesEdit = lazy(() => import("@/pages/dashboard/services/edit"));
 
 const Router = () => {
   return (
@@ -105,6 +109,39 @@ const Router = () => {
             </Suspense>
           }
         />
+        <Route
+          path="/dashboard/services"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ServicesList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/services/:id"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ServicesShow />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/services/new"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ServicesCreate />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/services/:id/edit"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ServicesEdit />
+            </Suspense>
+          }
+        />
+        <Route path="*" element={<ErrorComponent />} />
       </Route>
 
       <Route

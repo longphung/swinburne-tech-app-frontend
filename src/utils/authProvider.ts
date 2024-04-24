@@ -16,6 +16,19 @@ export const enum USERS_ROLE {
   CUSTOMER = "customer",
 }
 
+type Nullable<T> = T | null;
+
+export type UserData = {
+  id: string;
+  address: string;
+  emailVerified: boolean;
+  email: string;
+  role: USERS_ROLE;
+  name: string;
+  phone: string;
+  username: string;
+};
+
 const authProvider: AuthProvider = {
   login: async (data: {
     username: string;
@@ -159,11 +172,14 @@ const authProvider: AuthProvider = {
       };
     }
   },
-  getIdentity: async () => {
+  getIdentity: async (): Promise<{
+    [Property in keyof UserData]: Nullable<UserData[Property]>;
+  }> => {
     const idToken = localStorage.getItem("idToken");
     if (!idToken) {
       return {
         id: null,
+        name: null,
         username: null,
         email: null,
         emailVerified: null,

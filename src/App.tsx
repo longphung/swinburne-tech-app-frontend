@@ -1,4 +1,5 @@
 import React from "react";
+import StoreIcon from '@mui/icons-material/Store';
 import PeopleIcon from "@mui/icons-material/People";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ConfirmProvider } from "material-ui-confirm";
@@ -41,6 +42,17 @@ const App: React.FC = () => {
                     label: "Manage Users",
                   },
                 },
+                {
+                  name: "services",
+                  list: "/dashboard/services",
+                  show: "/dashboard/services/:id",
+                  create: "/dashboard/services/new",
+                  edit: "/dashboard/services/:id/edit",
+                  meta: {
+                    icon: <StoreIcon />,
+                    label: "Manage Services",
+                  },
+                }
               ]}
               routerProvider={routerProvider}
               notificationProvider={useNotificationProvider}
