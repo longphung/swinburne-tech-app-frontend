@@ -9,25 +9,7 @@ import {
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { AuthProvider } from "@refinedev/core";
 import { AxiosError, isAxiosError } from "axios";
-
-export const enum USERS_ROLE {
-  ADMIN = "admin",
-  TECHNICIAN = "technician",
-  CUSTOMER = "customer",
-}
-
-type Nullable<T> = T | null;
-
-export type UserData = {
-  id: string;
-  address: string;
-  emailVerified: boolean;
-  email: string;
-  role: USERS_ROLE;
-  name: string;
-  phone: string;
-  username: string;
-};
+import { Nullable, UserData, USERS_ROLE } from "@/interfaces";
 
 const authProvider: AuthProvider = {
   login: async (data: {
@@ -172,9 +154,7 @@ const authProvider: AuthProvider = {
       };
     }
   },
-  getIdentity: async (): Promise<{
-    [Property in keyof UserData]: Nullable<UserData[Property]>;
-  }> => {
+  getIdentity: async (): Promise<Nullable<UserData>> => {
     const idToken = localStorage.getItem("idToken");
     if (!idToken) {
       return {

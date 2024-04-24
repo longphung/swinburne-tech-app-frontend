@@ -20,7 +20,8 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 
-import { UserData, USERS_ROLE } from "@/utils/authProvider";
+
+import { UserData, USERS_ROLE } from "@/interfaces";
 
 interface Props {
   titleText?: string;

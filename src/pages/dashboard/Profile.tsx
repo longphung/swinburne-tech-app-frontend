@@ -1,7 +1,8 @@
 import React, { FC } from "react";
 import EditUser from "@/components/EditUser";
 import { useGetIdentity } from "@refinedev/core";
-import { UserData } from "@/utils/authProvider";
+
+import { UserData } from "@/interfaces";
 
 const Profile: FC = () => {
   const { data } = useGetIdentity<UserData>();

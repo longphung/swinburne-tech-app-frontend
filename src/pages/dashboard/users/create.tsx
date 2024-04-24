@@ -1,6 +1,5 @@
 import { Create } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
-import { UserData, USERS_ROLE } from "@/utils/authProvider";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -11,6 +10,7 @@ import React from "react";
 import { Breadcrumbs, Link } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useGetIdentity } from "@refinedev/core";
+import { UserData, USERS_ROLE } from "@/interfaces";
 
 const UsersCreate = () => {
   const {

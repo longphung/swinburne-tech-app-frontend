@@ -8,7 +8,9 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
-const CellAction = (props: { id: string }) => {
+import { USERS_ROLE } from "@/interfaces";
+
+const UserListCellAction = (props: { id: string }) => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
 
@@ -94,15 +96,16 @@ const UsersList = () => {
             field: "role",
             headerName: "Role",
             width: 250,
+            // @ts-expect-error This is valid
             renderCell: (params: GridRowParams) => {
               return (
                 <Stack direction="row" spacing={1}>
-                  {params.row.role.map((x) => (
+                  {params.row.role.map((x: USERS_ROLE) => (
                     <Chip
                       key={`${params.row.id}-${x}`}
                       label={x}
                       color="primary"
-                      variant="outlined"
+                      variant={x !== "admin" ? "outlined" : "filled"}
                     />
                   ))}
                 </Stack>
@@ -115,7 +118,7 @@ const UsersList = () => {
             field: "createdAt",
             headerName: "Created At",
             width: 150,
-            type: "date",
+            type: "dateTime",
             // @ts-expect-error This is valid
             valueGetter: (params: GridRowParams) => {
               return new Date(params.row.createdAt);
@@ -127,7 +130,7 @@ const UsersList = () => {
             headerName: "Actions",
             // @ts-expect-error This is valid
             renderCell: (params: GridRowParams) => (
-              <CellAction id={params.row.id} />
+              <UserListCellAction id={params.row.id} />
             ),
           },
         ]}

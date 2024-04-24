@@ -1,7 +1,7 @@
 import EditUser from "@/components/EditUser";
 import { useOne } from "@refinedev/core";
-import { UserData } from "@/utils/authProvider";
 import { useParams } from "react-router-dom";
+import { UserData } from "@/interfaces";
 
 const UsersEdit = () => {
   const { id } = useParams();
