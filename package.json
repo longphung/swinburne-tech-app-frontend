@@ -12,6 +12,20 @@
     "preview": "refine start",
     "refine": "refine"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longphung/swinburne-tech-app-frontend.git"
+  },
+  "author": "Phung Nguyen, Ritvik Thakur, Gauri Krishna, Bashini Dewage, Charles Ficarra",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/longphung/swinburne-tech-app-frontend/issues"
+  },
+  "homepage": "https://github.com/longphung/swinburne-tech-app-frontend#readme",
+  "keywords": [
+    "swinburne",
+    "technology-application"
+  ],
   "browserslist": {
     "production": [
       ">0.2%",
