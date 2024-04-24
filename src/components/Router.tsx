@@ -19,7 +19,7 @@ const Login = lazy(() => import("@/components/Login"));
 const ForgotPassword = lazy(() => import("@/components/ForgotPassword"));
 const Profile = lazy(() => import("@/pages/dashboard/Profile"));
 const UsersList = lazy(() => import("@/pages/dashboard/users/list"));
-const UsersCreate = lazy(() => import("@/pages/dashboard/users/create"));
+// const UsersCreate = lazy(() => import("@/pages/dashboard/users/create"));
 const UsersEdit = lazy(() => import("@/pages/dashboard/users/edit"));
 const UsersShow = lazy(() => import("@/pages/dashboard/users/show"));
 const ServicesShow = lazy(() => import("@/pages/dashboard/services/show"));
@@ -97,7 +97,9 @@ const Router = () => {
           path="/dashboard/users/new"
           element={
             <Suspense fallback={<CircularProgress />}>
-              <UsersCreate />
+              <RouteLink to={`/dashboard/users`}>Back to Users</RouteLink>
+              <Typography variant="h4">Please use the sign up form.</Typography>
+              Link to <RouteLink to="/register">Register</RouteLink>
             </Suspense>
           }
         />

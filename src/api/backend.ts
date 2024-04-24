@@ -23,7 +23,7 @@ beInst.interceptors.request.use((config) => {
 });
 
 beInst.interceptors.response.use(null, async (error) => {
-  if (error.status !== 401) {
+  if (error.response.status !== 401) {
     return Promise.reject(error);
   }
   const refreshToken = localStorage.getItem("refreshToken");

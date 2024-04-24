@@ -2,7 +2,8 @@ import { DataGrid, GridRowParams } from "@mui/x-data-grid";
 import { DeleteButton, EditButton, List, useDataGrid } from "@refinedev/mui";
 import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { IconButton, Popover } from "@mui/material";
+import { Breadcrumbs, IconButton, Link, Popover } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const CellAction = (props: { id: string }) => {
   const [open, setOpen] = useState(false);
@@ -53,8 +54,22 @@ const UsersList = () => {
     },
   });
 
+  const breadcrumb = (
+    <Breadcrumbs aria-label="breadcrumb">
+      <Link underline="hover" color="inherit" href="/">
+        Dashboard
+      </Link>
+      <Typography color="text.primary">Users</Typography>
+    </Breadcrumbs>
+  );
+
   return (
-    <List title="Users" resource="users">
+    <List
+      title="Users"
+      resource="users"
+      canCreate={false}
+      breadcrumb={breadcrumb}
+    >
       <DataGrid
         {...dataGridProps}
         columns={[

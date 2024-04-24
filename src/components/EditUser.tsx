@@ -50,7 +50,6 @@ const EditUser: FC<Props> = (props) => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    console.log("data", data);
     if (userData.role !== USERS_ROLE.ADMIN) {
       // @ts-expect-error - regular users cannot edit emailVerified
       delete data.emailVerified;
