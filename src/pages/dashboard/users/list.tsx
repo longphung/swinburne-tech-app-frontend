@@ -71,7 +71,7 @@ const UsersList = () => {
 
   const breadcrumb = (
     <Breadcrumbs aria-label="breadcrumb">
-      <Link underline="hover" color="inherit" href="/">
+      <Link underline="hover" color="inherit" href="/dashboard">
         Dashboard
       </Link>
       <Typography color="text.primary">Users</Typography>

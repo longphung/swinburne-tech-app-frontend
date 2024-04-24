@@ -108,6 +108,7 @@ const ServicesList = () => {
           {
             field: "actions",
             headerName: "Actions",
+            type: "actions",
             renderCell: (params) => (
               <ServiceListActionCell id={params.row.id as string} />
             ),
