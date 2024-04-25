@@ -97,7 +97,11 @@ const ServicesList = () => {
             width: 500,
             renderCell: (params) => (
               <Box sx={{ width: "100%" }}>
-                <Editor initialContent={params.row.description as string} editable={false} />
+                <Editor
+                  // @ts-expect-error This is a valid prop
+                  initialContent={params.row.description as string}
+                  editable={false}
+                />
               </Box>
             ),
           },
