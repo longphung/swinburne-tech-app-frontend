@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import EditorMenuBar from "@/components/Editor/EditorMenuBar";
 import EditorFloatingMenuBar from "@/components/Editor/EditorFloatingMenuBar";
 
@@ -20,6 +19,8 @@ const Editor: FC = () => {
 
   return (
     <>
+      {editor && <EditorMenuBar editor={editor} />}
+
       {editor && (
         <BubbleMenu className="bubble-menu" tippyOptions={{ duration: 100 }} editor={editor}>
           <EditorFloatingMenuBar editor={editor} />

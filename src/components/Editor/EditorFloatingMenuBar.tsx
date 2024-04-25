@@ -3,7 +3,7 @@ import { Editor } from "@tiptap/react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
-import FormatStrikethroughIcon from "@mui/icons-material/FormatStrikethrough";
+import StrikethroughSIcon from "@mui/icons-material/StrikethroughS";
 
 interface Props {
   // Editor instance
@@ -12,10 +12,8 @@ interface Props {
 
 const EditorFloatingMenuBar: FC<Props> = (props) => {
   const { editor } = props;
-  const [formats, setFormats] = React.useState(() => []);
 
-  const handleFormat = (event: React.MouseEvent, newFormats: any) => {
-    setFormats(newFormats);
+  const handleChange = (event: React.MouseEvent, newFormats: [string]) => {
     newFormats.forEach((format: string) => {
       editor.chain().focus().toggleMark(format).run();
     });
@@ -23,20 +21,19 @@ const EditorFloatingMenuBar: FC<Props> = (props) => {
 
   return (
     <ToggleButtonGroup
-      value={formats}
-      onChange={handleFormat}
+      onChange={handleChange}
       sx={{
         backgroundColor: "white",
       }}
     >
-      <ToggleButton value="bold">
+      <ToggleButton value="bold" selected={editor.isActive("bold")}>
         <FormatBoldIcon />
       </ToggleButton>
-      <ToggleButton value="italic">
+      <ToggleButton value="italic" selected={editor.isActive("italic")}>
         <FormatItalicIcon />
       </ToggleButton>
-      <ToggleButton value="strike">
-        <FormatStrikethroughIcon />
+      <ToggleButton value="strike" selected={editor.isActive("strike")}>
+        <StrikethroughSIcon />
       </ToggleButton>
     </ToggleButtonGroup>
   );

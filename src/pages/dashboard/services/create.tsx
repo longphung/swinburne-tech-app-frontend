@@ -8,6 +8,7 @@ import {
   InputLabel,
   Link,
   MenuItem,
+  Paper,
   Select,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -59,7 +60,7 @@ const ServicesCreate = () => {
       breadcrumb={breadcrumb}
       title={<Typography variant="h5">Create new service</Typography>}
     >
-      <Grid container component="form">
+      <Grid container component="form" onSubmit={onSubmit} spacing={2}>
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
           <TextField
             {...register("title", {
@@ -179,8 +180,10 @@ const ServicesCreate = () => {
         </Grid>
 
         <Grid item xs={12} padding="1rem">
-          <InputLabel>Description</InputLabel>
-          <Editor />
+          <InputLabel sx={{ marginBottom: "1rem" }}>Description</InputLabel>
+          <Paper elevation={2} sx={{ padding: "1rem" }}>
+            <Editor />
+          </Paper>
         </Grid>
       </Grid>
     </Create>
