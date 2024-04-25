@@ -5,14 +5,14 @@ import React, { useState } from "react";
 import { Breadcrumbs, IconButton, Link, Popover } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Typography from "@mui/material/Typography";
+import Editor from "@/components/Editor/Editor";
+import Box from "@mui/material/Box";
 
 const ServiceListActionCell = (props: { id: string }) => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
 
-  const handlePopoverOpen: React.MouseEventHandler<HTMLButtonElement> = (
-    event,
-  ) => {
+  const handlePopoverOpen: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     setAnchorEl(event.currentTarget);
     setOpen(true);
   };
@@ -34,18 +34,8 @@ const ServiceListActionCell = (props: { id: string }) => {
           maxWidth: "20rem",
         }}
       >
-        <DeleteButton
-          resource="services"
-          recordItemId={props.id}
-          fullWidth
-          sx={{ padding: "1rem" }}
-        />
-        <EditButton
-          resource="services"
-          recordItemId={props.id}
-          fullWidth
-          sx={{ padding: "1rem" }}
-        />
+        <DeleteButton resource="services" recordItemId={props.id} fullWidth sx={{ padding: "1rem" }} />
+        <EditButton resource="services" recordItemId={props.id} fullWidth sx={{ padding: "1rem" }} />
       </Popover>
     </>
   );
@@ -68,6 +58,7 @@ const ServicesList = () => {
       <DataGrid
         {...dataGridProps}
         autoHeight
+        getRowHeight={() => "auto"}
         columns={[
           {
             field: "id",
@@ -82,12 +73,12 @@ const ServicesList = () => {
           {
             field: "label",
             headerName: "Label",
-            width: 200,
+            width: 100,
           },
           {
             field: "price",
             headerName: "Price",
-            width: 120,
+            width: 50,
             type: "number",
           },
           {
@@ -103,15 +94,18 @@ const ServicesList = () => {
           {
             field: "description",
             headerName: "Description",
-            width: 200,
+            width: 500,
+            renderCell: (params) => (
+              <Box sx={{ width: "100%" }}>
+                <Editor initialContent={params.row.description as string} editable={false} />
+              </Box>
+            ),
           },
           {
             field: "actions",
             headerName: "Actions",
             type: "actions",
-            renderCell: (params) => (
-              <ServiceListActionCell id={params.row.id as string} />
-            ),
+            renderCell: (params) => <ServiceListActionCell id={params.row.id as string} />,
           },
         ]}
       />
