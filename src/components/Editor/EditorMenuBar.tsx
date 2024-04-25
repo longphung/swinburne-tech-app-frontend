@@ -1,4 +1,9 @@
 import { SvgIcon, ToggleButton } from "@mui/material";
+import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
+import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import RedoIcon from "@mui/icons-material/Redo";
 import UndoIcon from "@mui/icons-material/Undo";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
@@ -106,9 +111,47 @@ const MenuBar = ({ editor }: { editor: Editor }) => {
       type: "divider",
     },
     {
+      icon: <FormatAlignLeftIcon />,
+      title: "Align Left",
+      action: () => editor.chain().focus().setTextAlign("left").run(),
+      isActive: () => editor.isActive({ textAlign: "left" }),
+    },
+    {
+      icon: <FormatAlignCenterIcon />,
+      title: "Align Center",
+      action: () => editor.chain().focus().setTextAlign("center").run(),
+      isActive: () => editor.isActive({ textAlign: "center" }),
+    },
+    {
+      icon: <FormatAlignRightIcon />,
+      title: "Align Right",
+      action: () => editor.chain().focus().setTextAlign("right").run(),
+      isActive: () => editor.isActive({ textAlign: "right" }),
+    },
+    {
+      icon: <FormatAlignJustifyIcon />,
+      title: "Justify",
+      action: () => editor.chain().focus().setTextAlign("justify").run(),
+      isActive: () => editor.isActive({ textAlign: "justify" }),
+    },
+    {
+      type: "divider",
+    },
+    {
       icon: <HorizontalRuleIcon />,
       title: "Horizontal Rule",
       action: () => editor.chain().focus().setHorizontalRule().run(),
+    },
+    {
+      icon: <InsertPhotoIcon />,
+      title: "Image",
+      action: () => {
+        const url = window.prompt("URL");
+
+        if (url) {
+          editor.chain().focus().setImage({ src: url }).run();
+        }
+      },
     },
     {
       type: "divider",

@@ -1,12 +1,21 @@
 import React, { FC } from "react";
+import { TextAlign } from "@tiptap/extension-text-align";
+import ImageResize from "tiptap-extension-resize-image";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
+
 import EditorMenuBar from "@/components/Editor/EditorMenuBar";
 import EditorFloatingMenuBar from "@/components/Editor/EditorFloatingMenuBar";
 
 const Editor: FC = () => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
+      ImageResize,
+    ],
     content: `
       <p>
         Try to select <em>this text</em> to see what we call the bubble menu.
