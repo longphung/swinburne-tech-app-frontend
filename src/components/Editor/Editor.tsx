@@ -1,13 +1,15 @@
-import React, { FC } from "react";
+import React, { FC, useImperativeHandle } from "react";
 import { TextAlign } from "@tiptap/extension-text-align";
 import ImageResize from "tiptap-extension-resize-image";
+import { Editor as EditorType } from "@tiptap/react";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 
 import EditorMenuBar from "@/components/Editor/EditorMenuBar";
 import EditorFloatingMenuBar from "@/components/Editor/EditorFloatingMenuBar";
 
-const Editor: FC = () => {
+const Editor: FC = React.forwardRef<EditorType | null, { initialContent?: string }>((props, ref) => {
+  const { initialContent = "" } = props;
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -16,15 +18,10 @@ const Editor: FC = () => {
       }),
       ImageResize,
     ],
-    content: `
-      <p>
-        Try to select <em>this text</em> to see what we call the bubble menu.
-      </p>
-      <p>
-        Neat, isn’t it? Add an empty paragraph to see the floating menu.
-      </p>
-    `,
+    content: initialContent,
   });
+
+  useImperativeHandle(ref, () => editor as EditorType, [editor]);
 
   return (
     <>
@@ -45,6 +42,8 @@ const Editor: FC = () => {
       <EditorContent editor={editor} />
     </>
   );
-};
+});
+
+Editor.displayName = "Editor";
 
 export default Editor;

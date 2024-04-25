@@ -1,4 +1,5 @@
 import { Create } from "@refinedev/mui";
+import { Editor as EditorType } from "@tiptap/react";
 import Typography from "@mui/material/Typography";
 import {
   Breadcrumbs,
@@ -17,14 +18,17 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 
 import Editor from "@/components/Editor/Editor";
+import { useRef } from "react";
 
 const ServicesCreate = () => {
+  const editor = useRef<EditorType>(null);
   const {
     saveButtonProps,
     refineCore: { onFinish },
     control,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -50,12 +54,18 @@ const ServicesCreate = () => {
 
   const onSubmit = handleSubmit((data) => {
     console.log("data", data);
-    // onFinish(data);
+    onFinish(data);
   });
 
   return (
     <Create
-      saveButtonProps={saveButtonProps}
+      saveButtonProps={{
+        ...saveButtonProps,
+        onClick: () => {
+          setValue("description", editor.current?.getHTML() || "");
+          onSubmit();
+        },
+      }}
       resource="services"
       breadcrumb={breadcrumb}
       title={<Typography variant="h5">Create new service</Typography>}
@@ -182,7 +192,11 @@ const ServicesCreate = () => {
         <Grid item xs={12} padding="1rem">
           <InputLabel sx={{ marginBottom: "1rem" }}>Description</InputLabel>
           <Paper elevation={2} sx={{ padding: "1rem" }}>
-            <Editor />
+            <Editor
+              // @ts-expect-error This is a valid call
+              initialContent={"Description of the service"}
+              ref={editor}
+            />
           </Paper>
         </Grid>
       </Grid>
