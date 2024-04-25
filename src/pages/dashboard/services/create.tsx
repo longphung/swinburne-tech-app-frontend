@@ -15,6 +15,8 @@ import TextField from "@mui/material/TextField";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 
+import Editor from "@/components/Editor/Editor";
+
 const ServicesCreate = () => {
   const {
     saveButtonProps,
@@ -131,7 +133,9 @@ const ServicesCreate = () => {
               control={control}
               render={({ field }) => (
                 <Select id="category" label="Category" {...field}>
-                  <MenuItem value="" disabled>None</MenuItem>
+                  <MenuItem value="" disabled>
+                    None
+                  </MenuItem>
                   <MenuItem value={1}>1</MenuItem>
                   <MenuItem value={2}>2</MenuItem>
                   <MenuItem value={3}>3</MenuItem>
@@ -161,7 +165,9 @@ const ServicesCreate = () => {
               control={control}
               render={({ field }) => (
                 <Select id="service-type-select" label="Service Type" {...field}>
-                  <MenuItem value="" disabled>None</MenuItem>
+                  <MenuItem value="" disabled>
+                    None
+                  </MenuItem>
                   <MenuItem value="remote">Remote</MenuItem>
                   <MenuItem value="onsite">On Site</MenuItem>
                   <MenuItem value="both">Both</MenuItem>
@@ -172,22 +178,9 @@ const ServicesCreate = () => {
           </FormControl>
         </Grid>
 
-        <Grid item xs={12} display="flex" justifyContent="center">
-          <TextField
-            {...register("description", {
-              required: "Description is required",
-            })}
-            id="description"
-            label="Description"
-            helperText={errors.description ? errors.description.message : ""}
-            error={!!errors.description}
-            type="text"
-            fullWidth
-            placeholder="Description"
-            sx={{
-              margin: "1rem",
-            }}
-          />
+        <Grid item xs={12} padding="1rem">
+          <InputLabel>Description</InputLabel>
+          <Editor />
         </Grid>
       </Grid>
     </Create>
