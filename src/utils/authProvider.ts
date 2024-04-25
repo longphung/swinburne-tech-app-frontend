@@ -9,12 +9,7 @@ import {
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { AuthProvider } from "@refinedev/core";
 import { AxiosError, isAxiosError } from "axios";
-
-export const enum USERS_ROLE {
-  ADMIN = "admin",
-  TECHNICIAN = "technician",
-  CUSTOMER = "customer",
-}
+import { Nullable, UserData, USERS_ROLE } from "@/interfaces";
 
 const authProvider: AuthProvider = {
   login: async (data: {
@@ -159,11 +154,12 @@ const authProvider: AuthProvider = {
       };
     }
   },
-  getIdentity: async () => {
+  getIdentity: async (): Promise<Nullable<UserData>> => {
     const idToken = localStorage.getItem("idToken");
     if (!idToken) {
       return {
         id: null,
+        name: null,
         username: null,
         email: null,
         emailVerified: null,
