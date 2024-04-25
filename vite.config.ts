@@ -15,22 +15,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      output: {
-        manualChunks(id) {
-          const chunkList = [
-            "@mui",
-            "@refinedev/mui",
-            "material-ui-confirm"
-          ]
-          let result = '';
-          chunkList.forEach((chunk) => {
-            if (id.includes(chunk)) {
-              result = chunk;
-            }
-          });
-          return result;
-        },
-      },
+      output: {},
     },
   },
 });
