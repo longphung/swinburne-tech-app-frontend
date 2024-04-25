@@ -22,7 +22,7 @@ import { dataProvider } from "@/utils/restDataProvider";
 
 const App: React.FC = () => {
   return (
-    (<BrowserRouter>
+    (<BrowserRouter basename='/swinburne-tech-app-frontend'>
       <ThemeProvider theme={RefineThemes.Blue}>
         <CssBaseline />
         <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
