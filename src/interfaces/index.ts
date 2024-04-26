@@ -13,7 +13,7 @@ export type UserData = {
   address: string;
   emailVerified: boolean;
   email: string;
-  role: USERS_ROLE;
+  role: USERS_ROLE[];
   name: string;
   phone: string;
   username: string;

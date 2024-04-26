@@ -1,10 +1,4 @@
-import {
-  login,
-  logout,
-  register,
-  resetPassword,
-  sendForgotPasswordEmail,
-} from "@/api/backend";
+import { login, logout, register, resetPassword, sendForgotPasswordEmail } from "@/api/backend";
 
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { AuthProvider } from "@refinedev/core";
@@ -12,11 +6,7 @@ import { AxiosError, isAxiosError } from "axios";
 import { Nullable, UserData, USERS_ROLE } from "@/interfaces";
 
 const authProvider: AuthProvider = {
-  login: async (data: {
-    username: string;
-    password: string;
-    role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
-  }) => {
+  login: async (data: { username: string; password: string; role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER }) => {
     try {
       const result = await login({
         username: data.username,
@@ -179,7 +169,7 @@ const authProvider: AuthProvider = {
         phone: string;
         address: string;
         name: string;
-        role: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
+        role: USERS_ROLE[];
       };
     } = jwtDecode(idToken);
     return {

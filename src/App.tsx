@@ -16,6 +16,7 @@ import authProvider from "./utils/authProvider";
 import { beInst } from "@/api/backend";
 import { dataProvider } from "@/utils/restDataProvider";
 import CartProvider from "@/components/Providers/CartProvider";
+import accessControlProvider from "@/utils/accessControlProvider";
 
 const App: React.FC = () => {
   return (
@@ -56,6 +57,7 @@ const App: React.FC = () => {
                   ]}
                   routerProvider={routerProvider}
                   notificationProvider={useNotificationProvider}
+                  accessControlProvider={accessControlProvider}
                   // resources={}
                   options={{
                     syncWithLocation: true,
