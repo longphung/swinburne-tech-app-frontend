@@ -2,7 +2,7 @@ import { DataProvider } from "@refinedev/core";
 import { AxiosInstance } from "axios";
 import { stringify } from "query-string";
 
-import { generateSort, generateFilter } from "./utils";
+import { generateFilter, generateSort } from "./utils";
 import { beInst } from "@/api/backend";
 
 type MethodTypes = "get" | "delete" | "head" | "options";
@@ -12,12 +12,9 @@ type MethodTypesWithBody = "post" | "put" | "patch";
 export const dataProvider = (
   apiUrl: string,
   httpClient: AxiosInstance = beInst,
-): Omit<
-  Required<DataProvider>,
-  "createMany" | "updateMany" | "deleteMany"
-> => ({
+): Omit<Required<DataProvider>, "createMany" | "updateMany" | "deleteMany"> => ({
   getList: async ({ resource, pagination, filters, sorters, meta }) => {
-    const url = `${apiUrl}/${resource}`;
+    const url = meta?.customUrl ? meta?.customUrl(apiUrl, resource) : `${apiUrl}/${resource}`;
 
     const { current = 1, pageSize = 10, mode = "server" } = pagination ?? {};
 
@@ -46,9 +43,7 @@ export const dataProvider = (
     }
 
     const combinedQuery = { ...query, ...queryFilters };
-    const urlWithQuery = Object.keys(combinedQuery).length
-      ? `${url}?${stringify(combinedQuery)}`
-      : url;
+    const urlWithQuery = Object.keys(combinedQuery).length ? `${url}?${stringify(combinedQuery)}` : url;
 
     const { data, headers } = await httpClient[requestMethod](urlWithQuery, {
       headers: headersFromMeta,
@@ -66,10 +61,7 @@ export const dataProvider = (
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypes) ?? "get";
 
-    const { data } = await httpClient[requestMethod](
-      `${apiUrl}/${resource}?${stringify({ id: ids })}`,
-      { headers },
-    );
+    const { data } = await httpClient[requestMethod](`${apiUrl}/${resource}?${stringify({ id: ids })}`, { headers });
 
     return {
       data,
@@ -140,15 +132,7 @@ export const dataProvider = (
   },
 
   // eslint-disable-next-line max-lines-per-function
-  custom: async ({
-    url,
-    method,
-    filters,
-    sorters,
-    payload,
-    query,
-    headers,
-  }) => {
+  custom: async ({ url, method, filters, sorters, payload, query, headers }) => {
     let requestUrl = `${url}?`;
 
     if (sorters) {
