@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
 import { ServiceData } from "@/interfaces";
+import { addItem, useCartDispatch } from "@/components/Providers/CartProvider";
 
 interface Props {
   service: ServiceData;
@@ -14,6 +15,22 @@ interface Props {
 
 const ServiceShoppingCard: React.FC<Props> = (props) => {
   const { service } = props;
+  const dispatchCart = useCartDispatch();
+
+  /**
+   * AUD with 2 decimals
+   */
+  const priceToShow = Intl.NumberFormat("en-AU", {
+    style: "currency",
+    currency: "AUD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(service.price);
+
+  const handleAdd = () => {
+    dispatchCart(addItem(service));
+  };
+
   return (
     <Grid
       item
@@ -52,8 +69,16 @@ const ServiceShoppingCard: React.FC<Props> = (props) => {
             {service.label}
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
+        <CardActions
+          sx={{
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography variant="h6" color="text.primary">
+            {priceToShow}
+          </Typography>
+
+          <Button onClick={handleAdd}>Add to cart</Button>
         </CardActions>
       </Card>
     </Grid>

@@ -1,13 +1,9 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { useList, useTable } from "@refinedev/core";
+import { useList } from "@refinedev/core";
 import { ServiceData } from "@/interfaces";
 import { useState } from "react";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import { CardMedia } from "@mui/material";
 import ServiceShoppingCard from "@/components/ServiceShoppingCard";
 
 const Services = () => {
