@@ -2,7 +2,17 @@ import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import Typography from "@mui/material/Typography";
 import { Editor as EditorType } from "@tiptap/react";
-import { Breadcrumbs, FormControl, FormHelperText, InputLabel, Link, MenuItem, Paper, Select } from "@mui/material";
+import {
+  Breadcrumbs,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  Link,
+  MenuItem,
+  Paper,
+  Select,
+  Tooltip,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
@@ -10,6 +20,8 @@ import { useRef } from "react";
 
 import Editor from "@/components/Editor/Editor";
 import { useInvalidate } from "@refinedev/core";
+import { ServiceData } from "@/interfaces";
+import InfoIcon from "@mui/icons-material/Info";
 
 const ServicesEdit = () => {
   const editor = useRef<EditorType>(null);
@@ -30,13 +42,14 @@ const ServicesEdit = () => {
       category: "",
       serviceType: "",
       description: "",
+      imageUrl: "",
       id: "",
     },
     refineCoreProps: {
       autoSave: {
         enabled: false,
       },
-      onMutationSuccess: (data, variables) => {
+      onMutationSuccess: (_data, variables) => {
         if (variables.id) {
           invalidate({
             resource: "services",
@@ -52,6 +65,7 @@ const ServicesEdit = () => {
       },
     },
   });
+  const { data } = queryResult as unknown as { data: { data?: ServiceData } };
 
   const breadcrumb = (
     <Breadcrumbs aria-label="breadcrumb">
@@ -198,16 +212,41 @@ const ServicesEdit = () => {
           </FormControl>
         </Grid>
 
-        <Grid item xs={12} padding="1rem">
-          <InputLabel sx={{ marginBottom: "1rem" }}>Description</InputLabel>
-          <Paper elevation={2} sx={{ padding: "1rem" }}>
-            <Editor
-              // @ts-expect-error This is a valid call
-              initialContent={"Description of the service"}
-              ref={editor}
-            />
-          </Paper>
+        <Grid item xs={12} md={6} display="flex" justifyContent="center">
+          <TextField
+            {...register("imageUrl", { required: true })}
+            id="imageUrl"
+            label={
+              <Typography variant="body1">
+                Image URL
+                <Tooltip title="We don't support image preview yet" placement="top">
+                  <InfoIcon />
+                </Tooltip>
+              </Typography>
+            }
+            helperText={errors.imageUrl ? errors.imageUrl.message : ""}
+            error={!!errors.imageUrl}
+            type="text"
+            fullWidth
+            placeholder="Image URL"
+            sx={{
+              margin: "1rem",
+            }}
+          />
         </Grid>
+
+        {data?.data?.description && (
+          <Grid item xs={12} padding="1rem">
+            <InputLabel sx={{ marginBottom: "1rem" }}>Description</InputLabel>
+            <Paper elevation={2} sx={{ padding: "1rem" }}>
+              <Editor
+                // @ts-expect-error This is a valid call
+                initialContent={data.data.description}
+                ref={editor}
+              />
+            </Paper>
+          </Grid>
+        )}
       </Grid>
     </Edit>
   );

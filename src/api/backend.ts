@@ -167,3 +167,8 @@ export const resetPassword = async (data: {
   const result = await beInst.post("/auth/reset-password", data);
   return result.data;
 }
+
+export const getUsersServiceList = async () => {
+  const result = await beInst.get("/services");
+  return result.data;
+}

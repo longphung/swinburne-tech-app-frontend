@@ -33,11 +33,7 @@ const Router = () => {
       <Route
         path="/dashboard"
         element={
-          <Authenticated
-            key="catch-all"
-            redirectOnFail="/login"
-            v3LegacyAuthProviderCompatible={false}
-          >
+          <Authenticated key="catch-all" redirectOnFail="/login" v3LegacyAuthProviderCompatible={false}>
             <ThemedLayoutV2
               Title={({ collapsed }) => (
                 <RouteLink

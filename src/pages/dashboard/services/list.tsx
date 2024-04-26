@@ -42,7 +42,12 @@ const ServiceListActionCell = (props: { id: string }) => {
 };
 
 const ServicesList = () => {
-  const { dataGridProps } = useDataGrid<ServiceData>();
+  const { dataGridProps } = useDataGrid<ServiceData>({
+    resource: "services",
+    meta: {
+      customUrl: (apiUrl: string, resource: string) => `${apiUrl}/${resource}/admin`,
+    },
+  });
 
   const breadcrumb = (
     <Breadcrumbs aria-label="breadcrumb">

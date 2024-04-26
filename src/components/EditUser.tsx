@@ -3,14 +3,7 @@ import { useGetIdentity, useInvalidate } from "@refinedev/core";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Controller } from "react-hook-form";
-import {
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-} from "@mui/material";
+import { Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { FC } from "react";
 import { Edit } from "@refinedev/mui";
@@ -46,7 +39,7 @@ const EditUser: FC<Props> = (props) => {
       name: userData.name,
       phone: userData.phone,
       username: userData.username,
-      role: [userData.role],
+      role: userData.role,
     },
     refineCoreProps: {
       autoSave: {
@@ -70,7 +63,7 @@ const EditUser: FC<Props> = (props) => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    if (userData.role !== USERS_ROLE.ADMIN) {
+    if (!userData.role.includes(USERS_ROLE.ADMIN)) {
       // @ts-expect-error - regular users cannot edit emailVerified
       delete data.emailVerified;
     }
@@ -82,10 +75,7 @@ const EditUser: FC<Props> = (props) => {
       recordItemId={userData.id}
       autoSaveProps={autoSaveProps}
       title={<Typography variant="h5">{titleText}</Typography>}
-      canDelete={
-        currUser?.role.includes(USERS_ROLE.ADMIN) ||
-        currUser?.role.includes(USERS_ROLE.CUSTOMER)
-      }
+      canDelete={currUser?.role.includes(USERS_ROLE.ADMIN) || currUser?.role.includes(USERS_ROLE.CUSTOMER)}
       goBack={null}
       saveButtonProps={{
         ...saveButtonProps,
@@ -102,11 +92,7 @@ const EditUser: FC<Props> = (props) => {
                     name="emailVerified"
                     control={control}
                     render={({ field: props }) => (
-                      <Checkbox
-                        {...props}
-                        checked={props.value}
-                        onChange={(e) => props.onChange(e.target.checked)}
-                      />
+                      <Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
                     )}
                   />
                 }
@@ -232,13 +218,9 @@ const EditUser: FC<Props> = (props) => {
                       labelId="role"
                       id="role"
                       multiple
-                      input={
-                        <OutlinedInput id="select-multiple-chip" label="Chip" />
-                      }
+                      input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
                       renderValue={(selected) => (
-                        <Box
-                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
-                        >
+                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                           {selected.map((value) => (
                             <Chip key={value} label={value} />
                           ))}
@@ -247,11 +229,7 @@ const EditUser: FC<Props> = (props) => {
                       value={field.value}
                       onChange={(e) => field.onChange(e.target.value)}
                     >
-                      {Object.values([
-                        USERS_ROLE.ADMIN,
-                        USERS_ROLE.CUSTOMER,
-                        USERS_ROLE.TECHNICIAN,
-                      ]).map((name) => (
+                      {Object.values([USERS_ROLE.ADMIN, USERS_ROLE.CUSTOMER, USERS_ROLE.TECHNICIAN]).map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
