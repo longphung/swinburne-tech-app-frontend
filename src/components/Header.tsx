@@ -127,7 +127,7 @@ const Header = () => {
             </Badge>
           }
           variant="text"
-          sx={{ ml: "2rem", mr: "-2rem" }}
+          sx={{ ml: "2rem" }}
           component={RouteLink}
           to="/cart"
         >
