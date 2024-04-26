@@ -5,11 +5,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ConfirmProvider } from "material-ui-confirm";
 import { Refine } from "@refinedev/core";
-import {
-  RefineSnackbarProvider,
-  RefineThemes,
-  useNotificationProvider,
-} from "@refinedev/mui";
+import { RefineSnackbarProvider, RefineThemes, useNotificationProvider } from "@refinedev/mui";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { ThemeProvider } from "@mui/material/styles";
 import routerProvider from "@refinedev/react-router-v6";
@@ -22,7 +18,7 @@ import { dataProvider } from "@/utils/restDataProvider";
 
 const App: React.FC = () => {
   return (
-    (<BrowserRouter basename='/swinburne-tech-app-frontend'>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <ThemeProvider theme={RefineThemes.Blue}>
         <CssBaseline />
         <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
@@ -62,7 +58,7 @@ const App: React.FC = () => {
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
-                  projectId: "qdfM7M-qCRHlR-IDgJ9N"
+                  projectId: "qdfM7M-qCRHlR-IDgJ9N",
                 }}
               >
                 <Router />
@@ -72,7 +68,7 @@ const App: React.FC = () => {
           </RefineSnackbarProvider>
         </ConfirmProvider>
       </ThemeProvider>
-    </BrowserRouter>)
+    </BrowserRouter>
   );
 };
 
