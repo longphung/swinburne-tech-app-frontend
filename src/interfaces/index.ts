@@ -28,3 +28,11 @@ export type ServiceData = {
   serviceType: string;
   description: string;
 };
+
+export type Cart = {
+  items: Array<
+    ServiceData & {
+      quantity: number;
+    }
+  >;
+};

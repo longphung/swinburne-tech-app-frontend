@@ -15,6 +15,7 @@ import Router from "./components/Router";
 import authProvider from "./utils/authProvider";
 import { beInst } from "@/api/backend";
 import { dataProvider } from "@/utils/restDataProvider";
+import CartProvider from "@/components/Providers/CartProvider";
 
 const App: React.FC = () => {
   return (
@@ -23,49 +24,51 @@ const App: React.FC = () => {
         <CssBaseline />
         <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
         <ConfirmProvider>
-          <RefineSnackbarProvider>
-            <DevtoolsProvider>
-              <Refine
-                authProvider={authProvider}
-                dataProvider={dataProvider("", beInst)}
-                resources={[
-                  {
-                    name: "users",
-                    list: "/dashboard/users",
-                    show: "/dashboard/users/:id",
-                    create: "/dashboard/users/new",
-                    edit: "/dashboard/users/:id/edit",
-                    meta: {
-                      icon: <PeopleIcon />,
-                      label: "Manage Users",
+          <CartProvider>
+            <RefineSnackbarProvider>
+              <DevtoolsProvider>
+                <Refine
+                  authProvider={authProvider}
+                  dataProvider={dataProvider("", beInst)}
+                  resources={[
+                    {
+                      name: "users",
+                      list: "/dashboard/users",
+                      show: "/dashboard/users/:id",
+                      create: "/dashboard/users/new",
+                      edit: "/dashboard/users/:id/edit",
+                      meta: {
+                        icon: <PeopleIcon />,
+                        label: "Manage Users",
+                      },
                     },
-                  },
-                  {
-                    name: "services",
-                    list: "/dashboard/services",
-                    show: "/dashboard/services/:id",
-                    create: "/dashboard/services/new",
-                    edit: "/dashboard/services/:id/edit",
-                    meta: {
-                      icon: <StoreIcon />,
-                      label: "Manage Services",
+                    {
+                      name: "services",
+                      list: "/dashboard/services",
+                      show: "/dashboard/services/:id",
+                      create: "/dashboard/services/new",
+                      edit: "/dashboard/services/:id/edit",
+                      meta: {
+                        icon: <StoreIcon />,
+                        label: "Manage Services",
+                      },
                     },
-                  },
-                ]}
-                routerProvider={routerProvider}
-                notificationProvider={useNotificationProvider}
-                // resources={}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                  projectId: "qdfM7M-qCRHlR-IDgJ9N",
-                }}
-              >
-                <Router />
-              </Refine>
-              <DevtoolsPanel />
-            </DevtoolsProvider>
-          </RefineSnackbarProvider>
+                  ]}
+                  routerProvider={routerProvider}
+                  notificationProvider={useNotificationProvider}
+                  // resources={}
+                  options={{
+                    syncWithLocation: true,
+                    warnWhenUnsavedChanges: true,
+                    projectId: "qdfM7M-qCRHlR-IDgJ9N",
+                  }}
+                >
+                  <Router />
+                </Refine>
+                <DevtoolsPanel />
+              </DevtoolsProvider>
+            </RefineSnackbarProvider>
+          </CartProvider>
         </ConfirmProvider>
       </ThemeProvider>
     </BrowserRouter>
