@@ -27,6 +27,7 @@ export type ServiceData = {
   category: number;
   serviceType: string;
   description: string;
+  imageUrl?: string;
 };
 
 export type Cart = {

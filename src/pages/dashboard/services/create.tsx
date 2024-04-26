@@ -1,4 +1,5 @@
 import { Create } from "@refinedev/mui";
+import InfoIcon from "@mui/icons-material/Info";
 import { useRef } from "react";
 import { Editor as EditorType } from "@tiptap/react";
 import Typography from "@mui/material/Typography";
@@ -12,6 +13,7 @@ import {
   MenuItem,
   Paper,
   Select,
+  Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -37,6 +39,7 @@ const ServicesCreate = () => {
       price: 0,
       category: "",
       serviceType: "",
+      imageUrl: "",
       description: "",
     },
   });
@@ -187,6 +190,29 @@ const ServicesCreate = () => {
             />
             <FormHelperText>{errors.category ? errors.category.message : ""}</FormHelperText>
           </FormControl>
+        </Grid>
+
+        <Grid item xs={12} md={6} display="flex" justifyContent="center">
+          <TextField
+            {...register("imageUrl")}
+            id="imageUrl"
+            label={
+              <Typography variant="body1">
+                Image URL
+                <Tooltip title="We don't support image preview yet" placement="top">
+                  <InfoIcon />
+                </Tooltip>
+              </Typography>
+            }
+            helperText={errors.imageUrl ? errors.imageUrl.message : ""}
+            error={!!errors.imageUrl}
+            type="text"
+            fullWidth
+            placeholder="Image URL"
+            sx={{
+              margin: "1rem",
+            }}
+          />
         </Grid>
 
         <Grid item xs={12} padding="1rem">
