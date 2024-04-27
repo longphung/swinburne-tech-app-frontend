@@ -1,4 +1,5 @@
 import Container from "@mui/material/Container";
+import EastIcon from "@mui/icons-material/East";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -14,12 +15,12 @@ const Services = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<number | "">("");
   const [serviceType, setServiceType] = useState<string>("");
+  const [sort, setSort] = useState<"asc" | "desc">("desc");
 
   const { data } = useList({
     resource: "services",
     pagination: {
       current: page,
-      pageSize: 1,
     },
     filters: [
       {
@@ -31,6 +32,12 @@ const Services = () => {
         field: "serviceType",
         operator: "eq",
         value: serviceType || undefined,
+      },
+    ],
+    sorters: [
+      {
+        field: "title",
+        order: sort,
       },
     ],
     meta: { query: { q: search } },
@@ -107,6 +114,45 @@ const Services = () => {
           </Box>
 
           <TextField label="Search" onChange={handleSearchChange} />
+        </Grid>
+
+        <Grid container item xs={12} justifyContent={"flex-end"}>
+          <FormControl fullWidth sx={{ maxWidth: "10rem" }}>
+            <InputLabel id="sort-select">Sort</InputLabel>
+            <Select
+              label="Sort"
+              value={sort}
+              onChange={(e) => setSort(e.target.value as "asc" | "desc")}
+              sx={{
+                "& .MuiInputBase-input": {
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                },
+              }}
+            >
+              <MenuItem
+                value="desc"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                A <EastIcon /> Z
+              </MenuItem>
+              <MenuItem
+                value="asc"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                Z <EastIcon /> A
+              </MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
 
         <Grid container item xs={12} spacing={2}>
