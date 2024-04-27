@@ -1,19 +1,33 @@
 import Grid from "@mui/material/Grid";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
-import React from "react";
+import { FC, MouseEventHandler } from "react";
 import Card from "@mui/material/Card";
 import { CardActions, CardMedia } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
 
 import { ServiceData } from "@/interfaces";
 import { addItem, useCartDispatch } from "@/components/Providers/CartProvider";
+
+const StyledCard = styled(Card)`
+  cursor: pointer;
+  transition: transform 0.2s;
+  text-decoration: none;
+  &:hover,
+  &:active,
+  &:focus {
+    transform: translateY(-2.5px);
+  }
+`;
 
 interface Props {
   service: ServiceData;
 }
 
-const ServiceShoppingCard: React.FC<Props> = (props) => {
+const ServiceShoppingCard: FC<Props> = (props) => {
   const { service } = props;
   const dispatchCart = useCartDispatch();
 
@@ -27,7 +41,9 @@ const ServiceShoppingCard: React.FC<Props> = (props) => {
     maximumFractionDigits: 2,
   }).format(service.price);
 
-  const handleAdd = () => {
+  const handleAdd: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     dispatchCart(addItem(service));
   };
 
@@ -42,12 +58,15 @@ const ServiceShoppingCard: React.FC<Props> = (props) => {
         flexDirection: "column",
       }}
     >
-      <Card
+      <StyledCard
         sx={{
           height: "100%",
           display: "flex",
           flexDirection: "column",
         }}
+        // @ts-expect-error This is correct, Card component inherits Paper props
+        component={Link}
+        to={`/services/${service.id}`}
       >
         <CardMedia
           component="img"
@@ -78,9 +97,12 @@ const ServiceShoppingCard: React.FC<Props> = (props) => {
             {priceToShow}
           </Typography>
 
-          <Button onClick={handleAdd}>Add to cart</Button>
+          <Button onClick={handleAdd}>
+            <AddShoppingCartIcon sx={{ marginRight: "0.5rem" }} />
+            Add
+          </Button>
         </CardActions>
-      </Card>
+      </StyledCard>
     </Grid>
   );
 };
