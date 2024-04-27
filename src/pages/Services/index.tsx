@@ -21,7 +21,6 @@ const Services = () => {
     resource: "services",
     pagination: {
       current: page,
-      // pageSize: 1,
     },
     filters: [
       {
