@@ -4,13 +4,16 @@ import TextField from "@mui/material/TextField";
 import { useList } from "@refinedev/core";
 import { ChangeEvent, useMemo, useState } from "react";
 import ServiceShoppingCard from "@/components/ServiceShoppingCard";
-import { debounce, Pagination } from "@mui/material";
+import { debounce, FormControl, InputLabel, MenuItem, Pagination, Select } from "@mui/material";
 
 import { ServiceData } from "@/interfaces";
+import Box from "@mui/material/Box";
 
 const Services = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState<number | "">("");
+  const [serviceType, setServiceType] = useState<string>("");
 
   const { data } = useList({
     resource: "services",
@@ -18,6 +21,18 @@ const Services = () => {
       current: page,
       pageSize: 1,
     },
+    filters: [
+      {
+        field: "category",
+        operator: "eq",
+        value: category || undefined,
+      },
+      {
+        field: "serviceType",
+        operator: "eq",
+        value: serviceType || undefined,
+      },
+    ],
     meta: { query: { q: search } },
   });
   const usableData =
@@ -45,8 +60,6 @@ const Services = () => {
     [],
   );
 
-  // console.log(usableData);
-
   const handlePageChange = (_event: ChangeEvent<unknown>, page: number) => {
     setPage(page);
   };
@@ -63,7 +76,36 @@ const Services = () => {
       }}
     >
       <Grid container spacing={4}>
-        <Grid container item xs={12} display="flex" justifyContent="flex-end">
+        <Grid container item xs={12} display="flex" justifyContent="space-between">
+          <Box flexGrow={1}>
+            <FormControl fullWidth sx={{ maxWidth: "10rem", marginRight: "2rem" }}>
+              <InputLabel id="category-select">Category</InputLabel>
+              <Select value={category} onChange={(e) => setCategory(e.target.value as number)} label="Category">
+                <MenuItem value="">All Categories</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={6}>6</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ maxWidth: "10rem" }}>
+              <InputLabel id="service-type-select">Service Type</InputLabel>
+              <Select
+                value={serviceType}
+                onChange={(e) => setServiceType(e.target.value as string)}
+                label="Service Type"
+              >
+                <MenuItem value="">All Service Types</MenuItem>
+                <MenuItem value="onsite">On Site</MenuItem>
+                <MenuItem value="remote">Remote</MenuItem>
+                <MenuItem value="both">Both</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+
           <TextField label="Search" onChange={handleSearchChange} />
         </Grid>
 
