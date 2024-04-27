@@ -42,7 +42,7 @@ export const dataProvider = (
       query._order = _order.join(",");
     }
 
-    const combinedQuery = { ...query, ...queryFilters };
+    const combinedQuery = { ...query, ...queryFilters, ...(meta?.query ? meta.query : {}) };
     const urlWithQuery = Object.keys(combinedQuery).length ? `${url}?${stringify(combinedQuery)}` : url;
 
     const { data, headers } = await httpClient[requestMethod](urlWithQuery, {
