@@ -26,7 +26,7 @@ export type ServiceData = {
   label: string;
   price: number;
   category: number;
-  serviceType: string;
+  serviceType: "onsite" | "remote" | "both";
   description: string;
   imageUrl?: string;
 };

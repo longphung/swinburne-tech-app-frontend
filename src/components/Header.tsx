@@ -20,7 +20,7 @@ const Item = styled.li`
 
 const HeaderLinks = (props: { userData?: UserData }) => {
   const { userData } = props;
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
   return (
     <Stack
       component="ul"
@@ -109,7 +109,7 @@ const Header = () => {
   const { data: userData } = useGetIdentity<UserData>();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
   const cart = useCart();
   const numberOfItemsInCart = cart.items.length;
 
