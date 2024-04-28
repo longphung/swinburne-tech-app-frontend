@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
+import Drawer from "@mui/material/Drawer";
+import { MouseEventHandler, useState } from "react";
+import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Box, Stack, Link, AppBar, Badge, useMediaQuery, IconButton, Theme } from "@mui/material";
+import { Box, Stack, Link, AppBar, Badge, useMediaQuery, IconButton, Theme, Popper, Paper, Fade } from "@mui/material";
 import { Link as RouteLink } from "react-router-dom";
 import { useGetIdentity } from "@refinedev/core";
 import Button from "@mui/material/Button";
@@ -10,8 +13,6 @@ import logoIcon from "@/assets/logo-icon.png";
 import logo from "../assets/logo.png";
 import { useCart } from "@/components/Providers/CartProvider";
 import { UserData } from "@/interfaces";
-import Drawer from "@mui/material/Drawer";
-import { useState } from "react";
 
 const Item = styled.li`
   list-style-type: none;
@@ -107,7 +108,7 @@ const HeaderLinks = (props: { userData?: UserData }) => {
 const Header = () => {
   const { data: userData } = useGetIdentity<UserData>();
   const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
   const cart = useCart();
   const numberOfItemsInCart = cart.items.length;
@@ -120,7 +121,7 @@ const Header = () => {
     setOpen(false);
   };
 
-  const handleCart = (event) => {
+  const handleCart: MouseEventHandler<HTMLButtonElement> = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
@@ -193,14 +194,39 @@ const Header = () => {
               }
               variant="text"
               sx={{ ml: "2rem" }}
-              component={RouteLink}
-              to="/cart"
+              onClick={handleCart}
             >
               Cart
             </Button>
           </>
         )}
       </Box>
+      <Popper
+        id="shopping-cart-popper"
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        placement="bottom-end"
+        sx={{
+          zIndex: 5000,
+        }}
+      >
+        {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={350}>
+            <Paper elevation={3}>
+              <Box sx={{ border: 1, padding: "1rem", backgroundColor: "white", width: "20rem" }}>
+                {cart.items.map((item) => (
+                  <Box key={item.id} sx={{ marginBottom: "1rem" }}>
+                    <Typography variant="h6">{item.title}</Typography>
+                    <Typography variant="body2">{item.note || ""}</Typography>
+                    <Typography variant="body1">Price: ${item.price}</Typography>
+                  </Box>
+                ))}
+                <Typography variant="h5">Total: ${cart.total}</Typography>
+              </Box>
+            </Paper>
+          </Fade>
+        )}
+      </Popper>
     </Stack>
   );
 };
