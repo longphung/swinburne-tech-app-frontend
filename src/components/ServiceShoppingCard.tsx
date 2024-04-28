@@ -9,7 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 
-import { ServiceData } from "@/interfaces";
+import { CartItem, ServiceData } from "@/interfaces";
 import { addItem, useCartDispatch } from "@/components/Providers/CartProvider";
 
 const StyledCard = styled(Card)`
@@ -30,6 +30,11 @@ interface Props {
 const ServiceShoppingCard: FC<Props> = (props) => {
   const { service } = props;
   const dispatchCart = useCartDispatch();
+  // Add missingInfo property to the service
+  const serviceToUse: CartItem = {
+    ...service,
+    missingInfo: true,
+  } as CartItem;
 
   /**
    * AUD with 2 decimals
@@ -39,12 +44,12 @@ const ServiceShoppingCard: FC<Props> = (props) => {
     currency: "AUD",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(service.price);
+  }).format(serviceToUse.price);
 
   const handleAdd: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    dispatchCart(addItem(service));
+    dispatchCart(addItem(serviceToUse));
   };
 
   return (
@@ -66,12 +71,12 @@ const ServiceShoppingCard: FC<Props> = (props) => {
         }}
         // @ts-expect-error This is correct, Card component inherits Paper props
         component={Link}
-        to={`/services/${service.id}`}
+        to={`/services/${serviceToUse.id}`}
       >
         <CardMedia
           component="img"
-          image={service.imageUrl ? service.imageUrl : "https://placehold.co/600x400"}
-          alt={service.title}
+          image={serviceToUse.imageUrl ? serviceToUse.imageUrl : "https://placehold.co/600x400"}
+          alt={serviceToUse.title}
           sx={{
             height: "250px",
           }}
@@ -82,10 +87,10 @@ const ServiceShoppingCard: FC<Props> = (props) => {
           }}
         >
           <Typography variant="h5" component="div">
-            {service.title}
+            {serviceToUse.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {service.label}
+            {serviceToUse.label}
           </Typography>
         </CardContent>
         <CardActions

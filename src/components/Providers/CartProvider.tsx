@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import { Cart, CartItem } from "@/interfaces";
 
@@ -52,14 +53,19 @@ const cartReducer = (state: Cart, action: ReturnType<typeof addItem> | ReturnTyp
   switch (action.type) {
     case "ADD_ITEM": {
       const item = action.payload;
-      const quantity = state.quantityById[item.id] || 0;
-      const total = state.total + item.price;
+      const generatedItem: CartItem = {
+        ...item,
+        serviceId: item.id,
+        id: uuidv4(),
+      };
+      const quantity = state.quantityById[generatedItem.serviceId] || 0;
+      const total = state.total + generatedItem.price;
       return {
         ...state,
-        items: [...state.items, item],
+        items: [...state.items, generatedItem],
         quantityById: {
           ...state.quantityById,
-          [item.id]: quantity + 1,
+          [generatedItem.serviceId]: quantity + 1,
         },
         total,
       };
@@ -70,14 +76,14 @@ const cartReducer = (state: Cart, action: ReturnType<typeof addItem> | ReturnTyp
       if (!item) {
         return state;
       }
-      const quantity = state.quantityById[itemId];
+      const quantity = state.quantityById[item.serviceId];
       const total = state.total - item.price;
       return {
         ...state,
         items: state.items.filter((item) => item.id !== itemId),
         quantityById: {
           ...state.quantityById,
-          [itemId]: quantity - 1,
+          [item.serviceId]: quantity - 1,
         },
         total,
       };

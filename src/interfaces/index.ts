@@ -21,17 +21,24 @@ export type UserData = {
 
 export type ServiceData = {
   id: string;
+  serviceId: string;
   title: string;
   label: string;
   price: number;
   category: number;
-  serviceType: string;
+  serviceType: "onsite" | "remote" | "both";
   description: string;
   imageUrl?: string;
 };
 
 export type CartItem = ServiceData & {
   note?: string;
+  priorityDueDate: Date;
+  // True if the user has not filled out the required information (for users adding from the service listing page)
+  missingInfo?: boolean;
+} & {
+  serviceType: "onsite" | "both";
+  location: string;
 };
 
 export type Cart = {
