@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
 
-import { Cart, ServiceData } from "@/interfaces";
+import { Cart, CartItem } from "@/interfaces";
 
 const CartContext = createContext<Cart | null>(null);
 
@@ -25,10 +25,10 @@ export const useCartDispatch = () => {
 };
 
 export const addItem = (
-  item: ServiceData,
+  item: CartItem,
 ): {
   type: "ADD_ITEM";
-  payload: ServiceData;
+  payload: CartItem;
 } => {
   return {
     type: "ADD_ITEM",
@@ -37,10 +37,10 @@ export const addItem = (
 };
 
 export const removeItem = (
-  itemId: ServiceData["id"],
+  itemId: CartItem["id"],
 ): {
   type: "REMOVE_ITEM";
-  payload: ServiceData["id"];
+  payload: CartItem["id"];
 } => {
   return {
     type: "REMOVE_ITEM",
@@ -52,30 +52,34 @@ const cartReducer = (state: Cart, action: ReturnType<typeof addItem> | ReturnTyp
   switch (action.type) {
     case "ADD_ITEM": {
       const item = action.payload;
-      const existingItem = state.items.find((i) => i.id === item.id);
-      if (existingItem) {
-        return {
-          ...state,
-          items: state.items.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i)),
-        };
-      }
+      const quantity = state.quantityById[item.id] || 0;
+      const total = state.total + item.price;
       return {
         ...state,
-        items: [...state.items, { ...item, quantity: 1 }],
+        items: [...state.items, item],
+        quantityById: {
+          ...state.quantityById,
+          [item.id]: quantity + 1,
+        },
+        total,
       };
     }
     case "REMOVE_ITEM": {
       const itemId = action.payload;
-      const existingItem = state.items.find((i) => i.id === itemId);
-      if (existingItem && existingItem.quantity > 1) {
-        return {
-          ...state,
-          items: state.items.map((i) => (i.id === itemId ? { ...i, quantity: i.quantity - 1 } : i)),
-        };
+      const item = state.items.find((item) => item.id === itemId);
+      if (!item) {
+        return state;
       }
+      const quantity = state.quantityById[itemId];
+      const total = state.total - item.price;
       return {
         ...state,
-        items: state.items.filter((i) => i.id !== itemId),
+        items: state.items.filter((item) => item.id !== itemId),
+        quantityById: {
+          ...state.quantityById,
+          [itemId]: quantity - 1,
+        },
+        total,
       };
     }
     default:
@@ -85,6 +89,8 @@ const cartReducer = (state: Cart, action: ReturnType<typeof addItem> | ReturnTyp
 
 const initialState: Cart = {
   items: [],
+  quantityById: {},
+  total: 0,
 };
 
 const CartProvider = ({ children }: { children: React.ReactNode }) => {
