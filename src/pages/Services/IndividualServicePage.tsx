@@ -13,8 +13,10 @@ import { ServiceData } from "@/interfaces";
 import { CircularProgress } from "@mui/material";
 import { useState } from "react";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { addItem, useCartDispatch } from "@/components/Providers/CartProvider";
 
 const IndividualServicePage = () => {
+  const dispatchCart = useCartDispatch();
   const { id } = useParams<{ id: string }>();
   const [note, setNote] = useState("");
   const { data } = useOne({
@@ -24,7 +26,14 @@ const IndividualServicePage = () => {
 
   const serviceData = data?.data as ServiceData;
 
-  const handleAddToCart = () => {};
+  const handleAddToCart = () => {
+    dispatchCart(addItem({ ...serviceData, note }));
+    setNote("");
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   if (!serviceData) {
     return (
@@ -49,7 +58,7 @@ const IndividualServicePage = () => {
             alt={serviceData.title}
             sx={{
               height: "100%",
-              maxHeight: "60%",
+              maxHeight: "32rem",
             }}
           />
         </Grid>
@@ -80,7 +89,7 @@ const IndividualServicePage = () => {
             fullWidth
             margin="normal"
           />
-          <Button variant="contained" color="primary" onChange={handleAddToCart} sx={{ marginTop: "1rem" }}>
+          <Button variant="contained" color="primary" onClick={handleAddToCart} sx={{ marginTop: "1rem" }}>
             <AddShoppingCartIcon sx={{ marginRight: "0.5rem" }} />
             Add to Cart
           </Button>

@@ -30,10 +30,12 @@ export type ServiceData = {
   imageUrl?: string;
 };
 
+export type CartItem = ServiceData & {
+  note?: string;
+};
+
 export type Cart = {
-  items: Array<
-    ServiceData & {
-      quantity: number;
-    }
-  >;
+  items: Array<CartItem>;
+  quantityById: Record<ServiceData["id"], number>;
+  total: number;
 };

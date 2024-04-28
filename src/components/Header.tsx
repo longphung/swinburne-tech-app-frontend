@@ -16,7 +16,7 @@ const Item = styled.li`
 const Header = () => {
   const { data: userData } = useGetIdentity<UserData>();
   const cart = useCart();
-  const numberOfItemsInCart = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+  const numberOfItemsInCart = cart.items.length;
 
   return (
     <Stack
