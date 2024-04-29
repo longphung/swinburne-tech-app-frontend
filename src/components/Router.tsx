@@ -26,6 +26,7 @@ const ServicesShow = lazy(() => import("@/pages/dashboard/services/show"));
 const ServicesList = lazy(() => import("@/pages/dashboard/services/list"));
 const ServicesCreate = lazy(() => import("@/pages/dashboard/services/create"));
 const ServicesEdit = lazy(() => import("@/pages/dashboard/services/edit"));
+const IndividualServicePage = lazy(() => import("@/pages/Services/IndividualServicePage"));
 
 const Router = () => {
   return (
@@ -33,11 +34,7 @@ const Router = () => {
       <Route
         path="/dashboard"
         element={
-          <Authenticated
-            key="catch-all"
-            redirectOnFail="/login"
-            v3LegacyAuthProviderCompatible={false}
-          >
+          <Authenticated key="catch-all" redirectOnFail="/login" v3LegacyAuthProviderCompatible={false}>
             <ThemedLayoutV2
               Title={({ collapsed }) => (
                 <RouteLink
@@ -212,6 +209,14 @@ const Router = () => {
           element={
             <Suspense fallback={<CircularProgress />}>
               <Services />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/services/:id"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <IndividualServicePage />
             </Suspense>
           }
         />
