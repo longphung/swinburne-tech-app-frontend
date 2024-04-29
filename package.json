@@ -91,6 +91,6 @@
         "projectId": "qdfM7M-qCRHlR-IDgJ9N"
     },
     "optionalDependencies": {
-        "@rollup/rollup-linux-x64-gnu": "^4.16.4"
+        "@rollup/rollup-linux-x64-gnu": "^4.17.1"
     }
 }
