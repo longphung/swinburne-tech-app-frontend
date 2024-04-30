@@ -1,23 +1,18 @@
 import styled from "@emotion/styled";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import Divider from "@mui/material/Divider";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { format } from "date-fns";
-import Grid from "@mui/material/Grid";
 import Drawer from "@mui/material/Drawer";
 import { MouseEventHandler, useState } from "react";
-import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Box, Stack, Link, AppBar, Badge, useMediaQuery, IconButton, Theme, Popper, Paper } from "@mui/material";
+import { AppBar, Badge, Box, IconButton, Link, Popper, Stack, Theme, useMediaQuery } from "@mui/material";
 import { Link as RouteLink } from "react-router-dom";
 import { useGetIdentity } from "@refinedev/core";
 import Button from "@mui/material/Button";
 
 import logoIcon from "@/assets/logo-icon.png";
 import logo from "../assets/logo.png";
-import { removeItem, useCart, useCartDispatch } from "@/components/Providers/CartProvider";
+import { useCart } from "@/components/Providers/CartProvider";
 import { UserData } from "@/interfaces";
+import CartPopup from "@/components/CartPopup";
 
 const Item = styled.li`
   list-style-type: none;
@@ -116,7 +111,6 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
   const cart = useCart();
-  const dispatchCart = useCartDispatch();
   const numberOfItemsInCart = cart.items.length;
 
   const handleMenu = () => {
@@ -215,58 +209,7 @@ const Header = () => {
           zIndex: 5000,
         }}
       >
-        <Paper elevation={3}>
-          <Box
-            sx={{
-              border: 1,
-              padding: "1rem",
-              backgroundColor: "white",
-              minWidth: "15rem",
-              maxWidth: "30rem",
-              borderRadius: "5px",
-            }}
-          >
-            {cart.items.map((item) => (
-              <Box key={item.id} sx={{ marginBottom: "1rem" }}>
-                <Grid container spacing={2} sx={{ marginBottom: "1rem" }}>
-                  <Grid item xs={12} md={9}>
-                    <Typography variant="h6">{item.title}</Typography>
-                    <Typography variant="body2">Due: {format(item.priorityDueDate, "Do MMM yyyy")}</Typography>
-                    <Typography variant="body2">{item.note || ""}</Typography>
-                    <Typography variant="body1">Price: ${item.price}</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={3}>
-                    <IconButton
-                      size="small"
-                      color="primary"
-                      onClick={() => {
-                        dispatchCart(removeItem(item.id));
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-                <Divider sx={{ mx: "-1rem" }} />
-              </Box>
-            ))}
-            <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
-              Total: ${cart.total}
-            </Typography>
-            {cart.items.length === 0 && (
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                component={RouteLink}
-                to="/checkout"
-                onClick={handleCartClose}
-              >
-                Go to Checkout <ShoppingCartCheckoutIcon sx={{ ml: "0.5rem" }} />
-              </Button>
-            )}
-          </Box>
-        </Paper>
+        <CartPopup onClose={handleCartClose} />
       </Popper>
     </Stack>
   );

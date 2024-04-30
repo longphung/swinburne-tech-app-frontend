@@ -56,10 +56,13 @@ const cartReducer = (state: Cart, action: ReturnType<typeof addItem> | ReturnTyp
       const generatedItem: CartItem = {
         ...item,
         serviceId: item.id,
+        finalPrice: item.modifiers?.length
+          ? item.modifiers.reduce((acc, curr) => acc + item.basePrice * curr.priceModifier, item.basePrice)
+          : item.basePrice,
         id: uuidv4(),
       };
       const quantity = state.quantityById[generatedItem.serviceId] || 0;
-      const total = state.total + generatedItem.price;
+      const total = state.total + generatedItem.finalPrice!;
       return {
         ...state,
         items: [...state.items, generatedItem],
@@ -77,7 +80,7 @@ const cartReducer = (state: Cart, action: ReturnType<typeof addItem> | ReturnTyp
         return state;
       }
       const quantity = state.quantityById[item.serviceId];
-      const total = state.total - item.price;
+      const total = state.total - item.finalPrice!;
       return {
         ...state,
         items: state.items.filter((item) => item.id !== itemId),

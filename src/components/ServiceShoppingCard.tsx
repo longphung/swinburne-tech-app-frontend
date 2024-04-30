@@ -29,11 +29,13 @@ interface Props {
 
 const ServiceShoppingCard: FC<Props> = (props) => {
   const { service } = props;
+  const { price, ...serviceWithoutPrice } = service;
   const dispatchCart = useCartDispatch();
   // Add missingInfo property to the service
   const serviceToUse: CartItem = {
-    ...service,
+    ...serviceWithoutPrice,
     missingInfo: true,
+    basePrice: price,
   } as CartItem;
 
   /**
@@ -44,7 +46,7 @@ const ServiceShoppingCard: FC<Props> = (props) => {
     currency: "AUD",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(serviceToUse.price);
+  }).format(price);
 
   const handleAdd: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
