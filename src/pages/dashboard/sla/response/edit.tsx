@@ -7,7 +7,7 @@ import { useForm } from "@refinedev/react-hook-form";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 
-import { CompletionSLAData } from "@/interfaces";
+import { ResponseSLAData } from "@/interfaces";
 
 const CompletionSLAEdit: FC = () => {
   const { id } = useParams();
@@ -18,7 +18,7 @@ const CompletionSLAEdit: FC = () => {
     formState: { errors },
     handleSubmit,
     watch,
-  } = useForm<CompletionSLAData>({
+  } = useForm<ResponseSLAData>({
     defaultValues: {
       dueWithinDays: 0,
       priceModifier: 0,
@@ -27,7 +27,7 @@ const CompletionSLAEdit: FC = () => {
     },
     refineCoreProps: {
       action: "edit",
-      resource: "completion-slas",
+      resource: "response-slas",
       id,
       meta: {
         customUrl: (url: string, _: string, id: string) => `${url}/service-level-agreements/${id}`,
@@ -40,8 +40,8 @@ const CompletionSLAEdit: FC = () => {
       <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard">
         Dashboard
       </Link>
-      <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard/completion-slas">
-        Completion SLAs
+      <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard/response-slas">
+        Response SLAs
       </Link>
       <Typography>Edit</Typography>
     </Breadcrumbs>
@@ -50,7 +50,7 @@ const CompletionSLAEdit: FC = () => {
   const onSubmit = handleSubmit((data) => {
     onFinish({
       ...data,
-      type: "completion",
+      type: "response",
     });
   });
 
@@ -67,7 +67,7 @@ const CompletionSLAEdit: FC = () => {
             fontWeight: "bold",
           }}
         >
-          Edit Completion SLA
+          Edit Response SLA
         </Typography>
       }
     >

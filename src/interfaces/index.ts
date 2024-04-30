@@ -47,11 +47,19 @@ export type Cart = {
   total: number;
 };
 
-export type CompletionSLAData = {
+type SLAData = {
   id: string;
-  type: "completion";
+  type: "response" | "completion";
   dueWithinDays: number;
   priceModifier: number;
   fixedPrice: number;
   description: string;
+};
+
+export type CompletionSLAData = SLAData & {
+  type: "completion";
+};
+
+export type ResponseSLAData = SLAData & {
+  type: "response";
 };

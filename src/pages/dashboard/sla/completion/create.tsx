@@ -21,7 +21,7 @@ const CompletionSLACreate: FC = () => {
     defaultValues: {
       dueWithinDays: 0,
       priceModifier: 0,
-      fixedPrice: 0,
+      // fixedPrice: 0,
       description: "",
     },
     refineCoreProps: {
@@ -71,7 +71,7 @@ const CompletionSLACreate: FC = () => {
     >
       <Grid container component="form" spacing={2} onSubmit={onSubmit}>
         <Grid item xs={12}>
-          <Typography variant="h6">Displayed label: "Within {watchedDueWithinDays} days"</Typography>
+          <Typography variant="h6">Displayed label: &quot;Within {watchedDueWithinDays} days&quot;</Typography>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
@@ -94,16 +94,16 @@ const CompletionSLACreate: FC = () => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <TextField
-            label="Fixed Price"
-            type="number"
-            {...register("fixedPrice", { required: "Fixed Price is required" })}
-            error={!!errors.fixedPrice}
-            helperText={(errors.fixedPrice?.message as ReactNode) || ""}
-            fullWidth
-          />
-        </Grid>
+        {/*<Grid item xs={12} md={6} lg={4}>*/}
+        {/*  <TextField*/}
+        {/*    label="Fixed Price"*/}
+        {/*    type="number"*/}
+        {/*    {...register("fixedPrice", { required: "Fixed Price is required" })}*/}
+        {/*    error={!!errors.fixedPrice}*/}
+        {/*    helperText={(errors.fixedPrice?.message as ReactNode) || ""}*/}
+        {/*    fullWidth*/}
+        {/*  />*/}
+        {/*</Grid>*/}
         <Grid item xs={12}>
           <TextField
             label="Description"

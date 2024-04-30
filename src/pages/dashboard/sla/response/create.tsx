@@ -2,15 +2,14 @@ import { FC, ReactNode } from "react";
 import { Create } from "@refinedev/mui";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Link } from "@mui/material";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "@refinedev/react-hook-form";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 
-import { CompletionSLAData } from "@/interfaces";
+import { ResponseSLAData } from "@/interfaces";
 
-const CompletionSLAEdit: FC = () => {
-  const { id } = useParams();
+const CompletionSLACreate: FC = () => {
   const {
     saveButtonProps,
     register,
@@ -18,19 +17,18 @@ const CompletionSLAEdit: FC = () => {
     formState: { errors },
     handleSubmit,
     watch,
-  } = useForm<CompletionSLAData>({
+  } = useForm<ResponseSLAData>({
     defaultValues: {
       dueWithinDays: 0,
       priceModifier: 0,
-      // fixedPrice: 0,
+      fixedPrice: 0,
       description: "",
     },
     refineCoreProps: {
-      action: "edit",
-      resource: "completion-slas",
-      id,
+      action: "create",
+      resource: "response-slas",
       meta: {
-        customUrl: (url: string, _: string, id: string) => `${url}/service-level-agreements/${id}`,
+        customUrl: (url: string) => `${url}/service-level-agreements`,
       },
     },
   });
@@ -40,17 +38,17 @@ const CompletionSLAEdit: FC = () => {
       <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard">
         Dashboard
       </Link>
-      <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard/completion-slas">
-        Completion SLAs
+      <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard/response-slas">
+        Response SLAs
       </Link>
-      <Typography>Edit</Typography>
+      <Typography>Create</Typography>
     </Breadcrumbs>
   );
 
   const onSubmit = handleSubmit((data) => {
     onFinish({
       ...data,
-      type: "completion",
+      type: "response",
     });
   });
 
@@ -67,7 +65,7 @@ const CompletionSLAEdit: FC = () => {
             fontWeight: "bold",
           }}
         >
-          Edit Completion SLA
+          Response Completion SLA
         </Typography>
       }
     >
@@ -122,4 +120,4 @@ const CompletionSLAEdit: FC = () => {
   );
 };
 
-export default CompletionSLAEdit;
+export default CompletionSLACreate;

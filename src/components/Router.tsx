@@ -32,7 +32,11 @@ const Checkout = lazy(() => import("@/pages/Checkout"));
 const CompletionSLAList = lazy(() => import("@/pages/dashboard/sla/completion/list"));
 const CompletionSLACreate = lazy(() => import("@/pages/dashboard/sla/completion/create"));
 const CompletionSLAEdit = lazy(() => import("@/pages/dashboard/sla/completion/edit"));
+const ResponseSLAList = lazy(() => import("@/pages/dashboard/sla/response/list"));
+const ResponseSLACreate = lazy(() => import("@/pages/dashboard/sla/response/create"));
+const ResponseSLAEdit = lazy(() => import("@/pages/dashboard/sla/response/edit"));
 
+// eslint-disable-next-line max-lines-per-function
 const Router = () => {
   return (
     <Routes>
@@ -166,6 +170,30 @@ const Router = () => {
           element={
             <Suspense fallback={<CircularProgress />}>
               <CompletionSLAEdit />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/response-slas"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ResponseSLAList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/response-slas/new"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ResponseSLACreate />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/response-slas/:id/edit"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ResponseSLAEdit />
             </Suspense>
           }
         />

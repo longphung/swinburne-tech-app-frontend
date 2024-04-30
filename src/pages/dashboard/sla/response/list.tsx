@@ -5,18 +5,18 @@ import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Link } from "@mui/material";
 import { DataGrid, GridRowParams } from "@mui/x-data-grid";
 
-import { CompletionSLAData } from "@/interfaces";
+import { ResponseSLAData } from "@/interfaces";
 import DataGridActionCell from "@/components/DataGridActionCell";
 
-const CompletionSLAList: FC = () => {
-  const { dataGridProps } = useDataGrid<CompletionSLAData>({
-    resource: "completion-slas",
+const ResponseSLAList: FC = () => {
+  const { dataGridProps } = useDataGrid<ResponseSLAData>({
+    resource: "response-slas",
     filters: {
       permanent: [
         {
           field: "type",
           operator: "eq",
-          value: "completion",
+          value: "response",
         },
       ],
     },
@@ -30,12 +30,12 @@ const CompletionSLAList: FC = () => {
       <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard">
         Dashboard
       </Link>
-      <Typography>Completion Service Level Agreements</Typography>
+      <Typography>Response Service Level Agreements</Typography>
     </Breadcrumbs>
   );
 
   return (
-    <List title="Completion SLAs" breadcrumb={breadCrumb}>
+    <List title="Response SLAs" breadcrumb={breadCrumb}>
       <DataGrid
         {...dataGridProps}
         columns={[
@@ -76,7 +76,7 @@ const CompletionSLAList: FC = () => {
             field: "actions",
             headerName: "Actions",
             type: "actions",
-            renderCell: (params) => <DataGridActionCell id={params.row.id as string} resource="completion-slas" />,
+            renderCell: (params) => <DataGridActionCell id={params.row.id as string} resource="response-slas" />,
           },
         ]}
         autoHeight
@@ -85,4 +85,4 @@ const CompletionSLAList: FC = () => {
   );
 };
 
-export default CompletionSLAList;
+export default ResponseSLAList;
