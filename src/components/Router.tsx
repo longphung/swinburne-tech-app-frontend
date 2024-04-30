@@ -10,6 +10,7 @@ import { CircularProgress } from "@mui/material";
 import logoIcon from "@/assets/logo-icon.png";
 import logo from "@/assets/logo.png";
 import Sider from "@/components/Sider";
+
 const Register = lazy(() => import("@/components/Register"));
 const UpdatePassword = lazy(() => import("@/components/UpdatePassword"));
 const Home = lazy(() => import("@/pages/Home"));
@@ -27,6 +28,10 @@ const ServicesList = lazy(() => import("@/pages/dashboard/services/list"));
 const ServicesCreate = lazy(() => import("@/pages/dashboard/services/create"));
 const ServicesEdit = lazy(() => import("@/pages/dashboard/services/edit"));
 const IndividualServicePage = lazy(() => import("@/pages/Services/IndividualServicePage"));
+const Checkout = lazy(() => import("@/pages/Checkout"));
+const CompletionSLAList = lazy(() => import("@/pages/dashboard/sla/completion/list"));
+const CompletionSLACreate = lazy(() => import("@/pages/dashboard/sla/completion/create"));
+const CompletionSLAEdit = lazy(() => import("@/pages/dashboard/sla/completion/edit"));
 
 const Router = () => {
   return (
@@ -140,6 +145,30 @@ const Router = () => {
             </Suspense>
           }
         />
+        <Route
+          path="/dashboard/completion-slas"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <CompletionSLAList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/completion-slas/new"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <CompletionSLACreate />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/completion-slas/:id/edit"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <CompletionSLAEdit />
+            </Suspense>
+          }
+        />
         <Route path="*" element={<ErrorComponent />} />
       </Route>
 
@@ -217,6 +246,14 @@ const Router = () => {
           element={
             <Suspense fallback={<CircularProgress />}>
               <IndividualServicePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <Checkout />
             </Suspense>
           }
         />

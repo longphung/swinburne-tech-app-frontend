@@ -46,3 +46,12 @@ export type Cart = {
   quantityById: Record<ServiceData["id"], number>;
   total: number;
 };
+
+export type CompletionSLAData = {
+  id: string;
+  type: "completion";
+  dueWithinDays: number;
+  priceModifier: number;
+  fixedPrice: number;
+  description: string;
+};
