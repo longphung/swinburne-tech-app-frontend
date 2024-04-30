@@ -72,7 +72,7 @@ const CartPopup = (props: { onClose: () => void }) => {
         <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
           Total: ${cart.total}
         </Typography>
-        {cart.items.length === 0 && (
+        {cart.items.length !== 0 && (
           <Button
             variant="contained"
             color="primary"
