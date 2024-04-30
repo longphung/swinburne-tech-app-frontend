@@ -22,6 +22,7 @@ import Typography from "@mui/material/Typography";
 import type { BoxProps } from "@mui/material/Box";
 import type { CardContentProps } from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
+import { useConfirm } from "material-ui-confirm";
 // import { USERS_ROLE } from "@/utils/authProvider";
 export const USERS_ROLE = {
   ADMIN: "admin",
@@ -48,6 +49,7 @@ const Register: React.FC<RegisterProps> = ({
   const {
     register,
     watch,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<
@@ -67,7 +69,7 @@ const Register: React.FC<RegisterProps> = ({
   });
 
   const authProvider = useActiveAuthProvider();
-  const { mutate: registerMutate, isLoading } = useRegister<{
+  const { mutateAsync: registerMutate, isLoading } = useRegister<{
     username: string;
     email: string;
     address: string;
@@ -78,6 +80,7 @@ const Register: React.FC<RegisterProps> = ({
   }>({
     v3LegacyAuthProviderCompatible: Boolean(authProvider?.isLegacy),
   });
+  const confirm = useConfirm();
   const routerType = useRouterType();
   const Link = useLink();
   const { Link: LegacyLink } = useRouterContext();
@@ -90,15 +93,22 @@ const Register: React.FC<RegisterProps> = ({
         {!hideForm && (
           <Stack
             component="form"
-            onSubmit={handleSubmit((data) => {
+            onSubmit={handleSubmit(async (data) => {
               if (onSubmit) {
                 // @ts-expect-error This is a legacy prop
                 return onSubmit(data);
               }
               const { confirmPassword, ...rest } = data;
-              return registerMutate({
+              await registerMutate({
                 role: USERS_ROLE.CUSTOMER,
                 ...rest,
+              });
+              reset();
+              await confirm({
+                title: "Thank you!",
+                description:
+                  "We've sent an email to your address. Please check your inbox and click the link to confirm your email.",
+                hideCancelButton: true,
               });
             })}
             spacing={2}
@@ -114,9 +124,7 @@ const Register: React.FC<RegisterProps> = ({
                   fullWidth
                   name="username"
                   label="Username"
-                  helperText={
-                    errors["username"] ? errors["username"].message : ""
-                  }
+                  helperText={errors["username"] ? errors["username"].message : ""}
                   error={!!errors.username}
                   type="text"
                   placeholder="Username"
@@ -159,9 +167,7 @@ const Register: React.FC<RegisterProps> = ({
                   fullWidth
                   name="address"
                   label={"Address"}
-                  helperText={
-                    errors["address"] ? errors["address"].message : ""
-                  }
+                  helperText={errors["address"] ? errors["address"].message : ""}
                   error={!!errors.address}
                   type="text"
                   autoComplete="street-address"
@@ -216,8 +222,7 @@ const Register: React.FC<RegisterProps> = ({
                 }}
               >
                 <Typography>
-                  Password must contain at least 8 characters, 1 uppercase
-                  letter, 1 lowercase letter, and 1 number.
+                  Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number.
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6} display="flex" justifyContent="center">
@@ -246,9 +251,7 @@ const Register: React.FC<RegisterProps> = ({
                   fullWidth
                   name="password"
                   label={"Password"}
-                  helperText={
-                    errors["password"] ? errors["password"].message : ""
-                  }
+                  helperText={errors["password"] ? errors["password"].message : ""}
                   error={!!errors.password}
                   type="password"
                   autoComplete="off"
@@ -262,9 +265,7 @@ const Register: React.FC<RegisterProps> = ({
                   {...register("confirmPassword", {
                     required: true,
                     validate: (value) => {
-                      return (
-                        watch("password") === value || "Passwords do not match"
-                      );
+                      return watch("password") === value || "Passwords do not match";
                     },
                   })}
                   id="confirmPassword"
@@ -272,11 +273,7 @@ const Register: React.FC<RegisterProps> = ({
                   fullWidth
                   name="confirmPassword"
                   label={"Confirm Password"}
-                  helperText={
-                    errors["confirmPassword"]
-                      ? errors["confirmPassword"].message
-                      : ""
-                  }
+                  helperText={errors["confirmPassword"] ? errors["confirmPassword"].message : ""}
                   error={!!errors.confirmPassword}
                   type="password"
                   autoComplete="off"

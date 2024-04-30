@@ -31,18 +31,37 @@ export type ServiceData = {
   imageUrl?: string;
 };
 
-export type CartItem = ServiceData & {
+export type CartItem = Omit<ServiceData, "price"> & {
   note?: string;
-  priorityDueDate: Date;
   // True if the user has not filled out the required information (for users adding from the service listing page)
   missingInfo?: boolean;
+  basePrice: number;
+  modifiers?: Array<SLAData>;
+  finalPrice?: number;
 } & {
   serviceType: "onsite" | "both";
-  location: string;
+  location?: string;
 };
 
 export type Cart = {
   items: Array<CartItem>;
   quantityById: Record<ServiceData["id"], number>;
   total: number;
+};
+
+export type SLAData = {
+  id: string;
+  type: "response" | "completion";
+  dueWithinDays: number;
+  priceModifier: number;
+  fixedPrice: number;
+  description: string;
+};
+
+export type CompletionSLAData = SLAData & {
+  type: "completion";
+};
+
+export type ResponseSLAData = SLAData & {
+  type: "response";
 };

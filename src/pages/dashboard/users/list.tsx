@@ -4,6 +4,7 @@ import { DeleteButton, EditButton, List, useDataGrid } from "@refinedev/mui";
 import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Breadcrumbs, Chip, IconButton, Link, Popover } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -14,9 +15,7 @@ const UserListCellAction = (props: { id: string }) => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
 
-  const handlePopoverOpen: React.MouseEventHandler<HTMLButtonElement> = (
-    event,
-  ) => {
+  const handlePopoverOpen: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     setAnchorEl(event.currentTarget);
     setOpen(true);
   };
@@ -38,18 +37,8 @@ const UserListCellAction = (props: { id: string }) => {
           maxWidth: "20rem",
         }}
       >
-        <DeleteButton
-          resource="users"
-          recordItemId={props.id}
-          fullWidth
-          sx={{ padding: "1rem" }}
-        />
-        <EditButton
-          resource="users"
-          recordItemId={props.id}
-          fullWidth
-          sx={{ padding: "1rem" }}
-        />
+        <DeleteButton resource="users" recordItemId={props.id} fullWidth sx={{ padding: "1rem" }} />
+        <EditButton resource="users" recordItemId={props.id} fullWidth sx={{ padding: "1rem" }} />
         <Button variant="text" sx={{ padding: "1rem" }} fullWidth>
           <LockResetIcon />
           <Typography variant="button" sx={{ marginLeft: "0.25rem" }}>
@@ -71,7 +60,7 @@ const UsersList = () => {
 
   const breadcrumb = (
     <Breadcrumbs aria-label="breadcrumb">
-      <Link underline="hover" color="inherit" href="/dashboard">
+      <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard">
         Dashboard
       </Link>
       <Typography color="text.primary">Users</Typography>
@@ -79,12 +68,7 @@ const UsersList = () => {
   );
 
   return (
-    <List
-      title="Users"
-      resource="users"
-      canCreate={false}
-      breadcrumb={breadcrumb}
-    >
+    <List title="Users" resource="users" canCreate={false} breadcrumb={breadcrumb}>
       <DataGrid
         {...dataGridProps}
         columns={[
@@ -129,9 +113,7 @@ const UsersList = () => {
             type: "actions",
             headerName: "Actions",
             // @ts-expect-error This is valid
-            renderCell: (params: GridRowParams) => (
-              <UserListCellAction id={params.row.id} />
-            ),
+            renderCell: (params: GridRowParams) => <UserListCellAction id={params.row.id} />,
           },
         ]}
         autoHeight

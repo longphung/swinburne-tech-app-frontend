@@ -42,24 +42,10 @@ const accessControlProvider = {
             };
           }
           case USERS_ROLE.CUSTOMER: {
-            const inaccessibleResources = ["", "users", "services"];
-
-            if (pathname.startsWith("/dashboard/profile")) {
-              return {
-                can: true,
-                reason: "Customer can access their profile",
-              };
-            }
-
-            if (inaccessibleResources.includes(params.resource || "")) {
-              return {
-                can: false,
-                reason: "Customer cannot access this resource",
-              };
-            }
+            // NOTE: There are some resources that customers can access, but not implemented yet
             return {
-              can: true,
-              reason: "Customer can access this resource",
+              can: false,
+              reason: "Customer cannot access this resource",
             };
           }
           case USERS_ROLE.TECHNICIAN: {
