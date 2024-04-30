@@ -1,108 +1,43 @@
-import { useEffect, useRef, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useRef, useState } from "react";
+import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import Box from "@mui/material/Box";
-import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
-
-const CheckoutForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-
-  const [message, setMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
-
-    const clientSecret = new URLSearchParams(window.location.search).get("payment_intent_client_secret");
-
-    if (!clientSecret) {
-      return;
-    }
-
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      switch (paymentIntent.status) {
-        case "succeeded":
-          setMessage("Payment succeeded!");
-          break;
-        case "processing":
-          setMessage("Your payment is processing.");
-          break;
-        case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
-          break;
-        default:
-          setMessage("Something went wrong.");
-          break;
-      }
-    });
-  }, [stripe]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
-
-    setIsLoading(true);
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "http://localhost:5173",
-      },
-    });
-
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
-    } else {
-      setMessage("An unexpected error occurred.");
-    }
-
-    setIsLoading(false);
-  };
-
-  const paymentElementOptions = {
-    layout: "tabs",
-  };
-
-  return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">{isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}</span>
-      </button>
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
-    </form>
-  );
-};
+import { Elements } from "@stripe/react-stripe-js";
+import { useCustomMutation } from "@refinedev/core";
+import { useCart } from "@/components/Providers/CartProvider";
+import Container from "@mui/material/Container";
+import { CheckoutForm } from "@/components/CheckoutForm";
+import { SLAData } from "@/interfaces";
 
 const Checkout = () => {
   const stripe = useRef(loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY!));
+  const cart = useCart();
   const [clientSecret, setClientSecret] = useState("");
+  const [data, setData] = useState<any>();
+  const { mutate, isLoading } = useCustomMutation({
+    mutationOptions: {
+      // @ts-expect-error This is a valid object
+      onSuccess: (data: any) => {
+        setClientSecret(data?.data?.clientSecret || "");
+        setData(data?.data);
+      },
+    },
+  });
 
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    fetch("/api/checkout/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+  if (!clientSecret) {
+    if (!isLoading) {
+      mutate({
+        url: "/checkout/create-payment-intent",
+        method: "post",
+        values: {
+          items: cart.items,
+        },
+      });
+    }
+    return <Box>Loading...</Box>;
+  }
 
-  const appearance = {
+  const appearance: StripeElementsOptions["appearance"] = {
     theme: "stripe",
   };
   const options = {
@@ -110,12 +45,42 @@ const Checkout = () => {
     appearance,
   };
 
+  console.log("data", data);
+
+  const dataToUse = data.orderResult.orderSummary.tickets.map(
+    (ticket: {
+      service: { title: string; price: { $numberDecimal: string } };
+      ticketTotal: { $numberDecimal: string };
+      location: string;
+      note: string;
+      modifiers_info: SLAData[];
+    }) => ({
+      title: ticket.service.title,
+      basePrice: ticket.service.price.$numberDecimal,
+      total: ticket.ticketTotal.$numberDecimal,
+      location: ticket.location,
+      note: ticket.note,
+      modifiers: ticket.modifiers_info.map((modifier) => ({
+        type: modifier.type,
+        dueWithinDays: modifier.dueWithinDays,
+        priceModifier: modifier.priceModifier,
+      })),
+    }),
+  );
+
   return (
     <Box>
       {clientSecret && (
-        <Elements options={options} stripe={stripe.current}>
-          <CheckoutForm />
-        </Elements>
+        <Container
+          maxWidth="lg"
+          sx={{
+            padding: "2rem",
+          }}
+        >
+          <Elements options={options} stripe={stripe.current}>
+            <CheckoutForm items={dataToUse} grandTotal={data.orderResult.orderSummary.grandTotal.$numberDecimal} />
+          </Elements>
+        </Container>
       )}
     </Box>
   );

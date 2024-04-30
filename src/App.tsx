@@ -90,6 +90,17 @@ const App: React.FC = () => {
                           label: "Response",
                         },
                       },
+                      {
+                        name: "orders",
+                        list: "/dashboard/orders",
+                        show: "/dashboard/orders/:id",
+                        create: "/dashboard/orders/new",
+                        edit: "/dashboard/orders/:id/edit",
+                        meta: {
+                          icon: <MonetizationOnIcon />,
+                          label: "Manage Orders",
+                        },
+                      }
                     ]}
                     routerProvider={routerProvider}
                     notificationProvider={useNotificationProvider}
