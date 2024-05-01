@@ -1,7 +1,7 @@
 import { useOne } from "@refinedev/core";
-import { CircularProgress, Theme, useMediaQuery } from "@mui/material";
+import { useForm } from "@refinedev/react-hook-form";
+import { CircularProgress } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { DatePicker } from "@mui/x-date-pickers";
 import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -12,16 +12,14 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
 import Editor from "@/components/Editor/Editor";
-import { CartItem, ServiceData } from "@/interfaces";
+import { CartItem, CompletionSLAData, ResponseSLAData, ServiceData } from "@/interfaces";
 import { addItem, useCartDispatch } from "@/components/Providers/CartProvider";
-import { useForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
+import SLASelect from "@/components/SLASelect";
 
 const IndividualServicePage = () => {
   const dispatchCart = useCartDispatch();
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
   const { id } = useParams<{ id: string }>();
-  const { data } = useOne({
+  const { data: serviceDataResponse } = useOne({
     resource: "services",
     id,
   });
@@ -33,17 +31,31 @@ const IndividualServicePage = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      priorityDueDate: null as Date | null,
       note: "",
       location: "",
+      completionSLA: null as unknown as CompletionSLAData,
+      responseSLA: null as unknown as ResponseSLAData,
     },
   });
 
-  const serviceData = data?.data as ServiceData;
+  const serviceData = serviceDataResponse?.data as ServiceData;
 
-  const onSubmit = (data: { priorityDueDate: Date | null; note: string; location: string }) => {
+  const onSubmit = (data: {
+    completionSLA: CompletionSLAData;
+    responseSLA: ResponseSLAData;
+    note: string;
+    location: string;
+  }) => {
+    const { price, ...serviceDataWithoutPrice } = serviceData;
+    const modifiers = [];
+    if (data.completionSLA) {
+      modifiers.push(data.completionSLA);
+    }
+    if (data.responseSLA) {
+      modifiers.push(data.responseSLA);
+    }
+    dispatchCart(addItem({ ...serviceDataWithoutPrice, modifiers, basePrice: price } as CartItem));
     reset();
-    dispatchCart(addItem({ ...serviceData, ...data } as CartItem));
     window.scroll({
       top: 0,
       behavior: "smooth",
@@ -78,55 +90,30 @@ const IndividualServicePage = () => {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography variant="h4" component="div">
-            {serviceData.title}
-          </Typography>
+          <Typography variant="h4">{serviceData.title}</Typography>
           <Typography variant="subtitle1" color="text.secondary">
             {serviceData.label}
           </Typography>
-          <Typography variant="h6" component="div">
-            Price: ${serviceData.price}
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            Service Type: {serviceData.serviceType}
-          </Typography>
-          <Grid container item xs={12} sx={{ margin: "1rem 0" }}>
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{
-                paddingRight: isMobile ? 0 : "1rem",
-                paddingBottom: isMobile ? "1rem" : 0,
-              }}
-            >
-              <Controller
-                name="priorityDueDate"
-                control={control}
-                rules={{
-                  required: "Fill in preferred due date. Preferred due date is required.",
-                }}
-                render={({ field }) => (
-                  <DatePicker
-                    name={field.name}
-                    onChange={(date) => field.onChange(date)}
-                    value={field.value}
-                    disablePast
-                    inputRef={field.ref}
-                    slotProps={{
-                      textField: {
-                        error: !!errors.priorityDueDate,
-                        helperText: errors.priorityDueDate?.message,
-                        placeholder: "DD/MM/YYYY",
-                      },
-                    }}
-                    format={"dd/MM/yyyy"}
-                    label="Preferred Due Date"
-                    sx={{ width: "100%" }}
-                  />
-                )}
+          <Typography variant="h6">${serviceData.price}</Typography>
+          <Typography variant="h6">Service Type: {serviceData.serviceType}</Typography>
+          <Grid container item xs={12} spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h6">Service Level Agreements (SLA):</Typography>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <SLASelect control={control as never} resource="response-slas" name="responseSLA" label="Response SLA" />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <SLASelect
+                control={control as never}
+                resource="completion-slas"
+                name="completionSLA"
+                label="Completion SLA"
               />
             </Grid>
+
             {serviceData.serviceType === "both" ||
               (serviceData.serviceType === "onsite" && (
                 <Grid item xs={12} md={6}>
