@@ -25,10 +25,11 @@ const StyledCard = styled(Card)`
 
 interface Props {
   service: ServiceData;
+  showAddButton?: boolean;
 }
 
 const ServiceShoppingCard: FC<Props> = (props) => {
-  const { service } = props;
+  const { service, showAddButton = false } = props;
   const { price, ...serviceWithoutPrice } = service;
   const dispatchCart = useCartDispatch();
   // Add missingInfo property to the service
@@ -104,10 +105,12 @@ const ServiceShoppingCard: FC<Props> = (props) => {
             {priceToShow}
           </Typography>
 
-          <Button onClick={handleAdd}>
-            <AddShoppingCartIcon sx={{ marginRight: "0.5rem" }} />
-            Add
-          </Button>
+          {showAddButton && (
+            <Button onClick={handleAdd}>
+              <AddShoppingCartIcon sx={{ marginRight: "0.5rem" }} />
+              Add
+            </Button>
+          )}
         </CardActions>
       </StyledCard>
     </Grid>
