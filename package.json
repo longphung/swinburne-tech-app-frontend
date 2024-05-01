@@ -1,6 +1,6 @@
 {
     "name": "swinburne-tech-app-frontend",
-    "version": "0.1.15",
+    "version": "0.1.16",
     "description": "Swinburne Technology Application frontend",
     "private": true,
     "type": "module",
