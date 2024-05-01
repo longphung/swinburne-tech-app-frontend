@@ -10,6 +10,7 @@ import { CircularProgress } from "@mui/material";
 import logoIcon from "@/assets/logo-icon.png";
 import logo from "@/assets/logo.png";
 import Sider from "@/components/Sider";
+import Footer from "@/components/Footer";
 
 const Register = lazy(() => import("@/components/Register"));
 const UpdatePassword = lazy(() => import("@/components/UpdatePassword"));
@@ -205,6 +206,7 @@ const Router = () => {
           <main>
             <Header />
             <Outlet />
+            <Footer />
           </main>
         }
       >
