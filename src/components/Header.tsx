@@ -163,18 +163,20 @@ const Header = () => {
       >
         {isMobile ? (
           <>
-            <Button
-              startIcon={
-                <Badge badgeContent={numberOfItemsInCart} color="error">
-                  <ShoppingCartIcon />
-                </Badge>
-              }
-              variant="text"
-              sx={{ ml: "2rem" }}
-              onClick={handleCart}
-            >
-              Cart
-            </Button>
+            {userData?.id && (
+              <Button
+                startIcon={
+                  <Badge badgeContent={numberOfItemsInCart} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                }
+                variant="text"
+                sx={{ ml: "2rem" }}
+                onClick={handleCart}
+              >
+                Cart
+              </Button>
+            )}
             <IconButton aria-label="menu" onClick={handleMenu}>
               <MenuIcon />
             </IconButton>
@@ -185,18 +187,20 @@ const Header = () => {
         ) : (
           <>
             <HeaderLinks userData={userData} />
-            <Button
-              startIcon={
-                <Badge badgeContent={numberOfItemsInCart} color="error">
-                  <ShoppingCartIcon />
-                </Badge>
-              }
-              variant="text"
-              sx={{ ml: "2rem" }}
-              onClick={handleCart}
-            >
-              Cart
-            </Button>
+            {userData?.id && (
+              <Button
+                startIcon={
+                  <Badge badgeContent={numberOfItemsInCart} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                }
+                variant="text"
+                sx={{ ml: "2rem" }}
+                onClick={handleCart}
+              >
+                Cart
+              </Button>
+            )}
           </>
         )}
       </Box>

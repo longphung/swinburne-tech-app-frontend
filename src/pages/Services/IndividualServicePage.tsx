@@ -1,6 +1,6 @@
-import { useOne } from "@refinedev/core";
+import { useGetIdentity, useOne } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Tooltip } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
@@ -18,6 +18,7 @@ import SLASelect from "@/components/SLASelect";
 
 const IndividualServicePage = () => {
   const dispatchCart = useCartDispatch();
+  const { data: userData } = useGetIdentity();
   const { id } = useParams<{ id: string }>();
   const { data: serviceDataResponse } = useOne({
     resource: "services",
@@ -148,10 +149,20 @@ const IndividualServicePage = () => {
             error={!!errors.note}
             helperText={errors.note?.message}
           />
-          <Button variant="contained" color="primary" sx={{ marginTop: "1rem" }} type="submit">
-            <AddShoppingCartIcon sx={{ marginRight: "0.5rem" }} />
-            Add to Cart
-          </Button>
+          <Tooltip>
+            <span>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: "1rem" }}
+                disabled={!userData?.id}
+                type="submit"
+              >
+                <AddShoppingCartIcon sx={{ marginRight: "0.5rem" }} />
+                Add to Cart
+              </Button>
+            </span>
+          </Tooltip>
         </Grid>
       </Grid>
     </Container>
