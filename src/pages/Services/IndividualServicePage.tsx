@@ -12,13 +12,13 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
 import Editor from "@/components/Editor/Editor";
-import { CartItem, CompletionSLAData, ResponseSLAData, ServiceData } from "@/interfaces";
+import { CartItem, CompletionSLAData, ResponseSLAData, ServiceData, UserData } from "@/interfaces";
 import { addItem, useCartDispatch } from "@/components/Providers/CartProvider";
 import SLASelect from "@/components/SLASelect";
 
 const IndividualServicePage = () => {
   const dispatchCart = useCartDispatch();
-  const { data: userData } = useGetIdentity();
+  const { data: userData } = useGetIdentity<UserData>();
   const { id } = useParams<{ id: string }>();
   const { data: serviceDataResponse } = useOne({
     resource: "services",
@@ -149,7 +149,7 @@ const IndividualServicePage = () => {
             error={!!errors.note}
             helperText={errors.note?.message}
           />
-          <Tooltip>
+          <Tooltip title={!userData?.id && "Please login to add services to cart."}>
             <span>
               <Button
                 variant="contained"
