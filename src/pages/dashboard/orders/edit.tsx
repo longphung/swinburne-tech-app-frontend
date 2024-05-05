@@ -5,12 +5,11 @@ import { Edit } from "@refinedev/mui";
 import { Breadcrumbs, FormControl, InputLabel, Link, MenuItem, Select } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
 
 import { OrderData } from "@/interfaces";
 
-type UpdatableFields = Pick<OrderData, "customerId" | "status">;
+type UpdatableFields = Pick<OrderData, "status">;
 
 const OrdersEdit: FC = () => {
   const {
@@ -19,7 +18,6 @@ const OrdersEdit: FC = () => {
     setValue,
     control,
     saveButtonProps,
-    register,
     formState: { errors },
   } = useForm<UpdatableFields>();
   const [haveSetStatus, setHaveSetStatus] = useState(false);
@@ -56,17 +54,6 @@ const OrdersEdit: FC = () => {
       }}
     >
       <Grid container spacing={2} component="form" onSubmit={onSubmit}>
-        <Grid item xs={12}>
-          {/* Replace the input with the appropriate fields */}
-          <TextField
-            {...register("customerId.name", { required: "Customer id is required" })}
-            label="Customer"
-            fullWidth
-            error={!!errors["customerId.name"]}
-            helperText={(errors["customerId.name"]?.message as string) || ""}
-          />
-        </Grid>
-
         <Grid item xs={12}>
           {!formLoading && (
             <FormControl error={!!errors.status}>
