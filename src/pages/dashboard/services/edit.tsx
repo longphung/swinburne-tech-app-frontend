@@ -161,7 +161,7 @@ const ServicesEdit = () => {
               justifyContent: "center",
             }}
           >
-            <InputLabel id="category">Category</InputLabel>
+            <InputLabel id="category-input-label">Category</InputLabel>
             <Controller
               name="category"
               control={control}
