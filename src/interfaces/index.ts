@@ -65,3 +65,18 @@ export type CompletionSLAData = SLAData & {
 export type ResponseSLAData = SLAData & {
   type: "response";
 };
+
+export type OrderData = {
+  id: string;
+  orderNumber: string;
+  grandTotal: number;
+  customerId: Pick<UserData, "id" | "name">;
+  status: "pending" | "cancelled" | "completed";
+  tickets: Array<{
+    _id: string;
+    // The title of the service
+    service: string;
+  }>;
+  createdAt: string;
+  updatedAt: string;
+};
