@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import Box from "@mui/material/Box";
 import { Elements } from "@stripe/react-stripe-js";
@@ -10,11 +10,12 @@ import { CheckoutForm } from "@/components/CheckoutForm";
 import { SLAData } from "@/interfaces";
 
 const Checkout = () => {
+  const paymentIntentSent = useRef(false);
   const stripe = useRef(loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY!));
   const cart = useCart();
   const [clientSecret, setClientSecret] = useState("");
   const [data, setData] = useState<any>();
-  const { mutate, isLoading } = useCustomMutation({
+  const { mutate } = useCustomMutation({
     mutationOptions: {
       // @ts-expect-error This is a valid object
       onSuccess: (data: any) => {
@@ -24,16 +25,21 @@ const Checkout = () => {
     },
   });
 
-  if (!clientSecret) {
-    if (!isLoading) {
-      mutate({
-        url: "/checkout/create-payment-intent",
-        method: "post",
-        values: {
-          items: cart.items,
-        },
-      });
+  useEffect(() => {
+    if (paymentIntentSent.current) {
+      return;
     }
+    mutate({
+      url: "/checkout/create-payment-intent",
+      method: "post",
+      values: {
+        items: cart.items,
+      },
+    });
+    paymentIntentSent.current = true;
+  }, []);
+
+  if (!clientSecret) {
     return <Box>Loading...</Box>;
   }
 
@@ -44,8 +50,6 @@ const Checkout = () => {
     clientSecret,
     appearance,
   };
-
-  console.log("data", data);
 
   const dataToUse = data.orderResult.orderSummary.tickets.map(
     (ticket: {

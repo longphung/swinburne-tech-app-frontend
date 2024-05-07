@@ -55,7 +55,15 @@ const IndividualServicePage = () => {
     if (data.responseSLA) {
       modifiers.push(data.responseSLA);
     }
-    dispatchCart(addItem({ ...serviceDataWithoutPrice, modifiers, basePrice: price } as CartItem));
+    dispatchCart(
+      addItem({
+        ...serviceDataWithoutPrice,
+        location: data.location,
+        note: data.note,
+        modifiers,
+        basePrice: price,
+      } as CartItem),
+    );
     reset();
     window.scroll({
       top: 0,

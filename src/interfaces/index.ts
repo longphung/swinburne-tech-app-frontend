@@ -66,6 +66,27 @@ export type ResponseSLAData = SLAData & {
   type: "response";
 };
 
+export type Tickets = {
+  customerId: {
+    _id: string;
+    name: string;
+  };
+  serviceId: {
+    _id: string;
+    name: string;
+  };
+  urgency: string;
+  location: string;
+  assignedTo: {
+    _id: string;
+    name: string;
+  };
+  modifiers: Array<SLAData>;
+  note: string;
+  refundFlag: boolean;
+  status: string;
+}
+
 export type OrderData = {
   id: string;
   orderNumber: string;

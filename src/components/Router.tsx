@@ -38,6 +38,7 @@ const ResponseSLACreate = lazy(() => import("@/pages/dashboard/sla/response/crea
 const ResponseSLAEdit = lazy(() => import("@/pages/dashboard/sla/response/edit"));
 const OrdersList = lazy(() => import("@/pages/dashboard/orders/list"));
 const OrdersEdit = lazy(() => import("@/pages/dashboard/orders/edit"));
+const TicketsList = lazy(() => import("@/pages/dashboard/tickets/list"));
 
 // eslint-disable-next-line max-lines-per-function
 const Router = () => {
@@ -213,6 +214,14 @@ const Router = () => {
           element={
             <Suspense fallback={<CircularProgress />}>
               <OrdersEdit />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/tickets"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <TicketsList />
             </Suspense>
           }
         />
