@@ -3,6 +3,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import StoreIcon from "@mui/icons-material/Store";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 
 const resources = [
   {
@@ -61,12 +62,19 @@ const resources = [
   {
     name: "orders",
     list: "/dashboard/orders",
-    show: "/dashboard/orders/:id",
-    create: "/dashboard/orders/new",
     edit: "/dashboard/orders/:id/edit",
     meta: {
       icon: <MonetizationOnIcon />,
       label: "Manage Orders",
+    },
+  },
+  {
+    name: "tickets",
+    list: "/dashboard/tickets",
+    show: "/dashboard/tickets/:id",
+    meta: {
+      icon: <ConfirmationNumberIcon />,
+      label: "Manage Tickets",
     },
   },
 ];
