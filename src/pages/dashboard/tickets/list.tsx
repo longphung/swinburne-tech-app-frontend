@@ -6,16 +6,8 @@ import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Link } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { SLAData, Tickets } from "@/interfaces";
+import { SLAData, TICKET_STATUS, Tickets } from "@/interfaces";
 import DataGridActionCell from "@/components/DataGridActionCell";
-
-export const TICKET_STATUS = {
-  NOT_STARTED: "Not Started",
-  OPEN: "Open",
-  QUERIES_CLIENT: "Queries Client",
-  QUERIES_EXTERNAL: "Queries External",
-  COMPLETE: "Complete",
-};
 
 const TicketsList = () => {
   const navigate = useNavigate();
