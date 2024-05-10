@@ -80,7 +80,7 @@ const TicketsShow = () => {
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Notes:
             </Typography>
-            <Typography variant="body1">{ticketData.notes}</Typography>
+            <Typography variant="body1">{ticketData.note}</Typography>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>

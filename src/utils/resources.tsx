@@ -72,6 +72,7 @@ const resources = [
     name: "tickets",
     list: "/dashboard/tickets",
     show: "/dashboard/tickets/:id",
+    edit: "/dashboard/tickets/:id/edit",
     meta: {
       icon: <ConfirmationNumberIcon />,
       label: "Manage Tickets",
