@@ -1,5 +1,5 @@
 import React from "react";
-import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Grid";
 import { format } from "date-fns";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { Show } from "@refinedev/mui";
@@ -38,24 +38,66 @@ const TicketsShow = () => {
       title={<Typography variant="h5">Ticket Details</Typography>}
       resource="tickets"
       recordItemId={id}
-      // canDelete={userData?.role.includes(USERS_ROLE.ADMIN)}
       canEdit={userData?.role.includes(USERS_ROLE.ADMIN) || userData?.role.includes(USERS_ROLE.TECHNICIAN)}
     >
       {isLoading ? (
         <Skeleton variant="rectangular" height={400} width="100%" />
       ) : (
-        <Stack spacing={2}>
-          <Typography variant="h6">ID: {ticketData.id}</Typography>
-          <Typography variant="h6">Customer: {ticketData.customerId.name}</Typography>
-          <Typography variant="h6">Status: {TICKET_STATUS[ticketData.status]}</Typography>
-          <Typography variant="h6">Service: {ticketData.serviceId.title}</Typography>
-          <Typography variant="h6">Urgency: {ticketData.urgency}</Typography>
-          <Typography variant="h6">Location: {ticketData.location}</Typography>
-          <Typography variant="h6">
-            Assigned To: {ticketData.assignedTo ? ticketData.assignedTo.name : "Not assigned"}
-          </Typography>
-          <Typography variant="h6">
-            Modifiers:
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              ID:
+            </Typography>
+            <Typography variant="body1">{ticketData.id}</Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Customer:
+            </Typography>
+            <Typography variant="body1">{ticketData.customerId.name}</Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Service Engineer:
+            </Typography>
+            <Typography variant="body1">
+              {ticketData.assignedTo ? ticketData.assignedTo.name : "Not assigned"}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Status:
+            </Typography>
+            <Typography variant="body1">{TICKET_STATUS[ticketData.status]}</Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Service:
+            </Typography>
+            <Typography variant="body1">{ticketData.serviceId.title}</Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Notes:
+            </Typography>
+            <Typography variant="body1">{ticketData.notes}</Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Urgency:
+            </Typography>
+            <Typography variant="body1">{ticketData.urgency}</Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Location:
+            </Typography>
+            <Typography variant="body1">{ticketData.location}</Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Modifiers:
+            </Typography>
             <Box component="ul" sx={{ margin: 0 }}>
               {ticketData.modifiers.map((x) => (
                 <li key={x.id}>
@@ -63,10 +105,20 @@ const TicketsShow = () => {
                 </li>
               ))}
             </Box>
-          </Typography>
-          <Typography variant="h6">Created At: {format(new Date(ticketData.createdAt), "do MMM yyyy")}</Typography>
-          <Typography variant="h6">Updated At: {format(new Date(ticketData.updatedAt), "do MMM yyyy")}</Typography>
-        </Stack>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Created At:
+            </Typography>
+            <Typography variant="body1">{format(new Date(ticketData.createdAt), "do MMM yyyy")}</Typography>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Updated At:
+            </Typography>
+            <Typography variant="body1">{format(new Date(ticketData.updatedAt), "do MMM yyyy")}</Typography>
+          </Grid>
+        </Grid>
       )}
     </Show>
   );
