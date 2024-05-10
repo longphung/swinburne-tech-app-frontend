@@ -1,15 +1,25 @@
 import { List, useDataGrid } from "@refinedev/mui";
-import { Link as RouterLink } from "react-router-dom";
+import { ComponentProps } from "react";
+import { format } from "date-fns";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Link } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { SLAData } from "@/interfaces";
+import { SLAData, Tickets } from "@/interfaces";
 import DataGridActionCell from "@/components/DataGridActionCell";
-import { format } from "date-fns";
+
+export const TICKET_STATUS = {
+  NOT_STARTED: "Not Started",
+  OPEN: "Open",
+  QUERIES_CLIENT: "Queries Client",
+  QUERIES_EXTERNAL: "Queries External",
+  COMPLETE: "Complete",
+};
 
 const TicketsList = () => {
-  const { dataGridProps } = useDataGrid({
+  const navigate = useNavigate();
+  const { dataGridProps } = useDataGrid<Tickets>({
     resource: "tickets",
   });
   const breadcrumb = (
@@ -20,10 +30,15 @@ const TicketsList = () => {
       <Typography>Tickets</Typography>
     </Breadcrumbs>
   );
+
+  const handleRowClick: ComponentProps<typeof DataGrid>["onRowClick"] = (params) => {
+    navigate(`/dashboard/tickets/${params.id}`);
+  };
   return (
     <List title="Tickets" breadcrumb={breadcrumb} canCreate={false}>
       <DataGrid
         {...dataGridProps}
+        onRowClick={handleRowClick}
         columns={[
           { field: "id", headerName: "ID", width: 90 },
           {
@@ -35,6 +50,12 @@ const TicketsList = () => {
                 {params.row.customerId.name}
               </Link>
             ),
+          },
+          {
+            field: "status",
+            headerName: "Status",
+            width: 150,
+            valueGetter: (params) => TICKET_STATUS[params.row.status as keyof typeof TICKET_STATUS],
           },
           {
             field: "serviceId",
@@ -111,6 +132,16 @@ const TicketsList = () => {
             renderCell: (params) => <DataGridActionCell id={params.row.id} resource="tickets" />,
           },
         ]}
+        sx={{
+          // disable cell selection style
+          ".MuiDataGrid-cell:focus": {
+            outline: "none",
+          },
+          // pointer cursor on ALL rows
+          "& .MuiDataGrid-row:hover": {
+            cursor: "pointer",
+          },
+        }}
       />
     </List>
   );
