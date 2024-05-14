@@ -32,15 +32,15 @@ This project uses environment variables for configuration. These are stored in `
 Here's an example of what your `.env.local` file might look like:
 
 ```dotenv
-BASE_URL=/your_base_url
+VITE_BASE_URL=/your_base_url
 VITE_STRIPE_PUBLIC_KEY=your_stripe_public_key
 VITE_BACKEND_URL=your_backend_url
 ```
 
 where:
 
-- `BASE_URL` is the base URL of your application
-- `VITE_STRIPE_PUBLIC_KEY` is your Stripe public key. **NEVER** expose your Stripe secret key here
+- `VITE_BASE_URL` is the base URL of your application
+- `VITE_STRIPE_PUBLIC_KEY` is your Stripe public key, it should start with `pk_<key>` format. **NEVER** expose your Stripe secret key here
 - `VITE_BACKEND_URL` is the URL of your backend application
 
 ## External Documentations
