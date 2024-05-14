@@ -1,27 +1,38 @@
 import React from "react";
+import { Controller } from "react-hook-form";
 import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import { Breadcrumbs, Link } from "@mui/material";
+import { Breadcrumbs, FormControl, InputLabel, Link, MenuItem, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+
 import UsersSelect from "@/components/UsersSelect";
-import { USERS_ROLE } from "@/interfaces";
+import { Ticket, URGENCY, USERS_ROLE } from "@/interfaces";
 
 const TicketsEdit = () => {
   const { id } = useParams();
   const {
+    refineCore: { queryResult, onFinish },
+    handleSubmit,
     register,
+    saveButtonProps,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<Ticket>({
+    defaultValues: {
+      status: "NOT_STARTED",
+      urgency: "",
+    },
     refineCoreProps: {
       action: "edit",
       resource: "tickets",
       id,
     },
   });
+
+  const ticketData = queryResult?.data?.data || ({} as Ticket);
 
   const breadcrumb = (
     <Breadcrumbs aria-label="breadcrumb">
@@ -35,9 +46,21 @@ const TicketsEdit = () => {
     </Breadcrumbs>
   );
 
+  const onSubmit = handleSubmit((data) => {
+    console.log("data", data);
+    // onFinish(data);
+  });
+
   return (
-    <Edit breadcrumb={breadcrumb} title={<Typography variant="h5">Edit Ticket</Typography>}>
-      <Grid container spacing={2}>
+    <Edit
+      saveButtonProps={{
+        ...saveButtonProps,
+        onClick: onSubmit,
+      }}
+      breadcrumb={breadcrumb}
+      title={<Typography variant="h5">Edit Ticket</Typography>}
+    >
+      <Grid container spacing={2} component="form" onSubmit={onSubmit}>
         <Grid item xs={12} md={6} lg={4}>
           <UsersSelect name="customerId" control={control as never} label="Customer" resource={USERS_ROLE.CUSTOMER} />
         </Grid>
@@ -50,19 +73,142 @@ const TicketsEdit = () => {
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <TextField {...register("status", { required: true })} label="Status" error={Boolean(errors.status)} />
+          <FormControl fullWidth>
+            <InputLabel>Status</InputLabel>
+            <Controller
+              control={control}
+              name="status"
+              render={({ field }) => (
+                <Select
+                  id="status-select"
+                  value={field.value}
+                  label="Status"
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      field.onChange(null);
+                      return;
+                    }
+                    field.onChange(e.target.value);
+                  }}
+                  ref={field.ref}
+                >
+                  <MenuItem key="none" value="">
+                    None
+                  </MenuItem>
+                  {[
+                    {
+                      label: "Not Started",
+                      id: "NOT_STARTED",
+                    },
+                    {
+                      label: "Open",
+                      id: "OPEN",
+                    },
+                    {
+                      label: "Queries Client",
+                      id: "QUERIES_CLIENT",
+                    },
+                    {
+                      label: "Queries External",
+                      id: "QUERIES_EXTERNAL",
+                    },
+                    {
+                      label: "Complete",
+                      id: "COMPLETE",
+                    },
+                  ].map((x) => (
+                    <MenuItem key={x.id} value={x.id}>
+                      {x.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+          </FormControl>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <TextField {...register("serviceId", { required: true })} label="Service" error={Boolean(errors.serviceId)} />
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            Service:
+          </Typography>
+          <Typography variant="body1">{ticketData.serviceId?.title}</Typography>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <TextField {...register("urgency", { required: true })} label="Urgency" error={Boolean(errors.urgency)} />
+          <FormControl fullWidth>
+            <InputLabel>Urgency</InputLabel>
+            <Controller
+              control={control}
+              name="urgency"
+              render={({ field }) => (
+                <Select
+                  id="urgency-select"
+                  value={field.value}
+                  label="Urgency"
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      field.onChange(null);
+                      return;
+                    }
+                    field.onChange(e.target.value);
+                  }}
+                  ref={field.ref}
+                >
+                  <MenuItem key="none" value="">
+                    None
+                  </MenuItem>
+                  {[
+                    {
+                      label: "Planned",
+                      id: URGENCY.PLANNED,
+                    },
+                    {
+                      label: "Low",
+                      id: URGENCY.LOW,
+                    },
+                    {
+                      label: "Medium",
+                      id: URGENCY.MEDIUM,
+                    },
+                    {
+                      label: "High",
+                      id: URGENCY.HIGH,
+                    },
+                    {
+                      label: "Critical",
+                      id: URGENCY.CRITICAL,
+                    },
+                  ].map((x) => (
+                    <MenuItem key={x.id} value={x.id}>
+                      {x.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+          </FormControl>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <TextField {...register("location", { required: true })} label="Location" error={Boolean(errors.location)} />
+          <TextField
+            {...register("location")}
+            label="Location"
+            error={Boolean(errors.location)}
+            helperText={errors.location ? (errors.location.message as string) : ""}
+            type="text"
+            placeholder="Location"
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <TextField {...register("note", { required: true })} label="Notes" error={Boolean(errors.note)} />
+          <TextField
+            {...register("note", { required: true })}
+            label="Notes"
+            error={Boolean(errors.note)}
+            helperText={errors.note ? (errors.note.message as string) : ""}
+            type="text"
+            placeholder="Notes"
+            fullWidth
+            multiline
+            rows={4}
+          />
         </Grid>
       </Grid>
     </Edit>

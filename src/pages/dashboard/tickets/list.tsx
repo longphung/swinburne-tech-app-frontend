@@ -6,12 +6,12 @@ import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Link } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { SLAData, TICKET_STATUS, Tickets } from "@/interfaces";
+import { SLAData, TICKET_STATUS, Ticket } from "@/interfaces";
 import DataGridActionCell from "@/components/DataGridActionCell";
 
 const TicketsList = () => {
   const navigate = useNavigate();
-  const { dataGridProps } = useDataGrid<Tickets>({
+  const { dataGridProps } = useDataGrid<Ticket>({
     resource: "tickets",
   });
   const breadcrumb = (
@@ -19,7 +19,7 @@ const TicketsList = () => {
       <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard">
         Dashboard
       </Link>
-      <Typography>Tickets</Typography>
+      <Typography>Ticket</Typography>
     </Breadcrumbs>
   );
 
@@ -27,7 +27,7 @@ const TicketsList = () => {
     navigate(`/dashboard/tickets/${params.id}`);
   };
   return (
-    <List title="Tickets" breadcrumb={breadcrumb} canCreate={false}>
+    <List title="Ticket" breadcrumb={breadcrumb} canCreate={false}>
       <DataGrid
         {...dataGridProps}
         onRowClick={handleRowClick}

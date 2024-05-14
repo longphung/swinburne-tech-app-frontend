@@ -74,7 +74,16 @@ export enum TICKET_STATUS {
   COMPLETE = "Complete",
 }
 
-export type Tickets = {
+// "planned", "low", "medium", "high", "critical"
+export enum URGENCY {
+  PLANNED = "planned",
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  CRITICAL = "critical",
+}
+
+export type Ticket = {
   id: string;
   customerId: {
     _id: string;
@@ -84,7 +93,7 @@ export type Tickets = {
     _id: string;
     title: string;
   };
-  urgency: string;
+  urgency: keyof typeof URGENCY;
   location: string;
   assignedTo: {
     _id: string;

@@ -8,16 +8,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useGetIdentity, useOne } from "@refinedev/core";
 
-import { TICKET_STATUS, Tickets, UserData, USERS_ROLE } from "@/interfaces";
+import { TICKET_STATUS, Ticket, UserData, USERS_ROLE } from "@/interfaces";
 
 const TicketsShow = () => {
   const { id } = useParams();
   const { data: userData } = useGetIdentity<UserData>();
-  const { isLoading, data } = useOne<Tickets>({
+  const { isLoading, data } = useOne<Ticket>({
     resource: "tickets",
     id,
   });
-  const ticketData = data?.data || ({} as Tickets);
+  const ticketData = data?.data || ({} as Ticket);
 
   const breadcrumb = (
     <Breadcrumbs aria-label="breadcrumb">
