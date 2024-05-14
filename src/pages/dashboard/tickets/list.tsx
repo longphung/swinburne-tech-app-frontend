@@ -38,7 +38,13 @@ const TicketsList = () => {
             headerName: "Customer",
             width: 250,
             renderCell: (params) => (
-              <Link component={RouterLink} to={`/dashboard/users/${params.row.customerId._id}/edit`}>
+              <Link
+                component={RouterLink}
+                to={`/dashboard/users/${params.row.customerId._id}/edit`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
                 {params.row.customerId.name}
               </Link>
             ),
@@ -54,7 +60,13 @@ const TicketsList = () => {
             headerName: "Service",
             width: 250,
             renderCell: (params) => (
-              <Link component={RouterLink} to={`/dashboard/services/${params.row.serviceId._id}/edit`}>
+              <Link
+                component={RouterLink}
+                to={`/dashboard/services/${params.row.serviceId._id}/edit`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
                 {params.row.serviceId.title}
               </Link>
             ),
@@ -75,7 +87,13 @@ const TicketsList = () => {
             width: 250,
             renderCell: (params) =>
               params.row.assignedTo?._id && (
-                <Link component={RouterLink} to={`/dashboard/users/${params.row.assignedTo._id}/edit`}>
+                <Link
+                  component={RouterLink}
+                  to={`/dashboard/users/${params.row.assignedTo._id}/edit`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
                   {params.row.assignedTo.name}
                 </Link>
               ),

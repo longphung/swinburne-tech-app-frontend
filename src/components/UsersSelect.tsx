@@ -11,6 +11,7 @@ type Props = {
   control: never;
   label: string;
   resource: USERS_ROLE.TECHNICIAN | USERS_ROLE.CUSTOMER;
+  error: string;
 };
 
 const UsersSelect: FC<Props> = (props) => {
@@ -38,6 +39,7 @@ const UsersSelect: FC<Props> = (props) => {
   return (
     <Controller
       control={control}
+      rules={{ required: "This field is required" }}
       render={({ field }) => (
         <Autocomplete
           id={`${name}-select`}
@@ -62,6 +64,8 @@ const UsersSelect: FC<Props> = (props) => {
             <TextField
               {...params}
               label={label}
+              error={!!props.error}
+              helperText={props.error}
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (

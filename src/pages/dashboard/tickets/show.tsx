@@ -6,13 +6,12 @@ import { Show } from "@refinedev/mui";
 import { Breadcrumbs, Link, Skeleton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useGetIdentity, useOne } from "@refinedev/core";
+import { useOne } from "@refinedev/core";
 
-import { TICKET_STATUS, Ticket, UserData, USERS_ROLE } from "@/interfaces";
+import { Ticket, TICKET_STATUS } from "@/interfaces";
 
 const TicketsShow = () => {
   const { id } = useParams();
-  const { data: userData } = useGetIdentity<UserData>();
   const { isLoading, data } = useOne<Ticket>({
     resource: "tickets",
     id,
@@ -38,7 +37,6 @@ const TicketsShow = () => {
       title={<Typography variant="h5">Ticket Details</Typography>}
       resource="tickets"
       recordItemId={id}
-      canEdit={userData?.role.includes(USERS_ROLE.ADMIN) || userData?.role.includes(USERS_ROLE.TECHNICIAN)}
     >
       {isLoading ? (
         <Skeleton variant="rectangular" height={400} width="100%" />

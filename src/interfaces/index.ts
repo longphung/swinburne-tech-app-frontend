@@ -88,16 +88,19 @@ export type Ticket = {
   customerId: {
     _id: string;
     name: string;
+    id: string;
   };
   serviceId: {
     _id: string;
     title: string;
+    id: string;
   };
   urgency: keyof typeof URGENCY;
   location: string;
   assignedTo: {
     _id: string;
     name: string;
+    id: string;
   };
   modifiers: Array<SLAData>;
   note: string;
