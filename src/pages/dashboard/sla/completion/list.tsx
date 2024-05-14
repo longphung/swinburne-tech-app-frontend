@@ -76,7 +76,9 @@ const CompletionSLAList: FC = () => {
             field: "actions",
             headerName: "Actions",
             type: "actions",
-            renderCell: (params) => <DataGridActionCell id={params.row.id as string} resource="completion-slas" />,
+            renderCell: (params) => (
+              <DataGridActionCell canDelete id={params.row.id as string} resource="completion-slas" />
+            ),
           },
         ]}
         autoHeight

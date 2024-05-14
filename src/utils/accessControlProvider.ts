@@ -2,6 +2,50 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 import { UserData, USERS_ROLE } from "@/interfaces";
 import { CanParams } from "@refinedev/core";
 
+export const customerFields = ["note", "location"];
+export const technicianFields = ["assignedTo", "status", "note", "urgency", "location"];
+
+const handleCustomerAccess = ({ resource, action, params }: CanParams) => {
+  if (resource === "tickets" && action === "edit") {
+    if (params?.field) {
+      return { can: customerFields.includes(params?.field), reason: "Customer can only edit note and location" };
+    }
+    return {
+      can: true,
+      reason: "Customer can edit tickets",
+    };
+  }
+  if (resource === "tickets" && action === "list") {
+    return {
+      can: true,
+      reason: "Customer can list tickets",
+    };
+  }
+  return {
+    can: false,
+    reason: "Unknown action",
+  };
+};
+
+const handleTechnicianAccess = ({ resource, action, params }: CanParams) => {
+  if (resource === "tickets" && action === "edit") {
+    if (params?.field) {
+      return {
+        can: technicianFields.includes(params?.field),
+        reason: "Technician can only edit assignedTo, status, note, urgency, and location",
+      };
+    }
+    return {
+      can: true,
+      reason: "Technician can edit tickets",
+    };
+  }
+  return {
+    can: true,
+    reason: "Technician can do anything",
+  };
+};
+
 /**
  * This only applies to the dashboard side of the application, we are only using CanAccess to check if the user can access parts of the dashboard
  */
@@ -33,28 +77,15 @@ const accessControlProvider = {
       }: JwtPayload & {
         userData: UserData;
       } = jwtDecode(idToken);
-      for (const r of role) {
-        switch (r) {
-          case USERS_ROLE.ADMIN: {
-            return {
-              can: true,
-              reason: "Admin can do anything",
-            };
-          }
-          case USERS_ROLE.CUSTOMER: {
-            // NOTE: There are some resources that customers can access, but not implemented yet
-            return {
-              can: false,
-              reason: "Customer cannot access this resource",
-            };
-          }
-          case USERS_ROLE.TECHNICIAN: {
-            return {
-              can: true,
-              reason: "Technician can do anything (for now...)",
-            };
-          }
-        }
+      if (role.includes(USERS_ROLE.ADMIN)) {
+        return {
+          can: true,
+          reason: "Admin can do anything",
+        };
+      } else if (role.includes(USERS_ROLE.TECHNICIAN)) {
+        return handleTechnicianAccess(params);
+      } else if (role.includes(USERS_ROLE.CUSTOMER)) {
+        return handleCustomerAccess(params);
       }
       return {
         can: false,

@@ -66,26 +66,49 @@ export type ResponseSLAData = SLAData & {
   type: "response";
 };
 
-export type Tickets = {
+export enum TICKET_STATUS {
+  NOT_STARTED = "Not Started",
+  OPEN = "Open",
+  QUERIES_CLIENT = "Queries Client",
+  QUERIES_EXTERNAL = "Queries External",
+  COMPLETE = "Complete",
+}
+
+// "planned", "low", "medium", "high", "critical"
+export enum URGENCY {
+  PLANNED = "planned",
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  CRITICAL = "critical",
+}
+
+export type Ticket = {
+  id: string;
   customerId: {
     _id: string;
     name: string;
+    id: string;
   };
   serviceId: {
     _id: string;
-    name: string;
+    title: string;
+    id: string;
   };
-  urgency: string;
+  urgency: keyof typeof URGENCY;
   location: string;
   assignedTo: {
     _id: string;
     name: string;
+    id: string;
   };
   modifiers: Array<SLAData>;
   note: string;
   refundFlag: boolean;
-  status: string;
-}
+  status: keyof typeof TICKET_STATUS;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type OrderData = {
   id: string;
