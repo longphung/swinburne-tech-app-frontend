@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const beInst = axios.create({
-  baseURL: "/api",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 
 let isRefreshing = false;
