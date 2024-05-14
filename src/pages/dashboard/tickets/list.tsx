@@ -19,7 +19,7 @@ const TicketsList = () => {
       <Link underline="hover" color="inherit" component={RouterLink} to="/dashboard">
         Dashboard
       </Link>
-      <Typography>Ticket</Typography>
+      <Typography>Tickets</Typography>
     </Breadcrumbs>
   );
 
@@ -27,7 +27,7 @@ const TicketsList = () => {
     navigate(`/dashboard/tickets/${params.id}`);
   };
   return (
-    <List title="Ticket" breadcrumb={breadcrumb} canCreate={false}>
+    <List title="Tickets" breadcrumb={breadcrumb} canCreate={false}>
       <DataGrid
         {...dataGridProps}
         onRowClick={handleRowClick}
