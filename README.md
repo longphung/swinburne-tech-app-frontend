@@ -1,4 +1,4 @@
-# Project Name
+# Techaway
 
 ## Table of Contents
 
