@@ -1,8 +1,6 @@
 import { DevtoolsProvider, DevtoolsPanel } from "@refinedev/devtools";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import React from "react";
-import StoreIcon from "@mui/icons-material/Store";
-import PeopleIcon from "@mui/icons-material/People";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ConfirmProvider } from "material-ui-confirm";
 import { Refine } from "@refinedev/core";
@@ -19,6 +17,7 @@ import { beInst } from "@/api/backend";
 import { dataProvider } from "@/utils/restDataProvider";
 import CartProvider from "@/components/Providers/CartProvider";
 import accessControlProvider from "@/utils/accessControlProvider";
+import resources from "@/utils/resources";
 
 const App: React.FC = () => {
   return (
@@ -34,30 +33,7 @@ const App: React.FC = () => {
                   <Refine
                     authProvider={authProvider}
                     dataProvider={dataProvider("", beInst)}
-                    resources={[
-                      {
-                        name: "users",
-                        list: "/dashboard/users",
-                        show: "/dashboard/users/:id",
-                        create: "/dashboard/users/new",
-                        edit: "/dashboard/users/:id/edit",
-                        meta: {
-                          icon: <PeopleIcon />,
-                          label: "Manage Users",
-                        },
-                      },
-                      {
-                        name: "services",
-                        list: "/dashboard/services",
-                        show: "/dashboard/services/:id",
-                        create: "/dashboard/services/new",
-                        edit: "/dashboard/services/:id/edit",
-                        meta: {
-                          icon: <StoreIcon />,
-                          label: "Manage Services",
-                        },
-                      },
-                    ]}
+                    resources={resources}
                     routerProvider={routerProvider}
                     notificationProvider={useNotificationProvider}
                     accessControlProvider={accessControlProvider}

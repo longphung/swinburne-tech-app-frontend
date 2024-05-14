@@ -69,7 +69,7 @@ export const dataProvider = (
   },
 
   create: async ({ resource, variables, meta }) => {
-    const url = `${apiUrl}/${resource}`;
+    const url = meta?.customUrl ? meta.customUrl(apiUrl, resource) : `${apiUrl}/${resource}`;
 
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypesWithBody) ?? "post";
@@ -84,7 +84,7 @@ export const dataProvider = (
   },
 
   update: async ({ resource, id, variables, meta }) => {
-    const url = `${apiUrl}/${resource}/${id}`;
+    const url = meta?.customUrl ? meta.customUrl(apiUrl, resource, id) : `${apiUrl}/${resource}/${id}`;
 
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypesWithBody) ?? "patch";
@@ -99,7 +99,7 @@ export const dataProvider = (
   },
 
   getOne: async ({ resource, id, meta }) => {
-    const url = `${apiUrl}/${resource}/${id}`;
+    const url = meta?.customUrl ? meta.customUrl(apiUrl, resource, id) : `${apiUrl}/${resource}/${id}`;
 
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypes) ?? "get";
@@ -112,7 +112,7 @@ export const dataProvider = (
   },
 
   deleteOne: async ({ resource, id, variables, meta }) => {
-    const url = `${apiUrl}/${resource}/${id}`;
+    const url = meta?.customUrl ? meta.customUrl(apiUrl, resource, id) : `${apiUrl}/${resource}/${id}`;
 
     const { headers, method } = meta ?? {};
     const requestMethod = (method as MethodTypesWithBody) ?? "delete";

@@ -25,15 +25,18 @@ const StyledCard = styled(Card)`
 
 interface Props {
   service: ServiceData;
+  showAddButton?: boolean;
 }
 
 const ServiceShoppingCard: FC<Props> = (props) => {
-  const { service } = props;
+  const { service, showAddButton = false } = props;
+  const { price, ...serviceWithoutPrice } = service;
   const dispatchCart = useCartDispatch();
   // Add missingInfo property to the service
   const serviceToUse: CartItem = {
-    ...service,
+    ...serviceWithoutPrice,
     missingInfo: true,
+    basePrice: price,
   } as CartItem;
 
   /**
@@ -44,7 +47,7 @@ const ServiceShoppingCard: FC<Props> = (props) => {
     currency: "AUD",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(serviceToUse.price);
+  }).format(price);
 
   const handleAdd: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -102,10 +105,12 @@ const ServiceShoppingCard: FC<Props> = (props) => {
             {priceToShow}
           </Typography>
 
-          <Button onClick={handleAdd}>
-            <AddShoppingCartIcon sx={{ marginRight: "0.5rem" }} />
-            Add
-          </Button>
+          {showAddButton && (
+            <Button onClick={handleAdd}>
+              <AddShoppingCartIcon sx={{ marginRight: "0.5rem" }} />
+              Add
+            </Button>
+          )}
         </CardActions>
       </StyledCard>
     </Grid>

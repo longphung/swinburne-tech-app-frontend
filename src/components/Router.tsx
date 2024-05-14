@@ -10,6 +10,8 @@ import { CircularProgress } from "@mui/material";
 import logoIcon from "@/assets/logo-icon.png";
 import logo from "@/assets/logo.png";
 import Sider from "@/components/Sider";
+import Footer from "@/components/Footer";
+
 const Register = lazy(() => import("@/components/Register"));
 const UpdatePassword = lazy(() => import("@/components/UpdatePassword"));
 const Home = lazy(() => import("@/pages/Home"));
@@ -27,7 +29,20 @@ const ServicesList = lazy(() => import("@/pages/dashboard/services/list"));
 const ServicesCreate = lazy(() => import("@/pages/dashboard/services/create"));
 const ServicesEdit = lazy(() => import("@/pages/dashboard/services/edit"));
 const IndividualServicePage = lazy(() => import("@/pages/Services/IndividualServicePage"));
+const Checkout = lazy(() => import("@/pages/Checkout"));
+const CompletionSLAList = lazy(() => import("@/pages/dashboard/sla/completion/list"));
+const CompletionSLACreate = lazy(() => import("@/pages/dashboard/sla/completion/create"));
+const CompletionSLAEdit = lazy(() => import("@/pages/dashboard/sla/completion/edit"));
+const ResponseSLAList = lazy(() => import("@/pages/dashboard/sla/response/list"));
+const ResponseSLACreate = lazy(() => import("@/pages/dashboard/sla/response/create"));
+const ResponseSLAEdit = lazy(() => import("@/pages/dashboard/sla/response/edit"));
+const OrdersList = lazy(() => import("@/pages/dashboard/orders/list"));
+const OrdersEdit = lazy(() => import("@/pages/dashboard/orders/edit"));
+const TicketsList = lazy(() => import("@/pages/dashboard/tickets/list"));
+const TicketsShow = lazy(() => import("@/pages/dashboard/tickets/show"));
+const TicketsEdit = lazy(() => import("@/pages/dashboard/tickets/edit"));
 
+// eslint-disable-next-line max-lines-per-function
 const Router = () => {
   return (
     <Routes>
@@ -140,6 +155,94 @@ const Router = () => {
             </Suspense>
           }
         />
+        <Route
+          path="/dashboard/completion-slas"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <CompletionSLAList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/completion-slas/new"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <CompletionSLACreate />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/completion-slas/:id/edit"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <CompletionSLAEdit />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/response-slas"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ResponseSLAList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/response-slas/new"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ResponseSLACreate />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/response-slas/:id/edit"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ResponseSLAEdit />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/orders"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <OrdersList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/orders/:id/edit"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <OrdersEdit />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/tickets"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <TicketsList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/tickets/:id"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <TicketsShow />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/tickets/:id/edit"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <TicketsEdit />
+            </Suspense>
+          }
+        />
         <Route path="*" element={<ErrorComponent />} />
       </Route>
 
@@ -148,6 +251,7 @@ const Router = () => {
           <main>
             <Header />
             <Outlet />
+            <Footer />
           </main>
         }
       >
@@ -217,6 +321,14 @@ const Router = () => {
           element={
             <Suspense fallback={<CircularProgress />}>
               <IndividualServicePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <Checkout />
             </Suspense>
           }
         />
