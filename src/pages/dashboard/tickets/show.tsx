@@ -76,9 +76,15 @@ const TicketsShow = () => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              Notes:
+              Customer Notes:
             </Typography>
-            <Typography variant="body1">{ticketData.note}</Typography>
+            <Typography variant="body1">{ticketData.noteCustomer}</Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Technician Notes:
+            </Typography>
+            <Typography variant="body1">{ticketData.noteTechnician}</Typography>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>

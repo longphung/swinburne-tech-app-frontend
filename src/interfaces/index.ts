@@ -103,7 +103,8 @@ export type Ticket = {
     id: string;
   };
   modifiers: Array<SLAData>;
-  note: string;
+  noteCustomer: string;
+  noteTechnician: string;
   refundFlag: boolean;
   status: keyof typeof TICKET_STATUS;
   createdAt: string;
