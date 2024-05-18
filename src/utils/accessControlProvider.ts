@@ -2,8 +2,8 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 import { UserData, USERS_ROLE } from "@/interfaces";
 import { CanParams } from "@refinedev/core";
 
-export const customerFields = ["note", "location"];
-export const technicianFields = ["assignedTo", "status", "note", "urgency", "location"];
+export const customerFields = ["noteCustomer", "location"];
+export const technicianFields = ["assignedTo", "status", "noteTechnician", "urgency", "location"];
 
 const handleCustomerAccess = ({ resource, action, params }: CanParams) => {
   if (resource === "tickets" && action === "edit") {
