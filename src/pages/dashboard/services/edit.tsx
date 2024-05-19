@@ -16,7 +16,7 @@ import {
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import Editor from "@/components/Editor/Editor";
 import { useInvalidate } from "@refinedev/core";
@@ -27,9 +27,8 @@ const ServicesEdit = () => {
   const editor = useRef<EditorType>(null);
   const invalidate = useInvalidate();
   const {
-    refineCore: { onFinish, queryResult },
+    refineCore: { onFinish, queryResult, formLoading },
     saveButtonProps,
-    register,
     setValue,
     control,
     formState: { errors },
@@ -65,6 +64,7 @@ const ServicesEdit = () => {
       },
     },
   });
+  const [prevLoading, setPrevLoading] = useState(formLoading);
   const { data } = queryResult as unknown as { data: { data?: ServiceData } };
 
   const breadcrumb = (
@@ -104,50 +104,71 @@ const ServicesEdit = () => {
     >
       <Grid container component="form" spacing={2} onSubmit={onSubmit}>
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <TextField
-            {...register("title", { required: true })}
-            id="title"
-            label="Title"
-            helperText={errors.title ? errors.title.message : ""}
-            error={!!errors.title}
-            type="text"
-            fullWidth
-            placeholder="Title"
-            sx={{
-              margin: "1rem",
-            }}
+          <Controller
+            name="title"
+            control={control}
+            rules={{ required: "Title is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="title"
+                label="Title"
+                helperText={errors.title ? errors.title.message : ""}
+                error={!!errors.title}
+                type="text"
+                fullWidth
+                placeholder="Title"
+                sx={{
+                  margin: "1rem",
+                }}
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <TextField
-            {...register("label", { required: true })}
-            id="label"
-            label="Label"
-            helperText={errors.label ? errors.label.message : ""}
-            error={!!errors.label}
-            type="text"
-            fullWidth
-            placeholder="Label"
-            sx={{
-              margin: "1rem",
-            }}
+          <Controller
+            name="label"
+            control={control}
+            rules={{ required: "Label is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="label"
+                label="Label"
+                helperText={errors.label ? errors.label.message : ""}
+                error={!!errors.label}
+                type="text"
+                fullWidth
+                placeholder="Label"
+                sx={{
+                  margin: "1rem",
+                }}
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <TextField
-            {...register("price", { required: true })}
-            id="price"
-            label="Price"
-            helperText={errors.price ? errors.price.message : ""}
-            error={!!errors.price}
-            type="number"
-            fullWidth
-            placeholder="Price"
-            sx={{
-              margin: "1rem",
-            }}
+          <Controller
+            name="price"
+            control={control}
+            rules={{ required: "Price is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="price"
+                label="Price"
+                helperText={errors.price ? errors.price.message : ""}
+                error={!!errors.price}
+                type="number"
+                fullWidth
+                placeholder="Price"
+                sx={{
+                  margin: "1rem",
+                }}
+              />
+            )}
           />
         </Grid>
 
@@ -213,25 +234,33 @@ const ServicesEdit = () => {
         </Grid>
 
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <TextField
-            {...register("imageUrl", { required: true })}
-            id="imageUrl"
-            label={
-              <Typography variant="body1">
-                Image URL
-                <Tooltip title="We don't support image preview yet" placement="top">
-                  <InfoIcon />
-                </Tooltip>
-              </Typography>
-            }
-            helperText={errors.imageUrl ? errors.imageUrl.message : ""}
-            error={!!errors.imageUrl}
-            type="text"
-            fullWidth
-            placeholder="Image URL"
-            sx={{
-              margin: "1rem",
-            }}
+          <Controller
+            name="imageUrl"
+            control={control}
+            rules={{ required: "Image URL is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="imageUrl"
+                defaultValue={data?.data?.imageUrl || ""}
+                label={
+                  <Typography variant="body1">
+                    Image URL
+                    <Tooltip title="We don't support image preview yet" placement="top">
+                      <InfoIcon />
+                    </Tooltip>
+                  </Typography>
+                }
+                helperText={errors.imageUrl ? errors.imageUrl.message : ""}
+                error={!!errors.imageUrl}
+                type="text"
+                fullWidth
+                placeholder="Image URL"
+                sx={{
+                  margin: "1rem",
+                }}
+              />
+            )}
           />
         </Grid>
 
