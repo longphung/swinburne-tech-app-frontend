@@ -145,9 +145,9 @@ export const sendConfirmationEmail = async (username: string) => {
   return result.data;
 };
 
-export const sendForgotPasswordEmail = async (username: string) => {
+export const sendForgotPasswordEmail = async (email: string) => {
   const result = await beInst.post("/auth/forgot-password", {
-    username,
+    email,
   });
   return result.data;
 };

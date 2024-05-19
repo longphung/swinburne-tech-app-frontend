@@ -124,9 +124,9 @@ const authProvider: AuthProvider = {
       };
     }
   },
-  forgotPassword: async (data: { username: string }) => {
+  forgotPassword: async (data: { email: string }) => {
     try {
-      await sendForgotPasswordEmail(data.username);
+      await sendForgotPasswordEmail(data.email);
       return {
         success: true,
         successNotification: {

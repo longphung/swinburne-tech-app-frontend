@@ -46,7 +46,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
     BaseRecord,
     HttpError,
     ForgotPasswordFormTypes & {
-      username: string;
+      email: string;
     }
   >({
     ...useFormProps,
@@ -108,16 +108,16 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
           })}
         >
           <TextField
-            {...register("username", {
-              required: "Username is required",
+            {...register("email", {
+              required: "Email is required",
             })}
-            id="username"
+            id="email"
             margin="normal"
             fullWidth
-            label={translate("pages.forgotPassword.fields.username", "Username")}
-            name="username"
+            label={translate("pages.forgotPassword.fields.email", "Email")}
+            name="email"
             type="text"
-            error={!!errors.username}
+            error={!!errors.email}
             autoComplete="email"
             sx={{
               m: 0,
