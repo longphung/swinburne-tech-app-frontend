@@ -58,13 +58,7 @@ beInst.interceptors.response.use(null, async (error) => {
   return beInst(error.config);
 });
 
-export const login = async ({
-  username,
-  password,
-}: {
-  username: string;
-  password: string;
-}) => {
+export const login = async ({ username, password }: { username: string; password: string }) => {
   const result = await beInst.post<{
     idToken: string;
     accessToken: string;
@@ -107,9 +101,7 @@ export const refreshAccessToken = async (refreshToken: string) => {
   }
 };
 
-export const logout = async (
-  refreshToken: string,
-): Promise<{ success: boolean; message?: string }> => {
+export const logout = async (refreshToken: string): Promise<{ success: boolean; message?: string }> => {
   try {
     await beInst.put("/auth/token", {
       refreshToken,
@@ -158,17 +150,21 @@ export const sendForgotPasswordEmail = async (username: string) => {
     username,
   });
   return result.data;
-}
+};
 
-export const resetPassword = async (data: {
-  token: string,
-  password: string,
-}) => {
+export const resetPassword = async (data: { token: string; password: string }) => {
   const result = await beInst.post("/auth/reset-password", data);
   return result.data;
-}
+};
 
 export const getUsersServiceList = async () => {
   const result = await beInst.get("/services");
   return result.data;
-}
+};
+
+export const getOrderPDFInvoice = async (orderId: string) => {
+  const result = await beInst.get(`/orders/pdf/${orderId}`, {
+    responseType: "blob",
+  });
+  return window.URL.createObjectURL(result.data);
+};
