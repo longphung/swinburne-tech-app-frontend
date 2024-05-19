@@ -29,6 +29,13 @@ const Dashboard = () => {
     }>
   >([]);
 
+  const formatter = Intl.NumberFormat("en-AU", {
+    style: "currency",
+    currency: "AUD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   useEffect(() => {
     if (!loadingTechnicianReport.current) {
       loadingTechnicianReport.current = true;
@@ -136,12 +143,14 @@ const Dashboard = () => {
                 headerName: "Gross",
                 width: 150,
                 type: "number",
+                valueGetter: (params) => (params.value === null ? null : formatter.format(params.value)),
               },
               {
                 field: "total",
                 headerName: "Total",
                 width: 150,
                 type: "number",
+                valueGetter: (params) => (params.value === null ? null : formatter.format(params.value)),
               },
             ]}
             autoHeight
