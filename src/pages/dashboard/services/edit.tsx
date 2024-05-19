@@ -16,18 +16,18 @@ import {
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 import Editor from "@/components/Editor/Editor";
 import { useInvalidate } from "@refinedev/core";
-import { ServiceData } from "@/interfaces";
+import { CATEGORY_LABELS, ServiceData } from "@/interfaces";
 import InfoIcon from "@mui/icons-material/Info";
 
 const ServicesEdit = () => {
   const editor = useRef<EditorType>(null);
   const invalidate = useInvalidate();
   const {
-    refineCore: { onFinish, queryResult, formLoading },
+    refineCore: { onFinish, queryResult },
     saveButtonProps,
     setValue,
     control,
@@ -64,7 +64,6 @@ const ServicesEdit = () => {
       },
     },
   });
-  const [prevLoading, setPrevLoading] = useState(formLoading);
   const { data } = queryResult as unknown as { data: { data?: ServiceData } };
 
   const breadcrumb = (
@@ -191,12 +190,12 @@ const ServicesEdit = () => {
                   <MenuItem value="" disabled>
                     None
                   </MenuItem>
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={1}>{CATEGORY_LABELS[1]}</MenuItem>
+                  <MenuItem value={2}>{CATEGORY_LABELS[2]}</MenuItem>
+                  <MenuItem value={3}>{CATEGORY_LABELS[3]}</MenuItem>
+                  <MenuItem value={4}>{CATEGORY_LABELS[4]}</MenuItem>
+                  <MenuItem value={5}>{CATEGORY_LABELS[5]}</MenuItem>
+                  <MenuItem value={6}>{CATEGORY_LABELS[6]}</MenuItem>
                 </Select>
               )}
             />

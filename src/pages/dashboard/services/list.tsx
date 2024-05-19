@@ -1,5 +1,5 @@
 import { DeleteButton, EditButton, List, useDataGrid } from "@refinedev/mui";
-import { ServiceData } from "@/interfaces";
+import { CATEGORY, CATEGORY_LABELS, ServiceData } from "@/interfaces";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import { Breadcrumbs, IconButton, Link, Popover } from "@mui/material";
@@ -90,6 +90,7 @@ const ServicesList = () => {
             field: "category",
             headerName: "Category",
             width: 120,
+            valueGetter: (params) => CATEGORY_LABELS[params.row.category as CATEGORY],
           },
           {
             field: "serviceType",
