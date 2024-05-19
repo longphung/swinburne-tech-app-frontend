@@ -8,9 +8,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { Controller } from "react-hook-form";
 
-
 import { OrderData } from "@/interfaces";
 import { getOrderPDFInvoice } from "@/api/backend";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 type UpdatableFields = Pick<OrderData, "status">;
 
@@ -31,11 +32,16 @@ const OrdersEdit: FC = () => {
   useEffect(() => {
     if (!loadingPdf.current && id) {
       loadingPdf.current = true;
-      console.log('running')
+      console.log("running");
       getOrderPDFInvoice(id).then((res) => {
-        setPdfURL(res)
-      })
+        setPdfURL(res);
+        loadingPdf.current = false;
+      });
     }
+    return () => {
+      loadingPdf.current = false;
+      setPdfURL(null);
+    };
   }, []);
 
   const breadcrumb = (
@@ -72,9 +78,20 @@ const OrdersEdit: FC = () => {
       <Grid container spacing={2} component="form" onSubmit={onSubmit}>
         <Grid item xs={12} md={6}>
           {pdfURL ? (
-            <Document file={pdfURL}>
-              <Page pageNumber={1} />
-            </Document>
+            <>
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}>
+                <Typography variant="h4">Invoice:</Typography>
+                <Button variant="contained" component={Link} href={pdfURL} target="_blank" rel="noreferrer">
+                  Download Invoice
+                </Button>
+              </Box>
+              <Document file={pdfURL}>
+                <Page pageNumber={1} />
+              </Document>
+            </>
           ) : (
             <CircularProgress />
           )}
