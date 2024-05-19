@@ -20,7 +20,6 @@ const TicketsEdit = () => {
   const {
     refineCore: { queryResult, onFinish },
     handleSubmit,
-    register,
     saveButtonProps,
     control,
     formState: { errors },
@@ -74,12 +73,14 @@ const TicketsEdit = () => {
     onFinish(dataToSend);
   });
 
-  const costToShow = ticketData?.cost ? Intl.NumberFormat("en-AU", {
-    style: "currency",
-    currency: "AUD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(ticketData.cost) : '';
+  const costToShow = ticketData?.cost
+    ? Intl.NumberFormat("en-AU", {
+        style: "currency",
+        currency: "AUD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(ticketData.cost)
+    : "";
 
   return (
     <Edit
@@ -274,15 +275,20 @@ const TicketsEdit = () => {
             }}
             fallback={<Typography variant="h6">Location: {ticketData.location}</Typography>}
           >
-            <TextField
-              {...register("location")}
-              value={ticketData.location ?? ''}
-              label="Location"
-              error={Boolean(errors.location)}
-              helperText={errors.location ? (errors.location.message as string) : ""}
-              type="text"
-              placeholder="Location"
-              fullWidth
+            <Controller
+              name="location"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Location"
+                  error={Boolean(errors.location)}
+                  helperText={errors.location ? (errors.location.message as string) : ""}
+                  type="text"
+                  placeholder="Location"
+                  fullWidth
+                />
+              )}
             />
           </CanAccess>
         </Grid>
@@ -295,17 +301,22 @@ const TicketsEdit = () => {
             }}
             fallback={<Typography variant="h6">Customer Notes: {ticketData.noteCustomer}</Typography>}
           >
-            <TextField
-              {...register("noteCustomer")}
-              value={ticketData.noteCustomer ?? ''}
-              label="Customer Notes"
-              error={Boolean(errors.noteCustomer)}
-              helperText={errors.noteCustomer ? (errors.noteCustomer.message as string) : ""}
-              type="text"
-              placeholder="Customer Notes"
-              fullWidth
-              multiline
-              rows={4}
+            <Controller
+              name="noteCustomer"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Customer Notes"
+                  error={Boolean(errors.noteCustomer)}
+                  helperText={errors.noteCustomer ? (errors.noteCustomer.message as string) : ""}
+                  type="text"
+                  placeholder="Customer Notes"
+                  fullWidth
+                  multiline
+                  rows={4}
+                />
+              )}
             />
           </CanAccess>
         </Grid>
@@ -319,17 +330,22 @@ const TicketsEdit = () => {
             }}
             fallback={<Typography variant="h6">Technician Notes: {ticketData.noteTechnician}</Typography>}
           >
-            <TextField
-              {...register("noteTechnician")}
-              value={ticketData.noteTechnician ?? ''}
-              label="Technician Notes"
-              error={Boolean(errors.noteTechnician)}
-              helperText={errors.noteTechnician? (errors.noteTechnician.message as string) : ""}
-              type="text"
-              placeholder="Customer Notes"
-              fullWidth
-              multiline
-              rows={4}
+            <Controller
+              name="noteTechnician"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Technician Notes"
+                  error={Boolean(errors.noteTechnician)}
+                  helperText={errors.noteTechnician ? (errors.noteTechnician.message as string) : ""}
+                  type="text"
+                  placeholder="Customer Notes"
+                  fullWidth
+                  multiline
+                  rows={4}
+                />
+              )}
             />
           </CanAccess>
         </Grid>

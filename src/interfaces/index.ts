@@ -25,7 +25,7 @@ export type ServiceData = {
   title: string;
   label: string;
   price: number;
-  category: number;
+  category: CATEGORY,
   serviceType: "onsite" | "remote" | "both";
   description: string;
   imageUrl?: string;
@@ -73,6 +73,24 @@ export enum TICKET_STATUS {
   QUERIES_EXTERNAL = "Queries External",
   COMPLETE = "Complete",
 }
+
+export enum CATEGORY {
+  MS = 1,
+  WIFI,
+  EMAIL,
+  WEBSITE,
+  CLOUD,
+  IT
+}
+
+export const CATEGORY_LABELS = {
+  [CATEGORY.MS]: "Microsoft 365",
+  [CATEGORY.WIFI]: "WiFi",
+  [CATEGORY.EMAIL]: "Email",
+  [CATEGORY.WEBSITE]: "Website",
+  [CATEGORY.CLOUD]: "Cloud",
+  [CATEGORY.IT]: "IT Security",
+};
 
 // "planned", "low", "medium", "high", "critical"
 export enum URGENCY {

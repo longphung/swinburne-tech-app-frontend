@@ -20,7 +20,7 @@ import { useRef } from "react";
 
 import Editor from "@/components/Editor/Editor";
 import { useInvalidate } from "@refinedev/core";
-import { ServiceData } from "@/interfaces";
+import { CATEGORY_LABELS, ServiceData } from "@/interfaces";
 import InfoIcon from "@mui/icons-material/Info";
 
 const ServicesEdit = () => {
@@ -29,7 +29,6 @@ const ServicesEdit = () => {
   const {
     refineCore: { onFinish, queryResult },
     saveButtonProps,
-    register,
     setValue,
     control,
     formState: { errors },
@@ -104,50 +103,71 @@ const ServicesEdit = () => {
     >
       <Grid container component="form" spacing={2} onSubmit={onSubmit}>
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <TextField
-            {...register("title", { required: true })}
-            id="title"
-            label="Title"
-            helperText={errors.title ? errors.title.message : ""}
-            error={!!errors.title}
-            type="text"
-            fullWidth
-            placeholder="Title"
-            sx={{
-              margin: "1rem",
-            }}
+          <Controller
+            name="title"
+            control={control}
+            rules={{ required: "Title is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="title"
+                label="Title"
+                helperText={errors.title ? errors.title.message : ""}
+                error={!!errors.title}
+                type="text"
+                fullWidth
+                placeholder="Title"
+                sx={{
+                  margin: "1rem",
+                }}
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <TextField
-            {...register("label", { required: true })}
-            id="label"
-            label="Label"
-            helperText={errors.label ? errors.label.message : ""}
-            error={!!errors.label}
-            type="text"
-            fullWidth
-            placeholder="Label"
-            sx={{
-              margin: "1rem",
-            }}
+          <Controller
+            name="label"
+            control={control}
+            rules={{ required: "Label is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="label"
+                label="Label"
+                helperText={errors.label ? errors.label.message : ""}
+                error={!!errors.label}
+                type="text"
+                fullWidth
+                placeholder="Label"
+                sx={{
+                  margin: "1rem",
+                }}
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <TextField
-            {...register("price", { required: true })}
-            id="price"
-            label="Price"
-            helperText={errors.price ? errors.price.message : ""}
-            error={!!errors.price}
-            type="number"
-            fullWidth
-            placeholder="Price"
-            sx={{
-              margin: "1rem",
-            }}
+          <Controller
+            name="price"
+            control={control}
+            rules={{ required: "Price is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="price"
+                label="Price"
+                helperText={errors.price ? errors.price.message : ""}
+                error={!!errors.price}
+                type="number"
+                fullWidth
+                placeholder="Price"
+                sx={{
+                  margin: "1rem",
+                }}
+              />
+            )}
           />
         </Grid>
 
@@ -170,12 +190,12 @@ const ServicesEdit = () => {
                   <MenuItem value="" disabled>
                     None
                   </MenuItem>
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={1}>{CATEGORY_LABELS[1]}</MenuItem>
+                  <MenuItem value={2}>{CATEGORY_LABELS[2]}</MenuItem>
+                  <MenuItem value={3}>{CATEGORY_LABELS[3]}</MenuItem>
+                  <MenuItem value={4}>{CATEGORY_LABELS[4]}</MenuItem>
+                  <MenuItem value={5}>{CATEGORY_LABELS[5]}</MenuItem>
+                  <MenuItem value={6}>{CATEGORY_LABELS[6]}</MenuItem>
                 </Select>
               )}
             />
@@ -213,25 +233,33 @@ const ServicesEdit = () => {
         </Grid>
 
         <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          <TextField
-            {...register("imageUrl", { required: true })}
-            id="imageUrl"
-            label={
-              <Typography variant="body1">
-                Image URL
-                <Tooltip title="We don't support image preview yet" placement="top">
-                  <InfoIcon />
-                </Tooltip>
-              </Typography>
-            }
-            helperText={errors.imageUrl ? errors.imageUrl.message : ""}
-            error={!!errors.imageUrl}
-            type="text"
-            fullWidth
-            placeholder="Image URL"
-            sx={{
-              margin: "1rem",
-            }}
+          <Controller
+            name="imageUrl"
+            control={control}
+            rules={{ required: "Image URL is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="imageUrl"
+                defaultValue={data?.data?.imageUrl || ""}
+                label={
+                  <Typography variant="body1">
+                    Image URL
+                    <Tooltip title="We don't support image preview yet" placement="top">
+                      <InfoIcon />
+                    </Tooltip>
+                  </Typography>
+                }
+                helperText={errors.imageUrl ? errors.imageUrl.message : ""}
+                error={!!errors.imageUrl}
+                type="text"
+                fullWidth
+                placeholder="Image URL"
+                sx={{
+                  margin: "1rem",
+                }}
+              />
+            )}
           />
         </Grid>
 

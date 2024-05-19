@@ -21,6 +21,7 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 
 import Editor from "@/components/Editor/Editor";
+import { CATEGORY_LABELS } from "@/interfaces";
 
 const ServicesCreate = () => {
   const editor = useRef<EditorType>(null);
@@ -150,12 +151,12 @@ const ServicesCreate = () => {
                   <MenuItem value="" disabled>
                     None
                   </MenuItem>
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={1}>{CATEGORY_LABELS[1]}</MenuItem>
+                  <MenuItem value={2}>{CATEGORY_LABELS[2]}</MenuItem>
+                  <MenuItem value={3}>{CATEGORY_LABELS[3]}</MenuItem>
+                  <MenuItem value={4}>{CATEGORY_LABELS[4]}</MenuItem>
+                  <MenuItem value={5}>{CATEGORY_LABELS[5]}</MenuItem>
+                  <MenuItem value={6}>{CATEGORY_LABELS[6]}</MenuItem>
                 </Select>
               )}
             />
