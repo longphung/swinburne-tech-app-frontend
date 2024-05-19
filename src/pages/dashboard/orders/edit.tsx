@@ -32,7 +32,6 @@ const OrdersEdit: FC = () => {
   useEffect(() => {
     if (!loadingPdf.current && id) {
       loadingPdf.current = true;
-      console.log("running");
       getOrderPDFInvoice(id).then((res) => {
         setPdfURL(res);
         loadingPdf.current = false;
@@ -40,7 +39,6 @@ const OrdersEdit: FC = () => {
     }
     return () => {
       loadingPdf.current = false;
-      setPdfURL(null);
     };
   }, []);
 
@@ -79,15 +77,18 @@ const OrdersEdit: FC = () => {
         <Grid item xs={12} md={6}>
           {pdfURL ? (
             <>
-              <Box sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Typography variant="h4">Invoice:</Typography>
-                <Button variant="contained" component={Link} href={pdfURL} target="_blank" rel="noreferrer">
+                <Button variant="contained" component="a" href={pdfURL} target="_blank" rel="noreferrer">
                   Download Invoice
                 </Button>
               </Box>
+              {/* TODO: known issues with pdf blanking when switching tab https://github.com/wojtekmaj/react-pdf/issues/1798 */}
               <Document file={pdfURL}>
                 <Page pageNumber={1} />
               </Document>
