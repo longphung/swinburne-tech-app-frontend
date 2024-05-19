@@ -170,14 +170,31 @@ export const getOrderPDFInvoice = async (orderId: string) => {
 };
 
 export const getTechnicianReport = async () => {
-  return await beInst.get("/reports/technician", {
-    responseType: "blob",
-  });
-}
-
-export const getCustomerReport = async () => {
-  return await beInst.get("/reports/revenue", {
-    responseType: "blob",
-  });
+  const result = await beInst.get<
+    {
+      _id: string;
+      technician: { name: string };
+      tickets: [number];
+      completedTickets: number;
+    }[]
+  >("/reports/technicians");
+  return result.data;
 };
 
+export const getRevenueReport = async () => {
+  const result = await beInst.get<
+    Array<{
+      _id: [string];
+      total: { $numberDecimal: number };
+      tickets: Array<
+        Array<{
+          _id: string;
+          serviceId: string;
+          status: string;
+          cost: { $numberDecimal: number };
+        }>
+      >;
+    }>
+  >("/reports/revenue");
+  return result.data;
+};
