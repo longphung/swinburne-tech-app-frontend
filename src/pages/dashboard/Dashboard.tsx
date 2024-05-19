@@ -1,8 +1,11 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { Link as RouterLink } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@mui/material";
+
 import { getRevenueReport, getTechnicianReport } from "@/api/backend";
 
 const Dashboard = () => {
@@ -86,7 +89,11 @@ const Dashboard = () => {
                 field: "technician",
                 headerName: "Technician",
                 width: 250,
-                valueGetter: (params) => params.row.technician.name,
+                renderCell: (params) => (
+                  <Link component={RouterLink} to={`/dashboard/users/${params.row._id}/edit`}>
+                    {params.row.technician.name}
+                  </Link>
+                ),
               },
               {
                 field: "tickets",
@@ -118,6 +125,11 @@ const Dashboard = () => {
                 field: "ticketId",
                 headerName: "Ticket ID",
                 width: 250,
+                renderCell: (params) => (
+                  <Link component={RouterLink} to={`/dashboard/tickets/${params.row.ticketId}`}>
+                    {params.row.ticketId}
+                  </Link>
+                ),
               },
               {
                 field: "gross",
