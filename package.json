@@ -66,6 +66,7 @@
         "material-ui-confirm": "^3.0.12",
         "react": "^18.3.1",
         "react-dom": "^18.0.0",
+        "react-pdf": "^8.0.2",
         "react-router-dom": "^6.23.1",
         "tiptap-extension-resize-image": "^1.0.4",
         "uuid": "^9.0.1"
@@ -87,6 +88,7 @@
         "typescript-eslint": "^7.7.1",
         "vite": "^5.2.10",
         "vite-plugin-pwa": "^0.19.8",
+        "vite-plugin-static-copy": "^1.0.4",
         "vite-tsconfig-paths": "^4.3.2"
     },
     "refine": {

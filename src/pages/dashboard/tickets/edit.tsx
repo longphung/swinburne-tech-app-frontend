@@ -74,6 +74,13 @@ const TicketsEdit = () => {
     onFinish(dataToSend);
   });
 
+  const costToShow = ticketData?.cost ? Intl.NumberFormat("en-AU", {
+    style: "currency",
+    currency: "AUD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(ticketData.cost) : '';
+
   return (
     <Edit
       saveButtonProps={{
@@ -190,6 +197,12 @@ const TicketsEdit = () => {
           <Typography variant="body1">{ticketData.serviceId?.title}</Typography>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            Ticket Cost:
+          </Typography>
+          <Typography variant="body1">{costToShow}</Typography>
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
           <CanAccess
             resource="tickets"
             action="edit"
@@ -263,6 +276,7 @@ const TicketsEdit = () => {
           >
             <TextField
               {...register("location")}
+              value={ticketData.location ?? ''}
               label="Location"
               error={Boolean(errors.location)}
               helperText={errors.location ? (errors.location.message as string) : ""}
@@ -273,17 +287,51 @@ const TicketsEdit = () => {
           </CanAccess>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <TextField
-            {...register("note")}
-            label="Notes"
-            error={Boolean(errors.note)}
-            helperText={errors.note ? (errors.note.message as string) : ""}
-            type="text"
-            placeholder="Notes"
-            fullWidth
-            multiline
-            rows={4}
-          />
+          <CanAccess
+            resource="tickets"
+            action="edit"
+            params={{
+              field: "noteCustomer",
+            }}
+            fallback={<Typography variant="h6">Customer Notes: {ticketData.noteCustomer}</Typography>}
+          >
+            <TextField
+              {...register("noteCustomer")}
+              value={ticketData.noteCustomer ?? ''}
+              label="Customer Notes"
+              error={Boolean(errors.noteCustomer)}
+              helperText={errors.noteCustomer ? (errors.noteCustomer.message as string) : ""}
+              type="text"
+              placeholder="Customer Notes"
+              fullWidth
+              multiline
+              rows={4}
+            />
+          </CanAccess>
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={4}>
+          <CanAccess
+            resource="tickets"
+            action="edit"
+            params={{
+              field: "noteTechnician",
+            }}
+            fallback={<Typography variant="h6">Technician Notes: {ticketData.noteTechnician}</Typography>}
+          >
+            <TextField
+              {...register("noteTechnician")}
+              value={ticketData.noteTechnician ?? ''}
+              label="Technician Notes"
+              error={Boolean(errors.noteTechnician)}
+              helperText={errors.noteTechnician? (errors.noteTechnician.message as string) : ""}
+              type="text"
+              placeholder="Customer Notes"
+              fullWidth
+              multiline
+              rows={4}
+            />
+          </CanAccess>
         </Grid>
       </Grid>
     </Edit>

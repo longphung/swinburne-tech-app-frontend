@@ -41,6 +41,7 @@ const OrdersEdit = lazy(() => import("@/pages/dashboard/orders/edit"));
 const TicketsList = lazy(() => import("@/pages/dashboard/tickets/list"));
 const TicketsShow = lazy(() => import("@/pages/dashboard/tickets/show"));
 const TicketsEdit = lazy(() => import("@/pages/dashboard/tickets/edit"));
+const Dashboard = lazy(() => import("@/pages/dashboard/Dashboard"));
 
 // eslint-disable-next-line max-lines-per-function
 const Router = () => {
@@ -77,7 +78,7 @@ const Router = () => {
           path="/dashboard"
           element={
             <Suspense fallback={<CircularProgress />}>
-              <Home />
+              <Dashboard />
             </Suspense>
           }
         />

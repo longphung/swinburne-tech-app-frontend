@@ -114,8 +114,8 @@ const TicketsList = () => {
             ),
           },
           {
-            field: "note",
-            headerName: "Note",
+            field: "noteCustomer",
+            headerName: "Customer Note",
             width: 250,
           },
           {
