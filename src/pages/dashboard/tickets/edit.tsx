@@ -74,6 +74,13 @@ const TicketsEdit = () => {
     onFinish(dataToSend);
   });
 
+  const costToShow = ticketData?.cost ? Intl.NumberFormat("en-AU", {
+    style: "currency",
+    currency: "AUD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(ticketData.cost) : '';
+
   return (
     <Edit
       saveButtonProps={{
@@ -188,6 +195,12 @@ const TicketsEdit = () => {
             Service:
           </Typography>
           <Typography variant="body1">{ticketData.serviceId?.title}</Typography>
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            Ticket Cost:
+          </Typography>
+          <Typography variant="body1">{costToShow}</Typography>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <CanAccess

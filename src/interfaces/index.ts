@@ -109,6 +109,7 @@ export type Ticket = {
   status: keyof typeof TICKET_STATUS;
   createdAt: string;
   updatedAt: string;
+  cost: number;
 };
 
 export type OrderData = {
