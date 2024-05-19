@@ -168,3 +168,16 @@ export const getOrderPDFInvoice = async (orderId: string) => {
   });
   return window.URL.createObjectURL(result.data);
 };
+
+export const getTechnicianReport = async () => {
+  return await beInst.get("/reports/technician", {
+    responseType: "blob",
+  });
+}
+
+export const getCustomerReport = async () => {
+  return await beInst.get("/reports/revenue", {
+    responseType: "blob",
+  });
+};
+
