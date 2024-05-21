@@ -5,6 +5,7 @@
 1. [Getting Started](#getting-started)
 2. [Environment Configuration](#environment-configuration)
 3. [External Documentations](#external-documentations)
+4. [Frequently Asked Questions (FAQs)](#faq)
 
 ## Getting Started
 
@@ -64,4 +65,8 @@ where:
 
 ### The order invoice pdf blanks out when navigating away from the page or to different tab?
 
-This is a known issue currently happening with `react-pdf` library. Tracking issue can be found [here](https://github.com/wojtekmaj/react-pdf/issues/1798)
+This is a known issue currently happening with Chromium browsers and affect not only `react-pdf` library. Tracking issue specific to `react-pdf` can be found [here](https://github.com/wojtekmaj/react-pdf/issues/1798)
+
+## My Cypress tests are returning 404 and not really running?
+
+If you are using the cypress runner to check instead of running in headless mode, then pick Electron instead of Google Chrome. Electron is the environment we are using to run the cypress tests in headless mode, which is what will also be running in the pipeline when we integrate tests to the pipeline.
