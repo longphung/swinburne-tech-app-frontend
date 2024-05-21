@@ -1,45 +1,42 @@
-describe('Login and Perform Additional Steps', () => {
-    beforeEach(() => {
-        cy.clearCookies();
-        cy.clearLocalStorage();
-        cy.visit('https://techaway.phungnnl.dev/login');
-    });
+/// <reference types="cypress" />
 
-    it('Customer should be able to log in and order a service', () => {
-        // Login steps
-        cy.get('#username').type('Bashi');
-        cy.get('#password').type('Hello@123');
-        cy.contains('button', 'Sign in').click();
+// eslint-disable-next-line max-lines-per-function
+describe("Login and Perform Additional Steps", () => {
+  beforeEach(() => {
+    cy.visit("https://techaway.phungnnl.dev/login");
+  });
 
-        cy.url().should('include', '/dashboard');
+  it("Customer should be able to log in and order a service", () => {
+    // Login steps
+    cy.get("#username").type("Bashi");
+    cy.get("#password").type("Hello@123");
+    cy.contains("button", "Sign in").click();
 
-        //Visit services menu
-        cy.visit('https://techaway.phungnnl.dev/services');
+    cy.url().should("include", "/dashboard");
 
-        //Order a service
-        cy.contains('div', 'IT Security').click();
-        cy.contains('button', 'Add to Cart').click();
-        cy.contains('button', 'Cart').click();
-        cy.get('#shopping-cart-popper')
-            .should('be.visible')
-            .and('contain', 'IT Security');
-        // Proceed to checkout
-        cy.contains('a', 'Go to Checkout').click();
+    //Visit services menu
+    cy.visit("https://techaway.phungnnl.dev/services");
 
-        //Navigate to dashbaord
-        cy.contains('a', 'Dashboard').click();
-        cy.url().should('include', '/dashboard');
+    //Order a service
+    cy.contains("div", "IT Security").click();
+    cy.contains("button", "Add to Cart").click();
+    cy.contains("button", "Cart").click();
+    cy.get("#shopping-cart-popper").should("be.visible").and("contain", "IT Security");
+    // Proceed to checkout
+    cy.contains("a", "Go to Checkout").click();
 
-        //Navigate to Mange tickets and check the created ticket
-        cy.contains('span', 'Manage Tickets').click();
-        cy.contains('div', 'low').click();
+    //Navigate to dashboard
+    cy.contains("a", "Dashboard").click();
+    cy.url().should("include", "/dashboard");
 
-        //Check ticket details
-        cy.contains('h5', 'Ticket Details');
+    //Navigate to Manage tickets and check the created ticket
+    cy.contains("span", "Manage Tickets").click();
+    cy.contains("div", "low").click();
 
-        //Log out
-        cy.contains('div', 'Logout').click();
+    //Check ticket details
+    cy.contains("h5", "Ticket Details");
 
-
-    });
+    //Log out
+    cy.contains("div", "Logout").click();
+  });
 });
