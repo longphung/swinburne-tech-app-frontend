@@ -184,7 +184,7 @@ export const getTechnicianReport = async () => {
 export const getRevenueReport = async () => {
   const result = await beInst.get<
     Array<{
-      _id: [string];
+      _id: string;
       total: { $numberDecimal: number };
       tickets: Array<
         Array<{

@@ -61,8 +61,8 @@ const Dashboard = () => {
         }[] = [];
         data.forEach((x) => {
           revenue.push({
-            _id: x._id[0],
-            serviceName: x._id[0],
+            _id: x._id,
+            serviceName: x._id,
             ticketId: "",
             gross: null,
             total: x.total.$numberDecimal,
