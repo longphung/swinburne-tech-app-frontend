@@ -6,7 +6,7 @@ import { Show } from "@refinedev/mui";
 import { Breadcrumbs, Link, Skeleton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useOne } from "@refinedev/core";
+import { CanAccess, useOne } from "@refinedev/core";
 
 import { Ticket, TICKET_STATUS } from "@/interfaces";
 
@@ -125,6 +125,18 @@ const TicketsShow = () => {
               ))}
             </Box>
           </Grid>
+          <CanAccess resource="orders" action="show">
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                Order:
+              </Typography>
+              <Typography variant="body1">
+                <Link component={RouterLink} to={`/dashboard/orders/${ticketData.orderId}`}>
+                  {ticketData.orderId}
+                </Link>
+              </Typography>
+            </Grid>
+          </CanAccess>
           <Grid item xs={12} md={4}>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Created At:

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { IconButton, Popover } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DeleteButton, EditButton } from "@refinedev/mui";
+import Button from "@mui/material/Button";
 
-const DataGridActionCell = (props: { id: string; resource: string; canDelete?: boolean }) => {
+const DataGridActionCell = (props: { id: string; resource: string; canDelete?: boolean; canShow?: boolean }) => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
 
@@ -33,6 +35,16 @@ const DataGridActionCell = (props: { id: string; resource: string; canDelete?: b
           <DeleteButton resource={props.resource} recordItemId={props.id} fullWidth sx={{ padding: "1rem" }} />
         )}
         <EditButton resource={props.resource} recordItemId={props.id} fullWidth sx={{ padding: "1rem" }} />
+        {props.canShow && (
+          <Button
+            component={RouterLink}
+            to={`/dashboard/${props.resource}/${props.id}`}
+            // fullWidth
+            sx={{ padding: "1rem", width: "8rem" }}
+          >
+            View Order
+          </Button>
+        )}
       </Popover>
     </>
   );

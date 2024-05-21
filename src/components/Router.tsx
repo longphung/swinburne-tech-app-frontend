@@ -38,6 +38,7 @@ const ResponseSLACreate = lazy(() => import("@/pages/dashboard/sla/response/crea
 const ResponseSLAEdit = lazy(() => import("@/pages/dashboard/sla/response/edit"));
 const OrdersList = lazy(() => import("@/pages/dashboard/orders/list"));
 const OrdersEdit = lazy(() => import("@/pages/dashboard/orders/edit"));
+const OrdersShow = lazy(() => import("@/pages/dashboard/orders/show"));
 const TicketsList = lazy(() => import("@/pages/dashboard/tickets/list"));
 const TicketsShow = lazy(() => import("@/pages/dashboard/tickets/show"));
 const TicketsEdit = lazy(() => import("@/pages/dashboard/tickets/edit"));
@@ -218,6 +219,14 @@ const Router = () => {
           element={
             <Suspense fallback={<CircularProgress />}>
               <OrdersEdit />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dashboard/orders/:id"
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <OrdersShow />
             </Suspense>
           }
         />
