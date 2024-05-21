@@ -7,9 +7,7 @@ import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
 import { FC, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useOne } from "@refinedev/core";
 
-import { OrderData } from "@/interfaces";
 import { getOrderPDFInvoice } from "@/api/backend";
 
 const OrdersShow: FC = () => {

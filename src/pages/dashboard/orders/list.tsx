@@ -117,7 +117,7 @@ const OrdersList = () => {
             field: "actions",
             headerName: "Actions",
             type: "actions",
-            renderCell: (params) => <DataGridActionCell id={params.row.id} resource="orders" />,
+            renderCell: (params) => <DataGridActionCell id={params.row.id} resource="orders" canShow />,
           },
         ]}
         getRowHeight={() => "auto"}
