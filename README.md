@@ -67,6 +67,6 @@ where:
 
 This is a known issue currently happening with Chromium browsers and affect not only `react-pdf` library. Tracking issue specific to `react-pdf` can be found [here](https://github.com/wojtekmaj/react-pdf/issues/1798)
 
-## My Cypress tests are returning 404 and not really running?
+### My Cypress tests are returning 404 and not really running?
 
 If you are using the cypress runner to check instead of running in headless mode, then pick Electron instead of Google Chrome. Electron is the environment we are using to run the cypress tests in headless mode, which is what will also be running in the pipeline when we integrate tests to the pipeline.
