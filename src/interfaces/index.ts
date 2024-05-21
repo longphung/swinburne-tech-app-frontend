@@ -128,6 +128,7 @@ export type Ticket = {
   createdAt: string;
   updatedAt: string;
   cost: number;
+  orderId: string;
 };
 
 export type OrderData = {

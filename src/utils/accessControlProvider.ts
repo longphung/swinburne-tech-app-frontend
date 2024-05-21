@@ -3,7 +3,8 @@ import { UserData, USERS_ROLE } from "@/interfaces";
 import { CanParams } from "@refinedev/core";
 
 export const customerFields = ["noteCustomer", "location"];
-export const technicianFields = ["assignedTo", "status", "noteTechnician", "urgency", "location"];
+export const technicianFields = ["status", "noteTechnician", "urgency", "location"];
+export const techniciansNoAccess = ["orders", "users"];
 
 const handleCustomerAccess = ({ resource, action, params }: CanParams) => {
   if (resource === "tickets" && action === "edit") {
@@ -21,6 +22,18 @@ const handleCustomerAccess = ({ resource, action, params }: CanParams) => {
       reason: "Customer can list tickets",
     };
   }
+  if (resource === "orders" && action === "list") {
+    return {
+      can: true,
+      reason: "Customer can list orders",
+    };
+  }
+  if (resource === "orders" && action === "show") {
+    return {
+      can: true,
+      reason: "Customer can see their orders",
+    };
+  }
   return {
     can: false,
     reason: "Unknown action",
@@ -28,6 +41,27 @@ const handleCustomerAccess = ({ resource, action, params }: CanParams) => {
 };
 
 const handleTechnicianAccess = ({ resource, action, params }: CanParams) => {
+  if (techniciansNoAccess.includes(resource!)) {
+    return {
+      can: false,
+      reason: "Technician can't access",
+    };
+  }
+  if (resource === "services" && action === "list") {
+    return {
+      can: true,
+      reason: "Technician can list services",
+    };
+  }
+  if (
+    ["completion-slas", "response-slas", "services"].includes(resource!) &&
+    ["edit", "create", "delete"].includes(action)
+  ) {
+    return {
+      can: false,
+      reason: "Technician can't edit or delete",
+    };
+  }
   if (resource === "tickets" && action === "edit") {
     if (params?.field) {
       return {
