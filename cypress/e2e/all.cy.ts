@@ -5,7 +5,7 @@ const BASE_URL = 'https://techaway.phungnnl.dev';
 // eslint-disable-next-line max-lines-per-function
 describe('All tests', () => {
   it('loads', () => {
-    cy.visit(`${BASE_URL}/login`);
+    cy.visit(`${BASE_URL}`);
   });
 
   it('demonstrates login', () => {
