@@ -63,9 +63,13 @@ where:
 
 ## FAQ
 
+### How can I test Stripe?
+
+Stripe provides a set of test accounts on their website which can be found [here](https://docs.stripe.com/testing#cards). Depending on the Stripe credentials you provide Stripe will determine your account will be in test mode or not. While in test mode, it is important to never input real credit cards information.
+
 ### The order invoice pdf blanks out when navigating away from the page or to different tab?
 
-This is a known issue currently happening with Chromium browsers and affect not only `react-pdf` library. Tracking issue specific to `react-pdf` can be found [here](https://github.com/wojtekmaj/react-pdf/issues/1798)
+This is a known issue currently happening with Chromium browsers and affect not only `react-pdf` library. Tracking issue specific to `react-pdf` can be found [here](https://github.com/wojtekmaj/react-pdf/issues/1798). Issues have been resolved on my local machine but other web users are still having similar report.
 
 ### My Cypress tests are returning 404 and not really running?
 
