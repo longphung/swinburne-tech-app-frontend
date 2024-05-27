@@ -60,7 +60,7 @@
         "@tiptap/pm": "^2.3.2",
         "@tiptap/react": "^2.4.0",
         "@tiptap/starter-kit": "^2.3.0",
-        "axios": "^1.6.8",
+        "axios": "^1.7.2",
         "date-fns": "^3.6.0",
         "jwt-decode": "^4.0.0",
         "material-ui-confirm": "^3.0.15",
